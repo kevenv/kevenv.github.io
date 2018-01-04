@@ -87,4 +87,6 @@ ul.topnav li.right
 {
     ul.topnav li.right, 
     ul.topnav li {float: none;}
+    .center {width: 100%;}
+    ul.topnav li { width: auto;}
 }
