@@ -1,0 +1,90 @@
+/*
+    BODY
+*/
+body
+{
+    margin: 0;
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+p
+{
+    font-size: 20px;
+}
+
+/*
+    PROPERTIES
+*/
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 0px;
+}
+
+.center-text, h1
+{
+    text-align: center;
+}
+
+/*
+    PAGES
+*/
+.intro-text
+{
+    font-size: 14px;
+}
+
+.project-cat
+{
+    padding-bottom: 20px;
+}
+
+/*
+    NAVBAR
+*/
+ul.topnav 
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+ul.topnav li
+{
+    float: left;
+    width: 20%;
+}
+
+ul.topnav li a
+{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active)
+{
+    background-color: #111;
+}
+
+ul.topnav li a.active
+{
+    background-color: #5b82b5;
+}
+
+ul.topnav li.right
+{
+    float: right;
+}
+
+@media screen and (max-width: 600px)
+{
+    ul.topnav li.right, 
+    ul.topnav li {float: none;}
+}
