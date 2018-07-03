@@ -1,8 +1,10 @@
-import subprocess as cmd
+import pystache
 
-TEMPLATES_PATH = '../templates'
+TEMPLATES_PATH = 'templates'
 
 def main():
+    renderer = pystache.Renderer(search_dirs=TEMPLATES_PATH)
+
     pages = [
         'index',
         'about',
@@ -11,6 +13,9 @@ def main():
         'contact'
     ]
     for p in pages:
-        cmd.call('python -m cogapp -o ../{0}.html -d {1}/{0}.cog'.format(p,TEMPLATES_PATH), shell=True)
+        out = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
+        f = open('{}.html'.format(p),'w')
+        f.write(out)
+        f.close()
 
 main()
