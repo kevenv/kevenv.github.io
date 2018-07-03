@@ -12,6 +12,7 @@ Personal website
 - python2
 - pystache
 - libsass
+- fontawesome.js
 
 ## Tools
 
