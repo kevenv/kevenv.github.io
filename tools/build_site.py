@@ -13,7 +13,9 @@ def main():
         'contact'
     ]
     for p in pages:
-        out = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
+        outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
+        out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
+            {'body':outPage, 'pageName': p})
         f = open('{}.html'.format(p),'w')
         f.write(out)
         f.close()
