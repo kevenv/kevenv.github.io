@@ -11,7 +11,8 @@ Personal website
 
 - python2
 - pystache
+- libsass
 
 ## Tools
 
-- sublime text package: mustache
+- sublime text package: mustache, sass
