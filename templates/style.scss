@@ -45,19 +45,19 @@ p
 	SOCIAL
 */
 // workaround for fontawesome being blocked by adblock
-.my-fa--at:before
+.social1:before
 {
     content: "\f1fa";
 }
-.my-fa--github:before
+.social3:before
 {
     content: "\f09b";
 }
-.my-fa--twitter:before
+.social4:before
 {
     content: "\f099";
 }
-.my-fa--linkedin:before
+.social2:before
 {
     content: "\f0e1";
 }
