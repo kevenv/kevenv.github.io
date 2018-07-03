@@ -44,6 +44,23 @@ p
 /*
 	SOCIAL
 */
+// workaround for fontawesome being blocked by adblock
+.my-fa-at:before
+{
+    content: "\f1fa";
+}
+.my-fa-github:before
+{
+    content: "\f09b";
+}
+.my-fa-twitter:before
+{
+    content: "\f099";
+}
+.my-fa-linkedin:before
+{
+    content: "\f0e1";
+}
 .social-button
 {
 	font-size: 2rem;
