@@ -1,48 +1,144 @@
 /*
-    BODY
+    MAIN
 */
+* {
+    box-sizing: border-box;
+}
 body
 {
     margin: 0;
-    font-family: Verdana;
-    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
     font-weight: normal;
 }
 
 p
 {
+    text-align: center;
     font-size: 20px;
 }
 
-/*
-    PROPERTIES
-*/
-.center {
-    margin: auto;
-    width: 60%;
-    padding: 0px;
+h1,h2,h3,h4,h5,h6
+{
+    font-family: 'Roboto', sans-serif;
 }
 
-.center-text, h1
+h1
 {
     text-align: center;
 }
 
+a:link
+{
+    color: black;
+}
+a:visited
+{
+    color: black;
+}
+a:hover
+{
+    color: #808080;
+}
+
 /*
-    PAGES
+    LAYOUT
 */
-.intro-text
+.content 
 {
-    font-size: 14px;
+    margin: auto;
+    width: 60%;
+    padding: 0px;
 }
-
-.project-cat
+@media screen and (max-width: 800px)
 {
-    padding-bottom: 20px;
+    .content
+    {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 600px)
+{
+    .content
+    {
+        width: 100%;
+    }
 }
 
 /*
-	SOCIAL
+    HEADER
+*/
+.topnav
+{
+    overflow: hidden;
+    background-color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.topnav a
+{
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+
+    float: left;
+    width: 20%;
+}
+
+.topnav a:hover:not(.active)
+{
+    background-color: #111;
+}
+
+.topnav a.active
+{
+    background-color: #5b82b5;
+}
+
+// make navbar vertical when screen is too small
+.topnav a.right
+{
+    float: right;
+}
+@media screen and (max-width: 600px)
+{
+    .topnav a.right, 
+    .topnav a {float: none;}
+    .center {width: 100%;}
+    .topnav a { width: auto;}
+}
+
+/*
+    BANNER
+*/
+.banner
+{
+    // fit banner to div
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+}
+
+/*
+    FOOTER
+*/
+footer
+{
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/*
+    SOCIAL
 */
 // workaround for fontawesome being blocked by adblock
 .scicon1:before
@@ -63,55 +159,19 @@ p
 }
 .sc-button
 {
-	font-size: 2rem;
+    font-size: 2rem;
 }
 
 /*
-    NAVBAR
+    PAGES
 */
-ul.topnav 
+#intro
 {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-ul.topnav li
+.project-cat
 {
-    float: left;
-    width: 20%;
-}
-
-ul.topnav li a
-{
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-ul.topnav li a:hover:not(.active)
-{
-    background-color: #111;
-}
-
-ul.topnav li a.active
-{
-    background-color: #5b82b5;
-}
-
-ul.topnav li.right
-{
-    float: right;
-}
-
-@media screen and (max-width: 600px)
-{
-    ul.topnav li.right, 
-    ul.topnav li {float: none;}
-    .center {width: 100%;}
-    ul.topnav li { width: auto;}
+    padding-bottom: 20px;
 }
