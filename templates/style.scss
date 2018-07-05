@@ -28,6 +28,11 @@ h1
     text-align: center;
 }
 
+a
+{
+    text-decoration: none;
+}
+
 a:link
 {
     color: black;
@@ -171,6 +176,69 @@ footer
     font-weight: bold;
 }
 
+.winner
+{
+    text-align: left;
+    font-style: italic;
+    color: #5b82b5
+}
+
+.project-column
+{
+    float: left;
+    width: 50%;
+}
+
+.project-column img
+{
+    width: 100%;
+    max-width: 400px;
+    border: 4px solid black;
+}
+
+.project-column p
+{
+    text-align: left;
+}
+
+@media screen and (max-width: 600px)
+{
+    .project-column
+    {
+        width: 100%;
+    }
+    .project-column img
+    {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+}
+@media screen and (max-width: 600px)
+{
+    .project-column img
+    {
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
+.project-row:after
+{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.project-desc
+{
+    padding-left: 8px;
+}
+.project-desc ul
+{
+    padding-left: 28px;
+}
 .project-cat
 {
     padding-bottom: 20px;
