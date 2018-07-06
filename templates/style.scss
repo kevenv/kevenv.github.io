@@ -172,6 +172,7 @@ footer
     font-weight: bold;
 }
 
+
 .winner
 {
     text-align: left;
@@ -238,4 +239,54 @@ footer
 .project-cat
 {
     padding-bottom: 20px;
+}
+
+
+#education-table
+{
+    padding: 0;
+}
+
+#education-table li
+{
+    list-style-type: none;
+    padding-bottom: 8px;
+}
+
+.education-diploma
+{
+    font-weight: bold;
+}
+
+#skills-table table 
+{
+    border-collapse: collapse;
+}
+#skills-table table, th, td
+{
+    padding: 0;
+}
+
+#skills-table th
+{
+    font-weight: bold;
+    padding-left: 6px;
+    padding-right: 6px;
+    text-align: left;
+}
+
+#skills-table td
+{
+    padding-left: 8px;
+}
+
+#skills-table tr
+{
+    height: 60px;
+}
+
+.courses-prof
+{
+    font-style: italic;
+    font-size: 18px;
 }
