@@ -242,22 +242,6 @@ footer
 }
 
 
-#education-table
-{
-    padding: 0;
-}
-
-#education-table li
-{
-    list-style-type: none;
-    padding-bottom: 8px;
-}
-
-.education-diploma
-{
-    font-weight: bold;
-}
-
 #skills-table table 
 {
     border-collapse: collapse;
@@ -284,6 +268,50 @@ footer
 {
     height: 60px;
 }
+
+
+#education-table
+{
+    padding: 0;
+    margin-top: 0;
+}
+
+.education-diploma
+{
+    font-weight: bold;
+}
+
+.education-date
+{
+    font-weight: bold;
+    text-align: right;
+}
+
+
+#work-table table
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#work-table table, td
+{
+    padding: 0;
+}
+
+.left-align
+{
+    text-align: left;
+}
+.right-align
+{
+    text-align: right;
+}
+.center-align
+{
+    text-align: center;
+}
+
 
 .courses-prof
 {
