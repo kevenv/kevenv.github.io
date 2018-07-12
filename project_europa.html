@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Kevenv's personal website</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset=utf-8>
+        <link rel="icon" href="imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:700" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114036564-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-114036564-1');
+        </script>
+    </head>
+    <body>
+        <div class="content">
+        <header>
+            <div class="navbar">
+                <a id="indexNav" href="index.html">HOME</a>
+                <a id="aboutNav" href="about.html">ABOUT</a>
+                <a id="projectsNav" href="projects.html">PROJECTS</a>
+                <a id="linksNav" href="links.html">LINKS</a>
+                <a id="contactNav" href="contact.html">CONTACT</a>
+            </div>
+        </header>
+
+<h1>Real-Time Strategy Game Engine</h1>
+
+<p class="post-text">
+    With a friend we wanted to make a clone of the famous RTS game <a href="https://en.wikipedia.org/wiki/Age_of_Empires">Age of Empires</a> from scratch.
+</p>
+
+<img src="imgs/projects/europa/ageofempire.jpg" class="post-img">
+
+<p class="post-text">
+    How hard can it be right?
+    No need to say that this project was a failure, but we've managed to implement some interesting stuff, still nowhere close to a complete game.
+</p>
+
+<img src="imgs/projects/europa/europa-scene.png" class="post-img">
+
+<h2>Features</h2>
+
+<ul>
+    <li>Entity-Components architecture</li>
+    <li>Client/Server network architecture</li>
+    <li>Resources manager</li>
+    <li>Screens system (Splash screen, Pause, Game, ...)</li>
+    <li>2D isometric renderer</li>
+    <li>UI system with dirty system</li>
+    <li>Text box</li>
+    <li>Check box</li>
+    <li>Combo box</li>
+    <li>Button</li>
+    <li>Scroll bar</li>
+    <li>Serializer</li>
+    <li>Map loader</li>
+    <li>Map editor</li>
+    <li>Embedded debugging console</li>
+    <li>Errors &amp; logging system</li>
+    <li>Sound system</li>
+    <li>Game entities</li>
+    <li>Path finding using A*</li>
+</ul>
+
+<p class="post-text">
+    I wrote the renderer, UI system and resources manager while my friend worked on the networking system and collisions handling. Our engine was able to handle quite a bit of entities...
+</p>
+
+<img src="imgs/projects/europa/europa-macdonald.png" class="post-img">
+
+<p class="post-text">Here's the first entity we've sent through the internet!</p>
+
+<img src="imgs/projects/europa/europa-first-entity.png" class="post-img">
+
+<a href="https://github.com/Nicolas82588/europa"><i class="fab scicon3 fa-fw post-code"></i> Code</a>
+        <footer>
+        	Keven Villeneuve &copy; 2018
+        </footer>
+        </div>
+    </body>
+    <script type="text/javascript">
+        document.getElementById("project_europaNav").className += " active";
+    </script>
+</html>

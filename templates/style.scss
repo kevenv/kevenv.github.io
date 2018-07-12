@@ -331,3 +331,24 @@ footer
     font-style: italic;
     font-size: 18px;
 }
+
+
+.post-text
+{
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.post-img
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    padding-bottom: 12px;
+}
+
+.post-code
+{
+    padding-bottom: 12px;
+}
