@@ -182,6 +182,26 @@ footer
     padding-bottom: 20px;
 }
 
+.project-grids table
+{
+    table-layout: fixed;
+    width: 100%;
+    border: 0;
+}
+.project-grids td
+{
+    width: 25%;
+}
+.project-grid
+{
+    width: 100%;
+    filter: opacity(100%);
+}
+.project-grid:hover
+{
+    filter: opacity(70%);
+}
+
 .winner
 {
     text-align: left;
