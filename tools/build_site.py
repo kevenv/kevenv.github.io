@@ -21,7 +21,7 @@ def main():
         outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
             {'body':outPage, 'pageName': p})
-        with open('{}.html'.format(p),'w') as f:
+        with open('{}.html'.format(p),'wb') as f:
             f.write(out)
 
     # SASS
