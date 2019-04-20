@@ -15,9 +15,11 @@ def main():
         'links',
         'contact',
         'project_chip8',
-        'project_europa'
+        'project_europa',
+        'master_thesis'
     ]
     for p in pages:
+        print p
         outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
             {'body':outPage, 'pageName': p})
