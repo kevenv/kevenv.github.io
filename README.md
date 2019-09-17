@@ -9,6 +9,8 @@ Personal website
 
 ## Dependencies
 
+install: `pip install --user -r tools/requirements.txt`
+
 - python2
 - pystache
 - libsass
