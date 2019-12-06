@@ -1,2 +1,2 @@
-libsass>=0.19.2
-pystache>=0.5.4
+libsass
+pystache

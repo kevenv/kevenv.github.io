@@ -7,11 +7,17 @@ Personal website
 - no useless js, jquery BS
 - no complex packages management
 
+## Install
+
+`pip3 install --user -r tools/requirements.txt`
+
+## Build
+
+`python3 tools/build_site.py`
+
 ## Dependencies
 
-install: `pip install --user -r tools/requirements.txt`
-
-- python2
+- python3
 - pystache
 - libsass
 - fontawesome.js

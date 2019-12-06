@@ -19,11 +19,11 @@ def main():
         'master_thesis'
     ]
     for p in pages:
-        print p
+        print(p)
         outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
             {'body':outPage, 'pageName': p})
-        with open('{}.html'.format(p),'wb') as f:
+        with open('{}.html'.format(p),'w') as f:
             f.write(out)
 
     # SASS
