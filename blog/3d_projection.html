@@ -164,11 +164,116 @@ but we can preserve:
 - depth order (what is in front of what) -> z-buffer
 - depth @ near ($n$) and far ($f$) plane
 
-To preserve depth at $n$ and $f$ we will move around the $z$ component by adding a scale $a$ and a translation $b$: $z' = a z + b$
+Assume the near plane is at distance ($d = n$).
 
-### Depth precision
-- from matrix
-- z-fighting
+To preserve depth at $n$ and $f$ we will move around the $z$ component by adding a scale $a$ and a translation $b$: $z' = a z + b$.
+
+\[
+\begin{bmatrix}
+	n & 0 & 0 & 0 \\
+	0 & n & 0 & 0 \\
+	0 & 0 & a & b \\
+	0 & 0 & -1 & 0 \\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+	n x \\
+	n y \\
+	a z + b\\
+	-z \\
+\end{bmatrix}
+->
+\begin{bmatrix}
+	x' \\
+	y' \\
+	z' \\
+	1 \\
+\end{bmatrix}
+\]
+
+\[
+	\begin{equation} \label{eq:persp_eq1}
+		x' = \frac{n x}{-z}
+	\end{equation}
+\]
+\[
+	\begin{equation} \label{eq:persp_eq2}
+		y' = \frac{n y}{-z}
+	\end{equation}
+\]
+\[
+	\begin{equation} \label{eq:persp_eq3}
+		z' = \frac{a z + b}{-z}
+	\end{equation}
+\]
+
+Choose $(a,b)$ such that:
+\[
+	\begin{equation} \label{eq:persp_eq4}
+	z'(-n) = -n
+	\end{equation}
+\]
+\[
+	\begin{equation} \label{eq:persp_eq5}
+	z'(-f) = -f
+	\end{equation}
+\]
+i.e. the projected $z$ value of some point on the near plane is at the same depth as that unprojected point.
+
+Plug $(\ref{eq:persp_eq4})$ in $(\ref{eq:persp_eq3})$:
+
+\[
+	-n = \frac{a(-n) + b}{-(-n)}\\
+	-n = \frac{-a n + b}{n}\\
+\]
+\[
+	\begin{equation} \label{eq:persp_eq6}
+	-n^{2} = -a n + b\\
+	\end{equation}
+\]
+
+Plug $(\ref{eq:persp_eq5})$ in $(\ref{eq:persp_eq3})$:
+\[
+	-f = \frac{a(-f) + b}{-(-f)}\\
+	-f = \frac{-a f + b}{f}\\
+\]
+\[
+	\begin{equation} \label{eq:persp_eq7}
+	-f^{2} = -a f + b\\
+	\end{equation}
+\]
+
+Subtract $(\ref{eq:persp_eq6})$ - $(\ref{eq:persp_eq7})$:
+\[
+	-n^{2} - (-f^{2}) = b - b - a n -(-a f)\\
+	-n^{2} + f^{2} = - a n + a f\\
+	-(n^{2} - f^{2}) = -a(n - f)\\
+	a = \frac{ -(n^{2} - f^{2}) }{ -a(n - f) }\\
+\]
+\[
+	\begin{equation} \label{eq:persp_eq8}
+	a = n + f
+	\end{equation}
+\]
+
+Plug $(\ref{eq:persp_eq8})$ in $(\ref{eq:persp_eq6})$:
+\[
+	-n^{2} = -(n + f) n + b\\
+	-n^{2} = -n^{2} - f n + b\\
+	0 = - f n + b\\
+\]
+\[
+	\begin{equation} \label{eq:persp_eq9}
+	b = n f\\
+	\end{equation}
+\]
 
 ### Solution
 The resulting OpenGL matrix is:
@@ -181,6 +286,10 @@ The resulting OpenGL matrix is:
 	0 & 0 & -1  & 0 \\
 \end{bmatrix}
 \]
+
+### Depth precision
+- from matrix
+- z-fighting
 
 
 ## Orthographic Projection
