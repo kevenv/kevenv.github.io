@@ -1,2 +1,5 @@
 libsass
 pystache
+markdown
+markdown-katex
+Pygments

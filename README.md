@@ -20,8 +20,11 @@ Personal website
 - python3
 - pystache
 - libsass
+- markdown
+- markdown-katex
+- Pygments
 - fontawesome.js
 
 ## Tools
 
-- sublime text package: mustache, sass
+- sublime text packages: mustache, sass, markdown
