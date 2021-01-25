@@ -45,7 +45,7 @@ a:hover
 /*
     LAYOUT
 */
-.content 
+body
 {
     margin: auto;
     width: 60%;
@@ -53,17 +53,23 @@ a:hover
 }
 @media screen and (max-width: 800px)
 {
-    .content
+    body
     {
         width: 100%;
     }
 }
 @media screen and (max-width: 600px)
 {
-    .content
+    body
     {
         width: 100%;
     }
+}
+
+.content
+{
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /*
@@ -181,19 +187,28 @@ footer
     padding: 0px;
     padding-bottom: 20px;
 }
+@media screen and (max-width: 800px)
+{
+    .intro-text
+    {
+        width: 90%;
+    }
+}
 
-/*
-    PROJECTS
-*/
 .project-grids table
 {
     table-layout: fixed;
     width: 100%;
     border: 0;
+    border-spacing: 2px;
 }
 .project-grids td
 {
     width: 25%;
+}
+.project-grids img
+{
+    vertical-align: top;
 }
 .project-grid
 {
@@ -205,6 +220,9 @@ footer
     filter: opacity(70%);
 }
 
+/*
+    PROJECTS
+*/
 .winner
 {
     text-align: left;
@@ -241,13 +259,6 @@ footer
         display: block;
         margin-left: auto;
         margin-right: auto;
-        width: 50%;
-    }
-}
-@media screen and (max-width: 600px)
-{
-    .project-column img
-    {
         width: 100%;
         max-width: 400px;
     }
