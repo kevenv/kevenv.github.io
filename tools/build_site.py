@@ -31,6 +31,7 @@ def main():
         'index',
         'about',
         'projects',
+        'publications',
         'blog',
         'contact',
         'project_chip8',
