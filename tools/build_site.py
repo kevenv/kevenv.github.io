@@ -32,7 +32,7 @@ def main():
         'about',
         'projects',
         'publications',
-        'blog',
+        # 'blog',
         'contact',
         'project_chip8',
         'project_europa',
@@ -46,6 +46,7 @@ def main():
         with open('{}.html'.format(p),'w') as f:
             f.write(out)
     
+    '''
     posts = [
         'hello'
     ]
@@ -59,5 +60,6 @@ def main():
             {'body':outPage, 'pageName': 'blog', 'head': header})
         with open('blog_{}.html'.format(p),'w') as f:
             f.write(out)
+    '''
 
 main()
