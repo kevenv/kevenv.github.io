@@ -3,6 +3,8 @@ import sass
 import markdown
 
 TEMPLATES_PATH = 'templates'
+IMAGES_PATH = 'imgs'
+DOCS_PATH = 'docs'
 CSS_PATH = '.'
 
 def main():
@@ -28,21 +30,31 @@ def main():
     sass.compile(dirname=(TEMPLATES_PATH,CSS_PATH), output_style='compressed')
 
     pages = [
-        'index',
-        'about',
-        'projects',
-        'publications',
-        # 'blog',
-        'contact',
-        'project_chip8',
-        'project_europa',
-        'master_thesis'
+        ('index',''),
+        ('about',''),
+        ('projects',''),
+        ('publications',''),
+        # ('blog',''),
+        ('contact',''),
+        ('project_chip8',''),
+        ('project_europa',''),
+        ('publications/master_thesis','../'),
     ]
-    for p in pages:
-        print(p)
-        outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p))
-        out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
-            {'body':outPage, 'pageName': p})
+    for page in pages:
+        print(page)
+        
+        p = page[0]
+        root = page[1]
+        root_images = root + IMAGES_PATH + '/'
+        root_docs = root + DOCS_PATH + '/'
+        
+        outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
+            'root': root, 'rootImages': root_images, 'rootDocs': root_docs
+        })
+        out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
+            'body':outPage, 'pageName': p,
+            'root': root, 'rootImages': root_images, 'rootDocs': root_docs
+        })
         with open('{}.html'.format(p),'w') as f:
             f.write(out)
     
