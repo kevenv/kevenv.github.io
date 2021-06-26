@@ -36,8 +36,8 @@ def main():
         ('publications',''),
         # ('blog',''),
         ('contact',''),
-        ('project_chip8',''),
-        ('project_europa',''),
+        ('projects/chip8','../'),
+        ('projects/europa','../'),
         ('publications/master_thesis','../'),
     ]
     for page in pages:
