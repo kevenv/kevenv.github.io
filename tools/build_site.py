@@ -39,6 +39,7 @@ def main():
         ('projects/chip8','../'),
         ('projects/europa','../'),
         ('publications/master_thesis','../'),
+        ('publications/volume_product_sampling','../'),
     ]
     for page in pages:
         print(page)

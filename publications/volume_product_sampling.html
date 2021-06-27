@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Kevenv's personal website</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset=utf-8>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto:700" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114036564-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-114036564-1');
+        </script>
+
+    </head>
+    <body>
+        <header>
+            <div class="navbar">
+                <a id="indexNav" href="../index.html">HOME</a>
+                <a id="aboutNav" href="../about.html">ABOUT</a>
+                <a id="publicationsNav" href="../publications.html">PUBLICATIONS</a>
+                <a id="projectsNav" href="../projects.html">PROJECTS</a>
+                <!--<a id="blogNav" href="../blog.html">BLOG</a>-->
+                <a id="contactNav" href="../contact.html">CONTACT</a>
+            </div>
+        </header>
+<div class="content">
+
+<h1 class="publication-title">Practical Product Sampling for Single Scattering in Media</h1>
+<p class="publication-author">Keven Villeneuve, Adrien Gruson, Iliyan Georgiev, Derek Nowrouzezahrai</p>
+<p class="publication-booktitle">EGSR 2021</p>
+
+<img class="publication-img" src="../imgs/publications/volume_product_sampling_cover2.jpg">
+<!--
+<p class="publication-caption">
+	caption
+</p>
+-->
+
+<h2>Abstract</h2>
+<p class="publication-abstract">
+    Efficient Monte-Carlo estimation of volumetric single scattering remains challenging due to various sources of variance, including transmittance, phase-function anisotropy, geometric cosine foreshortening, and squared-distance fall-off. We propose several complementary techniques to importance sample each of these terms and their product. First, we introduce an extension to equi-angular sampling to analytically account for the foreshortening at point-normal emitters. We then include transmittance and phase function via Taylor-series expansion and/or warp composition. Scaling to complex mesh emitters is achieved through an adaptive tree-splitting scheme. We show improved performance over state-of-the-art baselines in a diversity of scenarios.
+</p>
+
+<h2>Downloads</h2>
+<a href="../docs/volume_product_sampling.pdf"><i class="far fa-file-pdf"></i> Paper</a>
+
+<h2>BibTex</h2>
+<pre class="publication-bibtex">
+@article{Villeneuve:2021:VolumeProductSampling,
+  author = {Keven Villeneuve and Adrien Gruson and Iliyan Georgiev and Derek Nowrouzezahrai},
+  title = {Practical product sampling for single scattering in media},
+  booktitle = {Proceedings of EGSR},
+  year = {2021},
+  month = jun,
+  publisher = {The Eurographics Association}
+}
+</pre>
+
+</div>
+        <footer>
+        	Keven Villeneuve &copy; 2021
+        </footer>
+    </body>
+    <!-- Highlight selected tab in navbar -->
+    <script type="text/javascript">
+        document.getElementById("publications/volume_product_samplingNav").className += " active";
+    </script>
+</html>
