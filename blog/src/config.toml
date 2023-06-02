@@ -1,4 +1,4 @@
-baseurl = "https://username.github.io"
+baseurl = "https://kevenv.github.io/blog/"
 DefaultContentLanguage = "en"
 publishDir = "../"
 title = "Beautiful Hugo"
