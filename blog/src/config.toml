@@ -1,5 +1,6 @@
 baseurl = "https://username.github.io"
 DefaultContentLanguage = "en"
+publishDir = "../"
 title = "Beautiful Hugo"
 theme = "beautifulhugo"
 pygmentsStyle = "trac"
