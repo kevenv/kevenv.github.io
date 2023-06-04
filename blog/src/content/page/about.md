@@ -1,16 +1,24 @@
 ---
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: Software Engineer & Computational Scientist
 comments: false
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+Hi my name is Keven Villeneuve, I am a Software engineer specialized in computer graphics. I like to say that I am passionate about technology, I strive for simple &amp; elegant solutions. Genuinely curious, I love learning about math and physics. I also have a strong interest in low level programming and understanding how everything fits together.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+### Education
+- M.Eng. Computer Engineering (Thesis), McGill University
+	- _Specialization in Computer Graphics and Machine Learning_
+- B.Eng. Computer Engineering, Université de Sherbrooke
+	- _Specialization in Digital Signal Processing and Data Compression_
 
-What else do you need?
-
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+### Work Experience
+- **Current :** Senior Software Engineer, NVIDIA
+- R&D Software Engineer, Electronic Arts (SEED)
+- Software Developer, Maxon
+- Software Engineer (Intern), Autodesk
+- Research Assistant, McGill University
+- Software Developer (Intern), Autodesk
+- Engine Programmer (Intern), Ubisoft
+- Software Engineer (Intern), Candian Space Agency (CSA)
+- Software Developer, CIMA+

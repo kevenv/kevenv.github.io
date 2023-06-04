@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pages on Beautiful Hugo</title>
+    <title>Pages on Kevenv&#39;s Blog</title>
     <link>https://kevenv.github.io/blog/page/</link>
-    <description>Recent content in Pages on Beautiful Hugo</description>
+    <description>Recent content in Pages on Kevenv&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <managingEditor>youremail@domain.com (Some Person)</managingEditor>
-    <webMaster>youremail@domain.com (Some Person)</webMaster><atom:link href="https://kevenv.github.io/blog/page/index.xml" rel="self" type="application/rss+xml" />
+    <managingEditor>keven.villeneuve@gmail.com (Keven Villeneuve)</managingEditor>
+    <webMaster>keven.villeneuve@gmail.com (Keven Villeneuve)</webMaster><atom:link href="https://kevenv.github.io/blog/page/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About me</title>
       <link>https://kevenv.github.io/blog/page/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>youremail@domain.com (Some Person)</author>
+      <author>keven.villeneuve@gmail.com (Keven Villeneuve)</author>
       <guid>https://kevenv.github.io/blog/page/about/</guid>
-      <description>My name is Inigo Montoya. I have the following qualities:
- I rock a great mustache I&amp;rsquo;m extremely loyal to my family  What else do you need?
-my history To be honest, I&amp;rsquo;m having some trouble remembering right now, so why don&amp;rsquo;t you just watch my movie and it will answer all your questions.</description>
+      <description>Hi my name is Keven Villeneuve, I am a Software engineer specialized in computer graphics. I like to say that I am passionate about technology, I strive for simple &amp;amp; elegant solutions. Genuinely curious, I love learning about math and physics. I also have a strong interest in low level programming and understanding how everything fits together.
+Education  M.Eng. Computer Engineering (Thesis), McGill University  Specialization in Computer Graphics and Machine Learning   B.</description>
     </item>
     
   </channel>
