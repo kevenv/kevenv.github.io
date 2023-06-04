@@ -15,10 +15,12 @@ Hi my name is Keven Villeneuve, I am a Software engineer specialized in computer
 ### Work Experience
 - **Current :** Senior Software Engineer, NVIDIA
 - R&D Software Engineer, Electronic Arts (SEED)
-- Software Developer, Maxon
-- Software Engineer (Intern), Autodesk
+- Software Engineer, Maxon
+- Software Developer (Intern), Autodesk
 - Research Assistant, McGill University
 - Software Developer (Intern), Autodesk
 - Engine Programmer (Intern), Ubisoft
 - Software Engineer (Intern), Candian Space Agency (CSA)
 - Software Developer, CIMA+
+
+If you want to learn more about me, checkout my [portfolio](https://kevenv.github.io).
