@@ -6,6 +6,7 @@ Personal website
 - no web frameworks
 - no useless js, jquery BS
 - no complex packages management
+- minimal css
 
 ## Install
 
@@ -19,7 +20,6 @@ Personal website
 
 - python3
 - pystache
-- libsass
 - markdown
 - markdown-katex
 - Pygments
@@ -27,4 +27,4 @@ Personal website
 
 ## Tools
 
-- sublime text packages: mustache, sass, markdown
+- sublime text packages: mustache, markdown

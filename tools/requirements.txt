@@ -1,4 +1,3 @@
-libsass
 pystache
 markdown
 markdown-katex

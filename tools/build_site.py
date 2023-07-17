@@ -1,11 +1,10 @@
+import shutil
 import pystache
-import sass
 import markdown
 
 TEMPLATES_PATH = 'templates'
 IMAGES_PATH = 'imgs'
 DOCS_PATH = 'docs'
-CSS_PATH = '.'
 
 def main():
     # MUSTACHE
@@ -26,9 +25,10 @@ def main():
     <link rel="stylesheet" href="codehilite.css">
     '''
 
-    # SASS
-    sass.compile(dirname=(TEMPLATES_PATH,CSS_PATH), output_style='compressed')
+    # CSS
+    shutil.copyfile('{}/style.css'.format(TEMPLATES_PATH), 'style.css')
 
+    # HTML
     pages = [
         ('index',''),
         ('about',''),
@@ -49,11 +49,11 @@ def main():
         root_images = root + IMAGES_PATH + '/'
         root_docs = root + DOCS_PATH + '/'
         
-        outPage = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
+        out_page = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
-            'body':outPage, 'pageName': p,
+            'body': out_page, 'pageName': p,
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
         with open('{}.html'.format(p),'w') as f:
@@ -68,9 +68,10 @@ def main():
 
         with open('{}/blog/{}.md'.format(TEMPLATES_PATH,p),'r') as f:
             text = f.read()
-        outPage = md.reset().convert(text)
+        out_page = md.reset().convert(text)
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
-            {'body':outPage, 'pageName': 'blog', 'head': header})
+            { 'body': out_page, 'pageName': 'blog', 'head': header }
+        )
         with open('blog_{}.html'.format(p),'w') as f:
             f.write(out)
     '''
