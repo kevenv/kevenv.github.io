@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="../imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="../style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,42 +12,46 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="../index.html">HOME</a>
-                <a id="aboutNav" href="../about.html">ABOUT</a>
-                <a id="publicationsNav" href="../publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="../projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="../blog.html">BLOG</a>-->
-                <a id="contactNav" href="../contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
-<h1 class="publication-title">Importance Sampling Polygonal Lights in Participating Media</h1>
-<p class="publication-author">Keven Villeneuve</p>
-<p class="publication-booktitle">M.Eng. thesis, McGill University, 2019 (Advisor: <a href="http://www.cim.mcgill.ca/~derek/">Derek Nowrouzezahrai</a>)</p>
-
-<img class="publication-img" src="../imgs/publications/master_thesis_cover.jpg">
-<p class="publication-caption">
-	Improving the rendering efficiency of scenes involving polygonal lights (here a rectangular light) in participating media. Equi-angular sampling (left), our technique using a novel importance sampling scheme of a single oriented point light (middle), our technique improved using a simple tabulation scheme of 12 oriented point lights (right).
+        <hr>
+<h1>Importance Sampling Polygonal Lights in Participating Media</h1>
+<p>
+    Keven Villeneuve<br/>
+    <i>M.Eng. thesis, McGill University, 2019 (Advisor: <a href="http://www.cim.mcgill.ca/~derek/">Derek Nowrouzezahrai</a>)</i>
 </p>
 
-<h2>Abstract</h2>
-<p class="publication-abstract">
+<img src="../imgs/publications/master_thesis_cover.jpg">
+
+<p class="caption">
+    Improving the rendering efficiency of scenes involving polygonal lights (here a rectangular light) in participating media. Equi-angular sampling (left), our technique using a novel importance sampling scheme of a single oriented point light (middle), our technique improved using a simple tabulation scheme of 12 oriented point lights (right).
+</p>
+
+<h3>Abstract</h3>
+<p class="justify">
     The photorealistic images that we are so used to in our everyday life results from the accurate simulation of light scattering in a scene as defined by the rendering equation. Due to its simplicity and flexibility, path tracing is currently the most popular technique used to solve this equation. Unfortunately, its correctness comes at the price of variance, manifesting itself as noise on the resulting image. Getting rid of this noise is a very time-consuming process as thousands of samples need to be computed for every pixel of the image. For this reason, path tracing is normally implemented using various variance reduction schemes such as importance sampling.
 </p>
-<p class="publication-abstract">
-	The noise is even more problematic in the case of participating media like clouds, smoke and fire since a distance also has to be sampled into the medium before sampling a ray direction, thus requiring even more samples. Rendering polygonal and mesh lights in participating media is particularly challenging due to the fact that these light sources do not emit light from a single point in space but along all points on their surface. In addition, the illumination coming from those lights is affected by many terms of different nature such as the geometry, the transmittance and the phase function.
+<p class="justify">
+    The noise is even more problematic in the case of participating media like clouds, smoke and fire since a distance also has to be sampled into the medium before sampling a ray direction, thus requiring even more samples. Rendering polygonal and mesh lights in participating media is particularly challenging due to the fact that these light sources do not emit light from a single point in space but along all points on their surface. In addition, the illumination coming from those lights is affected by many terms of different nature such as the geometry, the transmittance and the phase function.
 </p>
-<p class="publication-abstract">
-	In this thesis we propose to express any polygonal light as an infinite set of oriented point lights at the surface of the polygonal light. We derive an analytical solution to importance sample the geometry term of one of those oriented point light. We then develop a semi-analytical solution to importance sample the product of its geometry, transmittance and phase function terms. Finally, we use a simple tabulation scheme on a small set of oriented point lights to importance sample the geometry, transmittance and the phase function of a polygonal light. We show that our new sampling scheme converges faster than the state of the art for polygonal lights in participating media and is directly applicable to the renderers used today in the films and visual effects industry. We also briefly present ongoing work on importance sampling mesh lights using a hierarchical lights clustering strategy that takes advantage of our newly derived solution for polygonal lights.  
+<p class="justify">
+    In this thesis we propose to express any polygonal light as an infinite set of oriented point lights at the surface of the polygonal light. We derive an analytical solution to importance sample the geometry term of one of those oriented point light. We then develop a semi-analytical solution to importance sample the product of its geometry, transmittance and phase function terms. Finally, we use a simple tabulation scheme on a small set of oriented point lights to importance sample the geometry, transmittance and the phase function of a polygonal light. We show that our new sampling scheme converges faster than the state of the art for polygonal lights in participating media and is directly applicable to the renderers used today in the films and visual effects industry. We also briefly present ongoing work on importance sampling mesh lights using a hierarchical lights clustering strategy that takes advantage of our newly derived solution for polygonal lights.  
 </p>
 
-<h2>Downloads</h2>
-<a href="../docs/keven_villeneuve_thesis_meng.pdf"><i class="far fa-file-pdf"></i> Thesis</a>
+<h3>Downloads</h3>
+<p class="link-button">
+    <a href="../docs/keven_villeneuve_thesis_meng.pdf"><i class="far fa-file-pdf"></i> Thesis</a>
+</p>
 
-<h2>BibTeX</h2>
-<pre class="publication-bibtex">
+<h3>BibTeX</h3>
+<pre class="bibtex">
 @MastersThesis{Villeneuve:2019:Thesis,
   title   = {Importance Sampling Polygonal Lights in Participating Media},
   author  = {Villeneuve, Keven},
@@ -57,13 +61,17 @@
 }
 </pre>
 
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("publications/master_thesisNav").className += " active";
-    </script>
 </html>

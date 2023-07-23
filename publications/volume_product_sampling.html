@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="../imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="../style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,46 +12,41 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="../index.html">HOME</a>
-                <a id="aboutNav" href="../about.html">ABOUT</a>
-                <a id="publicationsNav" href="../publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="../projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="../blog.html">BLOG</a>-->
-                <a id="contactNav" href="../contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
-<h1 class="publication-title">Practical Product Sampling for Single Scattering in Media</h1>
-<p class="publication-author">Keven Villeneuve, Adrien Gruson, Iliyan Georgiev, Derek Nowrouzezahrai</p>
-<p class="publication-booktitle">EGSR 2021</p>
-
-<img class="publication-img" src="../imgs/publications/volume_product_sampling_cover2.jpg">
-<!--
-<p class="publication-caption">
-	caption
+        <hr>
+<h1>Practical Product Sampling for Single Scattering in Media</h1>
+<p>
+    Keven Villeneuve, Adrien Gruson, Iliyan Georgiev, Derek Nowrouzezahrai<br/>
+    <i>EGSR 2021</i>
 </p>
--->
 
-<h2>Abstract</h2>
-<p class="publication-abstract">
+<img src="../imgs/publications/volume_product_sampling_cover2.jpg">
+
+<h3>Abstract</h3>
+<p class="justify">
     Efficient Monte-Carlo estimation of volumetric single scattering remains challenging due to various sources of variance, including transmittance, phase-function anisotropy, geometric cosine foreshortening, and squared-distance fall-off. We propose several complementary techniques to importance sample each of these terms and their product. First, we introduce an extension to equi-angular sampling to analytically account for the foreshortening at point-normal emitters. We then include transmittance and phase function via Taylor-series expansion and/or warp composition. Scaling to complex mesh emitters is achieved through an adaptive tree-splitting scheme. We show improved performance over state-of-the-art baselines in a diversity of scenarios.
 </p>
 
-<h2>Downloads</h2>
-<a href="../docs/volume_product_sampling.pdf"><i class="far fa-file-pdf"></i> Paper</a>
-<a href="../docs/volume_product_sampling_supplemental.pdf"><i class="far fa-file-pdf"></i> Supplemental</a>
-<a href="../docs/volume_product_sampling_EGSR2021.pdf"><i class="far fa-file-pdf"></i> Slides</a>
-<a href="../docs/volume_product_sampling_EGSR2021.pptx"><i class="far fa-file-powerpoint"></i> Slides</a>
-<a href="https://www.youtube.com/embed/iETDEkcRI8M?start=2075&end=2948"><i class="fas fa-video fa-fw"></i> Video</a>
-<a href="https://github.com/beltegeuse/rustlight/tree/point-normal"><i class="fab scicon3 fa-fw"></i> Code</a>
+<h3>Downloads</h3>
+<p class="link-button">
+    <a href="../docs/volume_product_sampling.pdf"><i class="far fa-file-pdf"></i> Paper</a>
+    <a href="../docs/volume_product_sampling_supplemental.pdf"><i class="far fa-file-pdf"></i> Supplemental</a>
+    <a href="../docs/volume_product_sampling_EGSR2021.pdf"><i class="far fa-file-pdf"></i> Slides</a>
+    <a href="../docs/volume_product_sampling_EGSR2021.pptx"><i class="far fa-file-powerpoint"></i> Slides</a>
+    <a href="https://www.youtube.com/embed/iETDEkcRI8M?start=2075&end=2948"><i class="fas fa-video fa-fw"></i> Talk</a>
+    <a href="https://github.com/beltegeuse/rustlight/tree/point-normal"><i class="fab fa-github fa-fw"></i> Code</a>
+</p>
 
-<h2>Video</h2>
-<iframe width="1908" height="722" src="https://www.youtube.com/embed/iETDEkcRI8M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-<h2>BibTeX</h2>
-<pre class="publication-bibtex">
+<h3>BibTeX</h3>
+<pre class="bibtex">
 @article{Villeneuve:2021:VolumeProductSampling,
   author = {Keven Villeneuve and Adrien Gruson and Iliyan Georgiev and Derek Nowrouzezahrai},
   title = {Practical product sampling for single scattering in media},
@@ -62,13 +57,17 @@
 }
 </pre>
 
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("publications/volume_product_samplingNav").className += " active";
-    </script>
 </html>

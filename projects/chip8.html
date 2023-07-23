@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="../imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="../style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,44 +12,49 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="../index.html">HOME</a>
-                <a id="aboutNav" href="../about.html">ABOUT</a>
-                <a id="publicationsNav" href="../publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="../projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="../blog.html">BLOG</a>-->
-                <a id="contactNav" href="../contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
+        <hr>
 <h1>Chip8 Emulator</h1>
 
-<p class="post-text">
+<p>
     One day I got really intrigued about emulators so I read a lot about it and implemented the <a href="https://en.wikipedia.org/wiki/CHIP-8">Chip8</a>. It is usually the first emulator someone would implement due to it's simplicity. I implemented it all from scratch based on the specs I found on the internet. It was one of the most interesting and fun programming project I did!
 </p>
 
 <h2>Some games</h2>
-<img src="../imgs/projects/chip8/chip8-pong.png" class="post-img">
-<img src="../imgs/projects/chip8/chip8-breakout.png" class="post-img">
-<img src="../imgs/projects/chip8/chip8-tetris.png" class="post-img">
-<img src="../imgs/projects/chip8/chip8-tank.png" class="post-img">
+<img src="../imgs/projects/chip8/chip8-pong.png">
+<img src="../imgs/projects/chip8/chip8-breakout.png">
+<img src="../imgs/projects/chip8/chip8-tetris.png">
+<img src="../imgs/projects/chip8/chip8-tank.png">
 
-<p class="post-text">
+<p>
     After that, I wanted to implement the <a href="https://en.wikipedia.org/wiki/Nintendo_Entertainment_System">NES</a>, but it turns out that this is much more complicated and so I only ended up making a disassembler for the <a href="https://en.wikipedia.org/wiki/MOS_Technology_6502">6502</a> (the CPU of the NES).
 </p>
 
-<img src="../imgs/projects/chip8/bender6502.jpg" class="post-img">
+<img src="../imgs/projects/chip8/bender6502.jpg">
 
-<a href="https://github.com/kevenv/chip8"><i class="fab scicon3 fa-fw post-code"></i> Code</a>
+<p class="link-button">
+    <a href="https://github.com/kevenv/chip8"><i class="fab fa-github fa-lg"></i> Code</a>
+</p>
 
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("projects/chip8Nav").className += " active";
-    </script>
 </html>

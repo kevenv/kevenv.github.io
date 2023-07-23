@@ -33,13 +33,13 @@ def main():
         ('index',''),
         ('about',''),
         ('projects',''),
+            ('projects/chip8','../'),
+            ('projects/europa','../'),
         ('publications',''),
-        # ('blog',''),
-        ('contact',''),
-        ('projects/chip8','../'),
-        ('projects/europa','../'),
-        ('publications/master_thesis','../'),
-        ('publications/volume_product_sampling','../'),
+            ('publications/master_thesis','../'),
+            ('publications/volume_product_sampling','../'),
+            ('publications/ddm_compression','../'),
+        ('blog',''),
     ]
     for page in pages:
         print(page)
@@ -59,7 +59,7 @@ def main():
         with open('{}.html'.format(p),'w') as f:
             f.write(out)
     
-    '''
+    # BLOG
     posts = [
         'hello'
     ]
@@ -74,6 +74,5 @@ def main():
         )
         with open('blog_{}.html'.format(p),'w') as f:
             f.write(out)
-    '''
 
 main()

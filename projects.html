@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,325 +12,269 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="index.html">HOME</a>
-                <a id="aboutNav" href="about.html">ABOUT</a>
-                <a id="publicationsNav" href="publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="blog.html">BLOG</a>-->
-                <a id="contactNav" href="contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="publications.html">Publications</a>
+                <a href="projects.html">Projects</a>
+                <a href="blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
+        <hr>
 <h1>Projects</h1>
 
-<div class="project-cat">
-<hr>
 <h2>Computer Graphics &lt;3</h2>
-<hr>
 
-    <div class="project-row">
-        <h3 id="pbr">Physically Based Renderer</h3>
-        <div class="project-column">
-            <img src="imgs/projects/pbr-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <ul>
-                <li>Volumetric Path Tracing</li>
-                <li>Progressive Photon Mapping</li>
-                <li>Volumetric VPLs</li>
-                <li>Volumetric Lightcuts</li>
-                <li>MIS</li>
-                <li>Area light IS</li>
-                <li>Mesh light IS</li>
-                <li>Diffuse BRDF</li>
-                <li>Phong BRDF</li>
-            </ul>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C++<br></div>
-            <a href="https://github.com/kevenv/nori"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="pbr"><a href="projects.html#pbr">Physically Based Renderer</a></h3>
+    <ul>
+        <li>Volumetric Path Tracing</li>
+        <li>Progressive Photon Mapping</li>
+        <li>Volumetric VPLs</li>
+        <li>Volumetric Lightcuts</li>
+        <li>MIS</li>
+        <li>Area light IS</li>
+        <li>Mesh light IS</li>
+        <li>Diffuse BRDF</li>
+        <li>Phong BRDF</li>
+    </ul>
+    <img src="imgs/projects/pbr-cover.jpg">
+    <p><i class="fas fa-code fa-fw"></i> C++</p>
+    <p class="link-button">
+        <a href="https://github.com/kevenv/nori"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+</article>
 
-    <div class="project-row">
-        <h3 id="raytracer">Ray Tracer</h3>
-        <div class="project-column">
-            <img src="imgs/projects/raytracer-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <ul>
-                <li>Phong shader</li>
-                <li>Glass shader</li>
-                <li>Mirror shader</li>
-                <li>Dielectric shader</li>
-                <li>Anti-Aliasing</li>
-                <li>Environment mapping</li>
-            </ul>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Java</div>
-        </div>
-    </div>
+<article>
+    <h3 id="raytracer"><a href="projects.html#raytracer">Ray Tracer</a></h3>
+    <ul>
+        <li>Phong shader</li>
+        <li>Glass shader</li>
+        <li>Mirror shader</li>
+        <li>Dielectric shader</li>
+        <li>Anti-Aliasing</li>
+        <li>Environment mapping</li>
+    </ul>
+    <img src="imgs/projects/raytracer-cover.jpg">
+    <p><i class="fas fa-code fa-fw"></i> Java</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="subdivs">Catmull-Clark Subdivisions</h3>
-        <div class="project-column">
-            <img src="imgs/projects/subdivs-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>
-                Catmull-Clark subdivisions surfaces with Phong shading. Implementation of <a href="https://people.eecs.berkeley.edu/~sequin/CS284/PAPERS/CatmullClark_SDSurf.pdf">Catmull1978</a> paper.
-            </p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Java, OpenGL</div>
-            <a href="https://streamable.com/s/3hnk0/yiumat"><i class="fas fa-video fa-fw"></i> Video</a>
-        </div>
-    </div>
+<article>
+    <h3 id="subdivs"><a href="projects.html#subdivs">Catmull-Clark Subdivisions</a></h3>
+    <p>
+        Catmull-Clark subdivisions surfaces with Phong shading.<br>
+        Implementation of <a href="https://people.eecs.berkeley.edu/~sequin/CS284/PAPERS/CatmullClark_SDSurf.pdf">Catmull1978</a> paper.
+    </p>
+    <img src="imgs/projects/subdivs-cover.jpg">
+    <p class="link-button">
+        <a href="https://streamable.com/s/3hnk0/yiumat"><i class="fas fa-video fa-fw"></i> Video</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> Java, OpenGL</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="smap">Shadow Mapping</h3>
-        <div class="project-column">
-            <img src="imgs/projects/shadowmap-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>
-                Shadow mapping with Phong shading. Implementation of <a href="http://cseweb.ucsd.edu/~ravir/274/15/papers/p270-williams.pdf">Williams1978</a> paper.
-            </p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Java, OpenGL</div>
-        </div>
-    </div>
+<article>
+    <h3 id="smap"><a href="projects.html#smap">Shadow Mapping</a></h3>
+    <p>
+        Shadow mapping with Phong shading.<br>
+        Implementation of <a href="http://cseweb.ucsd.edu/~ravir/274/15/papers/p270-williams.pdf">Williams1978</a> paper.
+    </p>
+    <img src="imgs/projects/shadowmap-cover.jpg">
+    <p><i class="fas fa-code fa-fw"></i> Java, OpenGL</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="clothsim">3D Cloth Simulator</h3>
-        <div class="project-column">
-            <img src="imgs/projects/cloth-sim-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>
-                Implementation of <a href="http://physbam.stanford.edu/~fedkiw/papers/stanford2002-01.pdf">Bridson2002</a> paper.
-            </p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C++, Irrlicht</div>
-            <a href="https://streamable.com/s/sfjf8/ssmxop"><i class="fas fa-video fa-fw"></i> Video</a><br>
-            <a href="https://github.com/kevenv/3d-cloth-sim"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="clothsim"><a href="projects.html#clothsim">3D Cloth Simulator</a></h3>
+    <p>
+        Implementation of <a href="http://physbam.stanford.edu/~fedkiw/papers/stanford2002-01.pdf">Bridson2002</a> paper.
+    </p>
+    <img src="imgs/projects/cloth-sim-cover.jpg">
+    <p class="link-button">
+        <a href="https://streamable.com/s/sfjf8/ssmxop"><i class="fas fa-video fa-fw"></i> Video</a>
+        <a href="https://github.com/kevenv/3d-cloth-sim"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C++, Irrlicht</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="collisions">2D Collisions Solver</h3>
-        <div class="project-column">
-            <img src="imgs/projects/collisions-solver-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>
-                2D collisions solver using the Gauss-Seidel method. Inspired by <a href="https://www.pixar.com/assets/pbm2001/index.html">PBM2001</a>.
-            </p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Java, Java2D</div>
-            <a href="https://streamable.com/enxbh"><i class="fas fa-video fa-fw"></i> Video</a>
-        </div>
-    </div>
+<article>
+    <h3 id="collisions"><a href="projects.html#collisions">2D Collisions Solver</a></h3>
+    <p>
+        2D collisions solver using the Gauss-Seidel method.<br>
+        Inspired by <a href="https://www.pixar.com/assets/pbm2001/index.html">PBM2001</a>.
+    </p>
+    <img src="imgs/projects/collisions-solver-cover.jpg">
+    <p class="link-button">
+        <a href="https://streamable.com/enxbh"><i class="fas fa-video fa-fw"></i> Video</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> Java, Java2D</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="fluidsim">Fluids Solver</h3>
-        <div class="project-column">
-            <img src="imgs/projects/fluids-sim-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>
-                Implementation of <a href="http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/ns.pdf">Stam1999</a> paper.
-            </p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Java, Java2D</div>
-        </div>
-    </div>
+<article>
+    <h3 id="fluidsim"><a href="projects.html#fluidsim">Fluids Solver</a></h3>
+    <p>
+        Implementation of <a href="http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/ns.pdf">Stam1999</a> paper.
+    </p>
+    <img src="imgs/projects/fluids-sim-cover.jpg">
+    <p><i class="fas fa-code fa-fw"></i> Java, Java2D</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="orbitsim">Real-Time Solar System Simulator</h3>
-        <div class="project-column">
-            <img src="imgs/projects/orbit-sim-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>Simulate our solar system and asteroids collisions in real-time.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C#, WindowsForms</div>
-            <a href="https://github.com/kevenv/orbitsim"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="orbitsim"><a href="projects.html#orbitsim">Real-Time Solar System Simulator</a></h3>
+    <p>Simulate our solar system and asteroids collisions in real-time.</p>
+    <img src="imgs/projects/orbit-sim-cover.jpg">
+    <p class="link-button">
+        <a href="https://github.com/kevenv/orbitsim"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C#, WindowsForms</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="prt">Precomputed Radiance Transfert (PRT)</h3>
-        <div class="project-column">
-            <img src="imgs/projects/prt-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>
-                Implementation of <a href="https://sites.fas.harvard.edu/~cs278/papers/prt.pdf">Sloan2002</a> paper.
-            </p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Javascript, Three.js, WebGL</div>
-            <a href="https://github.com/kevenv/prt"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="prt"><a href="projects.html#prt">Precomputed Radiance Transfert (PRT)</a></h3>
+    <p>
+        Implementation of <a href="https://sites.fas.harvard.edu/~cs278/papers/prt.pdf">Sloan2002</a> paper.
+    </p>
+    <img src="imgs/projects/prt-cover.jpg">
+    <p class="link-button">
+        <a href="https://github.com/kevenv/prt"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> Javascript, Three.js, WebGL</p>
+</article>
 
-</div>
-
-<div class="project-cat">
-<hr>
 <h2>Video Games</h2>
-<hr>
 
-    <div class="project-row">
-        <h3 id="europa"><a href="projects/europa.html">Real-Time Strategy Game Engine (Europa)</a></h3>
-        <div class="project-column">
-            <a href="projects/europa.html"><img src="imgs/projects/europa-cover.jpg"></a>
-        </div>
-        <div class="project-column project-desc">
-            <p>A project that was wayyyyy too ambitious.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C++, SDL, OpenGL</div>
-            <a href="https://github.com/Nicolas82588/europa"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="europa"><a href="projects/europa.html">Real-Time Strategy Game Engine (Europa)</a></h3>
+    <p>A project that was wayyyyy too ambitious.</p>
+    <a href="projects/europa.html"><img src="imgs/projects/europa-cover.jpg"></a>
+    <p class="link-button">
+        <a href="https://github.com/Nicolas82588/europa"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C++, SDL, OpenGL</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="shinypanda">2D Puzzle Platformer (ShinyPanda)</h3>
-        <div class="project-column">
-            <img src="imgs/projects/shinypanda-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>An original 2D Puzzle Platformer, another example of a project way too ambitious...</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C++, SFM</div>
-            <a href="https://github.com/kevenv/shinypanda"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="shinypanda"><a href="projects.html#shinypanda">2D Puzzle Platformer (ShinyPanda)</a></h3>
+    <p>An original 2D Puzzle Platformer, another example of a project way too ambitious...</p>
+    <img src="imgs/projects/shinypanda-cover.jpg">
+    <p class="link-button">
+        <a href="https://github.com/kevenv/shinypanda"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C++, SFML</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="almosttetris">Tetris Clone (Almost Tetris)</h3>
-        <div class="project-column">
-            <img src="imgs/projects/almosttetris-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>Cute Tetris clone with gameplay recorder.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C#, WindowsForms</div>
-            <a href="https://github.com/kevenv/AlmostTetris"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="almosttetris"><a href="projects.html#almosttetris">Tetris Clone (Almost Tetris)</a></h3>
+    <p>Cute Tetris clone with gameplay recorder.</p>
+    <img src="imgs/projects/almosttetris-cover.jpg">
+    <p class="link-button">
+        <a href="https://github.com/kevenv/AlmostTetris"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C#, WindowsForms</p>
+</article>
 
-</div>
-
-<div class="project-cat">
-<hr>
 <h2>Low-level</h2>
-<hr>
 
-    <div class="project-row">
-        <h3 id="tinyv">RISC-V Emulator (tinyv)</h3>
-        <div class="project-column">
-            <img src="imgs/projects/tinyv-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>A small RISC-V emulator.</p>
-            <ul>
-                <li>RV64I,M,Zicsr</li>
-                <li>Machine/User/Supervisor privilege levels</li>
-                <li>Exceptions</li>
-                <li>Basic C runtime</li>
-                <li>Console I/O</li>
-                <li>Passes some of the official tests suite</li>
-            </ul>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C</div>
-        </div>
-    </div>
+<article>
+    <h3 id="tinyv"><a href="projects.html#tinyv">RISC-V Emulator (tinyv)</a></h3>
+    <p>A small RISC-V emulator.</p>
+    <ul> <!-- TODO: move this to its own page? -->
+        <li>RV64I,M,Zicsr.</li>
+        <li>Machine/User/Supervisor privilege levels.</li>
+        <li>Exceptions.</li>
+        <li>Basic C runtime.</li>
+        <li>Console I/O.</li>
+        <li>Passes some of the official tests suite.</li>
+    </ul>
+    <img src="imgs/projects/tinyv-cover.jpg">
+    <p><i class="fas fa-code fa-fw"></i> C</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="gbemu">GameBoy Emulator (AlmostGB)</h3>
-        <div class="project-column">
-            <img src="imgs/projects/almostgb-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>My attempt to write a GameBoy emulator.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C++</div>
-            <a href="https://github.com/kevenv/AlmostGB"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="gbemu"><a href="projects.html#gbemu">GameBoy Emulator (AlmostGB)</a></h3>
+    <p>My attempt to write a GameBoy emulator.</p>
+    <img src="imgs/projects/almostgb-cover.jpg">
+    <p class="link-button">
+        <a href="https://github.com/kevenv/AlmostGB"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C++</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="chip8"><a href="projects/chip8.html">Chip8 Emulator</a></h3>
-        <div class="project-column">
-            <a href="projects/chip8.html"><img src="imgs/projects/chip8-cover.jpg"></a>
-        </div>
-        <div class="project-column project-desc">
-            <p>The "hello world" of emulator development.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C++, SDL, Qt</div>
-            <a href="https://github.com/kevenv/chip8"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="chip8"><a href="projects/chip8.html">Chip8 Emulator</a></h3>
+    <p>The "hello world" of emulator development.</p>
+    <a href="projects/chip8.html"><img src="imgs/projects/chip8-cover.jpg"></a>
+    <p class="link-button">
+        <a href="https://github.com/kevenv/chip8"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> C++, SDL, Qt</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="vehiculus">Electric vehicles prototyping platform (Vehiculus)</h3>
-        <div class="project-column">
-            <img src="imgs/projects/vehiculus-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>Electric vehicles prototyping platform. Interfaced MATLAB/Simulink with a <a href="https://www.emus.ca/">real-life electric motorcycle</a> as my undergrad thesis project.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> C, RTOS, MATLAB, Simulink</div>
-        </div>
-    </div>
-    
-</div>
+<article>
+    <h3 id="vehiculus"><a href="projects#vehiculus">Electric vehicles prototyping platform (Vehiculus)</a></h3>
+    <p>Electric vehicles prototyping platform. Interfaced MATLAB/Simulink with a <a href="https://www.emus.ca/">real-life electric motorcycle</a> as my undergrad thesis project.</p>
+    <img src="imgs/projects/vehiculus-cover.jpg">
+    <p><i class="fas fa-code fa-fw"></i> C, RTOS, MATLAB, Simulink</p>
+</article>
 
-<div class="project-cat">
-<hr>
 <h2>Hackathons</h2>
-<hr>
 
-    <div class="project-row">
-        <h3 id="neon">Myo gesture controlled video game (Neon)</h3>
-        <p class="winner"><i class="fas fa-trophy"></i> Winner "Most Retro Hack" - McHacks 2018</p>
-        <div class="project-column">
-            <img src="imgs/projects/neon-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>Endless runner video game using the Myo hand gesture control armband as a game controller.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Javascript, Three.js, WebGL</div>
-            <a href="https://www.youtube.com/watch?v=gK75UnXug3s&feature=youtu.be"><i class="fas fa-video fa-fw"></i> Video</a><br>
-            <a href="https://devpost.com/software/neon-s2grn1"><i class="far fa-newspaper fa-fw"></i> Devpost</a><br>
-            <a href="https://github.com/kevenv/mchacks2018"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="neon"><a href="projects#neon">Myo gesture controlled video game (Neon)</a></h3>
+    <p>
+        Endless runner video game using the Myo hand gesture control armband as a game controller.<br>
+        Winner "Most Retro Hack" - McHacks 2018.
+    </p>
+    <img src="imgs/projects/neon-cover.jpg">
+    <p class="link-button">
+        <a href="https://www.youtube.com/watch?v=gK75UnXug3s&feature=youtu.be"><i class="fas fa-video fa-fw"></i> Video</a>
+        <a href="https://devpost.com/software/neon-s2grn1"><i class="far fa-newspaper fa-fw"></i> Devpost</a>
+        <a href="https://github.com/kevenv/mchacks2018"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> Javascript, Three.js, WebGL</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="wavesim">Waves Simulator</h3>
-        <p class="winner"><i class="fas fa-trophy"></i> 2<sup>nd</sup> Place - McGill's Physics Hackathon 2017</p>
-        <div class="project-column">
-            <img src="imgs/projects/waves-sim-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>Waves simulator in Three.js by solving the wave equation using numerical integration.</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Javascript, Three.js, WebGL</div>
-            <a href="projects/physhackathon2017/main.html"><i class="fas fa-video fa-fw"></i> Demo</a><br>
-            <a href="https://devpost.com/software/simwave"><i class="far fa-newspaper fa-fw"></i> Devpost</a><br>
-            <a href="https://github.com/kevenv/physhackathon2017"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="wavesim"><a href="projects.html#wavesim">Waves Simulator</a></h3>
+    <p>
+        Waves simulator in Three.js by solving the wave equation using numerical integration.<br>
+        Won 2<sup>nd</sup> place at McGill's Physics Hackathon 2017.
+    </p>
+    <img src="imgs/projects/waves-sim-cover.jpg">
+    <p class="link-button">
+        <a href="projects/physhackathon2017/main.html"><i class="fas fa-video fa-fw"></i> Demo</a>
+        <a href="https://devpost.com/software/simwave"><i class="far fa-newspaper fa-fw"></i> Devpost</a>
+        <a href="https://github.com/kevenv/physhackathon2017"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> Javascript, Three.js, WebGL</p>
+</article>
 
-    <div class="project-row">
-        <h3 id="parkhere">Parking Rental App (ParkHere)</h3>
-        <p class="winner"><i class="fas fa-trophy"></i> 2<sup>nd</sup> Place - Startup Weekend Montreal 2014</p>
-        <div class="project-column">
-            <img src="imgs/projects/parkhere-cover.jpg">
-        </div>
-        <div class="project-column project-desc">
-            <p>Parking rental Android app (and a failed startup).</p>
-            <div class="project-tools"><i class="fas fa-code fa-fw"></i> Java, Android</div>
-            <a href="http://www.lesaffaires.com/blogues/julien-brault/snownitification-remporte-la-palme-a-startup-weekend-montreal/566137"><i class="far fa-newspaper fa-fw"></i> Journal les affaires</a><br>
-            <a href="http://www.journaldemontreal.com/2014/02/12/startup-weekend-montreal-fait-emerger-deux-projets-interessants--parkhere-et-snowtification"><i class="far fa-newspaper fa-fw"></i> Journal de Montreal</a><br>
-            <a href="http://www.hec.ca/en/news/2014/2014_Startup_weekend.html"><i class="far fa-newspaper fa-fw"></i> HEC Montreal</a><br>
-            <a href="https://github.com/kevenv/parkhere"><i class="fab scicon3 fa-fw"></i> Code</a>
-        </div>
-    </div>
+<article>
+    <h3 id="parkhere"><a href="projects.html#parkhere">Parking Rental App (ParkHere)</a></h3>
+    <p>
+        Parking rental Android app (and a failed startup).<br>
+        Won 2<sup>nd</sup> place at Startup Weekend Montreal 2014.
+    </p>
+    <img src="imgs/projects/parkhere-cover.jpg">
+    <p class="link-button">
+        <a href="http://www.lesaffaires.com/blogues/julien-brault/snownitification-remporte-la-palme-a-startup-weekend-montreal/566137"><i class="far fa-newspaper fa-fw"></i> Journal les affaires</a>
+        <a href="http://www.journaldemontreal.com/2014/02/12/startup-weekend-montreal-fait-emerger-deux-projets-interessants--parkhere-et-snowtification"><i class="far fa-newspaper fa-fw"></i> Journal de Montreal</a>
+        <a href="http://www.hec.ca/en/news/2014/2014_Startup_weekend.html"><i class="far fa-newspaper fa-fw"></i> HEC Montreal</a>
+        <a href="https://github.com/kevenv/parkhere"><i class="fab fa-github fa-lg"></i> Code</a>
+    </p>
+    <p><i class="fas fa-code fa-fw"></i> Java, Android</p>
+</article>
 
-</div>
-
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("projectsNav").className += " active";
-    </script>
 </html>

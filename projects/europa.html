@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="../imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="../style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,31 +12,30 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="../index.html">HOME</a>
-                <a id="aboutNav" href="../about.html">ABOUT</a>
-                <a id="publicationsNav" href="../publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="../projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="../blog.html">BLOG</a>-->
-                <a id="contactNav" href="../contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
+        <hr>
 <h1>Real-Time Strategy Game Engine</h1>
 
-<p class="post-text">
+<p>
     With a friend we wanted to make a clone of the famous RTS game <a href="https://en.wikipedia.org/wiki/Age_of_Empires">Age of Empires</a> from scratch.
 </p>
 
-<img src="../imgs/projects/europa/ageofempire.jpg" class="post-img">
+<img src="../imgs/projects/europa/ageofempire.jpg">
 
-<p class="post-text">
+<p>
     How hard can it be right?
     No need to say that this project was a failure, but we've managed to implement some interesting stuff, still nowhere close to a complete game.
 </p>
 
-<img src="../imgs/projects/europa/europa-scene.png" class="post-img">
+<img src="../imgs/projects/europa/europa-scene.png">
 
 <h2>Features</h2>
 
@@ -62,25 +61,31 @@
     <li>Path finding using A*</li>
 </ul>
 
-<p class="post-text">
+<p>
     I wrote the renderer, UI system and resources manager while my friend worked on the networking system and collisions handling. Our engine was able to handle quite a bit of entities...
 </p>
 
-<img src="../imgs/projects/europa/europa-macdonald.png" class="post-img">
+<img src="../imgs/projects/europa/europa-macdonald.png">
 
 <p class="post-text">Here's the first entity we've sent through the internet!</p>
 
-<img src="../imgs/projects/europa/europa-first-entity.png" class="post-img">
+<img src="../imgs/projects/europa/europa-first-entity.png">
 
-<a href="https://github.com/Nicolas82588/europa"><i class="fab scicon3 fa-fw post-code"></i> Code</a>
+<p class="link-button">
+    <a href="https://github.com/Nicolas82588/europa"><i class="fab fa-github fa-lg"></i> Code</a>
+</p>
 
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("projects/europaNav").className += " active";
-    </script>
 </html>

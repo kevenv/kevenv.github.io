@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,305 +12,191 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="index.html">HOME</a>
-                <a id="aboutNav" href="about.html">ABOUT</a>
-                <a id="publicationsNav" href="publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="blog.html">BLOG</a>-->
-                <a id="contactNav" href="contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="publications.html">Publications</a>
+                <a href="projects.html">Projects</a>
+                <a href="blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
+        <hr>
 <h1>About</h1>
 
-<p><a href="docs/keven_villeneuve_cv.pdf"><i class="far fa-file-pdf"></i> Download my CV</a></p>
+<p class="link-button" style="text-align: right;">
+    <a href="docs/keven_villeneuve_cv.pdf"><i class="far fa-file-pdf"></i> Download my CV</a>
+</p>
 
 <h2>Skills</h2>
-<div id="skills-table">
-<table>
-    <tr>
-        <th>LANGUAGES</th>
-        <td>C++, C, Rust, Python, JavaScript, GLSL, HLSL, x86 assembly, RISC-V, MATLAB, Mathematica, LaTeX.</td>
-    </tr>
-    <tr>
-        <th>LIBRARIES</th>
-        <td>OpenGL, Vulkan, DirectX 12, TBB, CUDA, WebGL, Three.js, Qt, STL, OpenCV, PyTorch, numpy, sklearn.</td>
-    </tr>
-    <tr>
-        <th>TOOLS</th>
-        <td>Clion, Visual Studio, VTune, Renderdoc, PIX, Git, Perforce, Maya, Bifrost, Arnold, Mitsuba, PBRT.</td>
-    </tr>
-</table>
-</div>
-
+<p><strong>Languages:</strong> C++, C, Rust, Python, JavaScript, GLSL, HLSL, x86 assembly, RISC-V, MATLAB, Mathematica, LaTeX.</p>
+<p><strong>Libraries:</strong> OpenGL, Vulkan, DirectX 12, TBB, CUDA, WebGL, Three.js, Qt, STL, OpenCV, PyTorch, numpy, sklearn.</p>
+<p><strong>Tools:</strong> Clion, Visual Studio, VTune, Renderdoc, PIX, Git, Perforce, Maya, Bifrost, Arnold, Mitsuba, PBRT.</p>
 
 <h2>Education</h2>
-<div id="work-table">
-<table>
-    <tr>
-        <td class="left-align">
-        <ul id="education-table" class="fa-ul">
-            <li>
-                <i class="fa-li fas fa-graduation-cap"></i> <div class="education-diploma">M.Eng. Computer Engineering (GPA: 3.94)</div>
-                McGill University, Canada<br>
-                Thesis: <a href="publications/master_thesis.html">Importance Sampling Polygonal Lights in Participating Media</a><br> (Advisor: <a href="http://www.cim.mcgill.ca/~derek/">Derek Nowrouzezahrai</a>)
-            </li>
-        </ul>
-        </td>
-        <td class="education-date">Jan 2017 - May 2019</td>
-    </tr>
-    <tr>
-        <td class="left-align">
-        <ul id="education-table" class="fa-ul">
-            <li>
-                <i class="fa-li fas fa-graduation-cap"></i> <div class="education-diploma">B.Eng. Computer Engineering (GPA: 3.40)</div>
-                Universite de Sherbrooke, Canada
-            </li>
-        </ul>
-        </td>
-        <td class="education-date">Sep 2012 - Dec 2016</td>
-    </tr>
-</table>
+<p>
+    <strong>M.Eng. Computer Engineering (Thesis)</strong>, McGill University, Canada<br/>
+    <i>Jan 2017 - May 2019</i>
+</p>
+<ul>
+    <li>Thesis: <a href="publications/master_thesis.html">Importance Sampling Polygonal Lights in Participating Media</a><br> (Advisor: <a href="http://www.cim.mcgill.ca/~derek/">Derek Nowrouzezahrai</a>)</li>
+</ul>
+<p>
+    <strong>B.Eng. Computer Engineering</strong>, Université de Sherbrooke, Canada<br/>
+    <i>Sep 2012 - Dec 2016</i>
+</p>
+<ul>
+    <li>Specialization in Digital Signal Processing and Machine Learning</li>
+</ul>
 
 <h2>Work experience</h2>
-<div id="work-table">
-<table>
-    <tr>
-        <th class="left-align">Senior Software engineer</th>
-        <th class="center-align">NVIDIA</th>
-        <th class="right-align">April 2022 - Present</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Working on OmniGraph, the compute engine of <a href="https://developer.nvidia.com/nvidia-omniverse-platform">Omniverse</a>.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
+<p>
+    <strong>Senior software engineer</strong>, NVIDIA<br/>
+    <i>April 2022 - Present</i>
+</p>
+<ul>
+    <li>Working on OmniGraph, the compute engine of <a href="https://developer.nvidia.com/nvidia-omniverse-platform">Omniverse</a>.</li>
+</ul>
 
-    <tr>
-        <th class="left-align">R&amp;D Software engineer</th>
-        <th class="center-align">SEED - Electronic Arts (Montreal)</th>
-        <th class="right-align">Mar 2020 - April 2022</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Develop a GPU implementation (HLSL) of Direct Delta Mush, a cutting edge real-time skinning animation technique and collaborate on major improvements leading to a <a href="https://binh.graphics/papers/2021s-DDMC/">SIGGRAPH paper</a>.</li>
-            <li>Implement GGX environment prefiltering in Halcyon, SEED's research renderer.</li>
-            <li>Implement 4D mesh streaming in Halcyon to support ongoing research on hyper-realistic characters in video games.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
+<p>
+    <strong>R&amp;D software engineer</strong>, Electronic Arts - SEED<br/>
+    <i>Mar 2020 - April 2022</i>
+</p>
+<ul>
+    <li>Develop a GPU implementation (DirectX 12, HLSL) of <i>Direct Delta Mush</i>, a cutting edge real-time skinning animation technique to significantly improve the quality of characters animation in video games and reduce artists time.</li>
+    <li>Collaborate on major improvements to the algorithm to increase the runtime efficiency, leading to a publication at <a href="publications/ddm_compression.html">SIGGRAPH</a>.</li>
+    <li>Validate the algorithm in Python and numpy to ease debugging of the GPU implementation.</li>
+    <li>Implement GGX environment prefiltering in <i>SEED</i>'s real-time research renderer (C++) to improve the realistm of shiny surfaces.</li>
+    <li>Implement 4D mesh streaming in the renderer to support ongoing research on hyper-realistic characters in video games.</li>
+</ul>
 
-    <tr>
-        <th class="left-align">Software developer</th>
-        <th class="center-align">Maxon (Montreal)</th>
-        <th class="right-align">Jun 2019 - Mar 2020</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Develop new features in the 3D animation software <a href="https://www.maxon.net/en-us/products/cinema-4d/">Cinema4D</a> to improve various 3D modeling workflows.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Software developer, Intern</th>
-        <th class="center-align">Autodesk (Montreal)</th>
-        <th class="right-align">Jan 2019 - May 2019</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Develop a new plugin to provide support of the upcoming <a href="https://area.autodesk.com/blogs/the-maya-blog/introducing-bifrost-for-maya/">Bifrost</a> procedural generation system in the Monte Carlo ray tracing renderer <a href="https://www.arnoldrenderer.com/">Arnold</a>.</li>
-            <li>Integrate the plugin into the Arnold development pipeline.</li>
-            <li>Create a suite of unit tests to validate the correctness of the plugin.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Teacher Assistant (TA)</th>
-        <th class="center-align">McGill University</th>
-        <th class="right-align">Sep 2018 - Dec 2018</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        
-        <ul>
-            <div style="font-style: italic;"><a href="http://www.cim.mcgill.ca/~derek/ecse446.html">Realistic &amp; Advanced Image Synthesis (ECSE 446/546)</a> Prof: Derek Nowrouzezahrai</div>
-            <li>
-                Develop a hybrid offline and real-time renderer<br>
-                (deferred shading + shadow mapping + SSAO + baked GI).
-            </li>
-            <li>Prepare assignments and the final exam.</li>
-            <li>Hold tutorials and office hours.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Software developer, Intern</th>
-        <th class="center-align">Autodesk (Montreal)</th>
-        <th class="right-align">May 2016 - Aug 2016</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Develop a new tool in <i>Maya</i> using a skinning decomposition algorithm, based on a paper published at SIGGRAPH.</li>
-            <li>Develop a graphical user interface and an appropriate workflow for this tool.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Software developer, Intern</th>
-        <th class="center-align">Autodesk (Toronto)</th>
-        <th class="right-align">Sep 2015 - Dec 2015</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Optimize the FBX importer of <i>Maya</i> using the Intel VTune profiler, giving 6x performance improvement.</li>
-            <li>Generalize the animation curves name function to the hardware accelerated context using OpenGL.</li>
-            <li>Develop an automated test suite in python to detect performance and usability regressions.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Software developer, Intern</th>
-        <th class="center-align">Autodesk (Montreal)</th>
-        <th class="right-align">Sep 2014 - Dec 2014</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Optimize a module in <i>Maya</i> using hardware accelerated graphics (OpenGL), giving 4x performance improvement.</li>
-            <li>Develop and debug various features in the very large C++ codebase of <i>Maya</i>.</li>
-            <li>Write regression tests to ensure retro compatibility of clients' scene.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Engine programmer, Intern</th>
-        <th class="center-align">Ubisoft (Montreal)</th>
-        <th class="right-align">Jan 2014 - Apr 2014</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Develop and debug features of <i>Assassins Creed Unity</i>'s game engine according to the demands of production.</li>
-            <li>Collaborate with a team consisting of hundreds of developers, artists and producers.</li>
-            <li>Document the features of the engine in a way that could be easily understood by users.</li>
-        </ul>
-        </td>
-    </tr>
-    <tr><td class="work-space"></td></tr>
-
-    <tr>
-        <th class="left-align">Software engineer, Intern</th>
-        <th class="center-align">Canadian Space Agency (Longueuil)</th>
-        <th class="right-align">May 2013 - Aug 2013</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-        <ul>
-            <li>Develop the network layer of the simulator used to train astronauts to manipulate space station's robotic arm <i><a href="https://en.wikipedia.org/wiki/Canadarm">CANADARM</a></i>.</li>
-            <li>Improve the design of the multithreaded software to allow for better flexibility and better integration of future features.</li>
-        </ul>
-        </td>
-    </tr>
+<p>
+    <strong>Software developer</strong>, Maxon<br/>
+    <i>Jun 2019 - Mar 2020</i>
+</p>
+<ul>
+    <li>Develop new features in <a href="https://www.maxon.net/en-us/products/cinema-4d/">Cinema4D</a>, a 3D animation software (C++, OpenGL), to improve various modeling workflows.</li>
+    <li>Resolve important software defects encountered by users and internally on Windows and Mac.</li>
+</ul>
     
-</table>
-</div>
+<p>    
+    <strong>Software developer (Intern)</strong>, Autodesk<br/>
+    <i>Jan 2019 - May 2019</i>
+</p>
+<ul>
+    <li>Develop a new C++ plugin as key support for the <a href="https://area.autodesk.com/blogs/the-maya-blog/introducing-bifrost-for-maya/">Bifrost</a> procedural generation system in <a href="https://www.arnoldrenderer.com/">Arnold</a>, a film quality renderer.</li>
+    <li>Act as the principal communication point between two teams of vastly different backgrounds and development pipelines involved in this project.</li>
+    <li>Debug tricky low-level crashes on Linux related to smart pointers using custom memory allocators within shared libraries.</li>
+</ul>
 
+<p>
+    <strong>Teacher Assistant (TA)</strong>, McGill University<br/>
+    <i>Sep 2018 - Dec 2018</i>
+</p>
+<ul>
+    <a href="http://www.cim.mcgill.ca/~derek/ecse446.html">Realistic &amp; Advanced Image Synthesis (ECSE 446/546)</a>
+    <li>
+        Develop a hybrid offline and real-time renderer<br/>
+        (deferred shading + shadow mapping + SSAO + baked GI).
+    </li>
+    <li>Prepare assignments and the final exam.</li>
+    <li>Hold tutorials and office hours.</li>
+</ul>
+    
+<p>    
+    <strong>Software developer (Intern)</strong>, Autodesk<br/>
+    <i>May 2016 - Aug 2016</i>
+</p>
+<ul>
+    <li>Develop a new tool in <a href="https://www.autodesk.ca/en/products/maya">Maya</a> (C++) using a skinning decomposition algorithm to allow importing complex animated characters into game engines without the usual tedious and time-consuming intermediate steps.</li>
+    <li>Develop a graphical user interface and an appropriate workflow for this tool.</li>
+</ul>
+    
+<p>
+    <strong>Software developer (Intern)</strong>, Autodesk<br/>
+    <i>Sep 2015 - Dec 2015</i>
+</p>
+<ul>
+    <li>Optimize the FBX importer of <i>Maya</i> (C++) using the <i>Intel VTune</i> profiler, giving 6x performance improvement.</li>
+    <li>Generalize the animation curves name function to the hardware accelerated context using OpenGL.</li>
+    <li>Develop an automated test suite in python to detect performance and usability regressions.</li>
+</ul>
+
+<p>
+    <strong>Software developer (Intern)</strong>, Autodesk<br/>
+    <i>Sep 2014 - Dec 2014</i>
+</p>
+<ul>
+    <li>Optimize a module in <i>Maya</i> using hardware accelerated graphics (OpenGL), giving 4x performance improvement.</li>
+    <li>Develop and debug various features in the very large C++ codebase of <i>Maya</i>.</li>
+    <li>Write regression tests to ensure retro compatibility of clients' scene.</li>
+</ul>
+
+<p>
+    <strong>Engine programmer (Intern)</strong>, Ubisoft<br/>
+    <i>Jan 2014 - Apr 2014</i>
+</p>
+<ul>
+    <li>Develop and debug features of <i>AAA</i> game engine in C++ and C# to meet the changing demands of game production.</li>
+    <li>Collaborate with a team of hundreds of developers, artists and producers to ensure their problems are solved correctly.</li>
+    <li>Document the features of the engine in a way that can be easily understood by artists.</li>
+</ul>
+
+<p>
+    <strong>Software engineer (Intern)</strong>, Canadian Space Agency (CSA)<br/>
+    <i>May 2013 - Aug 2013</i>
+</p>
+<ul>
+    <li>Extend the 3D simulator (C++, Ogre3D) of the <a href="https://en.wikipedia.org/wiki/International_Space_Station">ISS</a> robotic arm <a href="https://en.wikipedia.org/wiki/Canadarm">CANADARM</a> to provide various networking functionalities.</li>
+    <li>Design a robust multithreaded client/server architecture to handle many TCP clients at the same time.</li>
+</ul>
+
+<p>
+    <strong>Software developer</strong>, CIMA+<br/>
+    <i>May 2012 - May 2013</i>
+</p>
+<ul>
+    <li>Design and develop an automatic archiving platform using C# and the Outlook API, allowing substantial savings in multiple divisions of the company.</li>
+    <li>Generalize the software to be used by many different offices by providing easy &amp; robust customization via XML files.</li>
+    <li>Deploy the system in production and provide technical support for various bugs encountered by users.</li>
+</ul>
 
 <h2>Additional experience</h2>
 <ul>
-    <li>Organizer of the <a href="http://gfx.lab.mcgill.ca/reading.md.html">GFX Papers Reading Group</a> (McGill University) - 2017 and 2018</li>
-    <li>
-        Grader for the class <a href="http://www.cim.mcgill.ca/~derek/ecse446.html">ECSE 689: Realistic Image Synthesis</a> (McGill University) - Summer 2017<br>
-        Prof: Derek Nowrouzezahrai
-    </li>
-    <li>
-        Grader for the class <a href="http://www.cim.mcgill.ca/~derek/ecse222.html?">ECSE 222: Digital Logic</a> (McGill University) - Winter 2017<br>
-        Prof: Derek Nowrouzezahrai
-    </li>
-    <li>Student Volunteer at <a href="http://s2016.siggraph.org/">SIGGRAPH 2016</a> (Anaheim, USA) - Summer 2016</li>
-    <li>Mentor for the <a href="https://www.gyborobotics.com/">GYBO</a> robotics hackathon (Toronto, Canada) - Fall 2015</li>
+    <li>Organizer of the <a href="http://gfx.lab.mcgill.ca/reading.md.html">GFX Papers Reading Group</a> (McGill University) - 2017 and 2018.</li>
+    <li>Grader for the class <a href="http://www.cim.mcgill.ca/~derek/ecse446.html">ECSE 689: Realistic Image Synthesis</a> (McGill University) - Summer 2017.</li>
+    <li>Grader for the class <a href="http://www.cim.mcgill.ca/~derek/ecse222.html?">ECSE 222: Digital Logic</a> (McGill University) - Winter 2017.</li>
+    <li>Student Volunteer at <a href="http://s2016.siggraph.org/">SIGGRAPH 2016</a> (Anaheim, USA) - Summer 2016.</li>
+    <li>Mentor for the <a href="https://www.gyborobotics.com/">GYBO</a> robotics hackathon (Toronto, Canada) - Fall 2015.</li>
 </ul>
-
 
 <h2>Honors &amp; Awards</h2>
-<ul>    
+<ul>
     <li>
         Graduate Excellence Fellowship (GEF) - 2018<br>
-        Electrical &amp; Computer Engineering, McGill University
+        Electrical &amp; Computer Engineering, McGill University.
     </li>
-    <li>Winner of "Most retro hack" at <i><a href="https://mchacks.ca/">McHacks 2018</a></i></li>
-    <li>2<sup>nd</sup> Place at the <i><a href="http://www.physics.mcgill.ca/hackathon2017/">McGill Physics Hackathon 2017</a></i></li>
+    <li>Winner of "Most retro hack" at <i><a href="https://mchacks.ca/">McHacks 2018</a></i>.</li>
+    <li>2<sup>nd</sup> Place at the <i><a href="http://www.physics.mcgill.ca/hackathon2017/">McGill Physics Hackathon 2017</a></i>.</li>
     <li>
         Graduate Excellence Fellowship (GEF) - 2017<br>
-        Electrical &amp; Computer Engineering, McGill University
+        Electrical &amp; Computer Engineering, McGill University.
     </li>
-    <li>2<sup>nd</sup> Place at the <i>Startup Weekend Montreal 2014</i> hackathon</li>
+    <li>2<sup>nd</sup> Place at the <i>Startup Weekend Montreal 2014</i> hackathon.</li>
 </ul>
-
 
 <h2>Courses</h2>
 <ul>
-    <li>
-        Realistic Image Synthesis (ECSE 689)<br>
-        <div class="courses-prof">Derek Nowrouzezahrai</div>
-    </li>
-    <li>
-        Fundamentals of Computer Animation (COMP 559)<br>
-        <div class="courses-prof">Paul Kry</div>
-    </li>
-    <li>
-        Fundamentals of Computer Graphics (COMP 557)<br>
-        <div class="courses-prof">Paul Kry</div>
-    </li>
-    <li>
-        Computational Photography (ECSE 683)<br>
-        <div class="courses-prof">James Clark</div>
-    </li>
-    <li>
-        Applied Machine Learning (COMP 551)<br>
-        <div class="courses-prof">Joelle Pineau</div>
-    </li>
-    <li>
-        Artificial Intelligence (GEI 792)<br>
-        <div class="courses-prof">Jean Rouat</div>
-    </li>
-    <li>
-        Digital Signal Quantization (GEI 781)<br>
-        <div class="courses-prof">Philippe Gournay</div>
-    </li>
-    <li>
-        Digital Signal Modelization (GEI 780)<br>
-        <div class="courses-prof">Eric Plourde</div>
-    </li>
-    <li>
-        Digital Signal Processing (GIF 443)<br>
-        <div class="courses-prof">Eric Plourde</div>
-    </li>
+    <li>Realistic Image Synthesis (ECSE 689), <i>Derek Nowrouzezahrai</i></li>
+    <li>Fundamentals of Computer Animation (COMP 559), <i>Paul Kry</i></li>
+    <li>Fundamentals of Computer Graphics (COMP 557), <i>Paul Kry</i></li>
+    <li>Computational Photography (ECSE 683), <i>James Clark</i></li>
+    <li>Applied Machine Learning (COMP 551), <i>Joelle Pineau</i></li>
+    <li>Artificial Intelligence (GEI 792), <i>Jean Rouat</i></li>
+    <li>Digital Signal Quantization (GEI 781), <i>Philippe Gournay</i></li>
+    <li>Digital Signal Modelization (GEI 780), <i>Eric Plourde</i></li>
+    <li>Digital Signal Processing (GIF 443), <i>Eric Plourde</i></li>
 </ul>
-
 
 <h2>Interests</h2>
 <ul>
@@ -324,7 +210,7 @@
     <li>Machine learning</li>
     <li>Digital signal processing</li>
     <li>Low-level stuff (bits and bytes)
-        <ul>            
+        <ul>
             <li>OS</li>
             <li>VM</li>
             <li>Emulation</li>
@@ -337,13 +223,17 @@
     <li>Photography</li>
 </ul>
 
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("aboutNav").className += " active";
-    </script>
 </html>

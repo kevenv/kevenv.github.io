@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Kevenv's personal website</title>
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset=utf-8>
+        <title>Kevenv's website</title>
         <link rel="icon" href="imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -12,59 +12,84 @@
     </head>
     <body>
         <header>
-            <div class="navbar">
-                <a id="indexNav" href="index.html">HOME</a>
-                <a id="aboutNav" href="about.html">ABOUT</a>
-                <a id="publicationsNav" href="publications.html">PUBLICATIONS</a>
-                <a id="projectsNav" href="projects.html">PROJECTS</a>
-                <!--<a id="blogNav" href="blog.html">BLOG</a>-->
-                <a id="contactNav" href="contact.html">CONTACT</a>
-            </div>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="publications.html">Publications</a>
+                <a href="projects.html">Projects</a>
+                <a href="blog.html">Blog</a>
+            </nav>
         </header>
-<div class="content">
-
+        <hr>
 <h1>Publications</h1>
 
-<p class="publication-row">
-    <a href="https://binh.graphics/papers/2021s-DDMC/"><img class="publication-cover" src="imgs/publications/ddm_continuous_cover.jpg"></a>
-    <h2 class="publication-title"><a href="https://binh.graphics/papers/2021s-DDMC/">Direct Delta Mush Skinning Compression with Continuous Examples</a></h2>
-    <p class="publication-author">Binh Huy Le, Keven Villeneuve, and Carlos Gonzalez-Ochoa</p>
-    <p class="publication-booktitle">SIGGRAPH 2021</p>
-    <a href="https://binh.graphics/papers/2021s-DDMC/"><i class="fas fa-globe-americas"></i> Project</a>
-    <a href="https://binh.graphics/papers/2021s-DDMC/DDM_Compression_with_Continuous_Examples.pdf"><i class="far fa-file-pdf"></i> Paper</a>
-    <a href="https://www.youtube.com/watch?v=EztSXgimioo"><i class="fas fa-video fa-fw"></i> Video</a>
-</p>
+<article>
+    <h3>
+        <a href="publications/ddm_compression.html">
+        Direct Delta Mush Skinning Compression with Continuous Examples
+        </a>
+    </h3>
+    <p class="link-button">
+        Binh Huy Le, Keven Villeneuve, and Carlos Gonzalez-Ochoa<br/>
+        <i>SIGGRAPH 2021</i><br>
+        <img src="imgs/publications/ddm_compression_cover.jpg"/><br>
+        
+        <a href="publications/ddm_compression.html"><i class="fas fa-globe-americas"></i> Project</a>
+        <a href="docs//ddm_compression_continuous_examples.pdf"><i class="far fa-file-pdf"></i> Paper</a>
+        <a href="https://www.youtube.com/watch?v=f62iLgiUuMw"><i class="fas fa-video fa-fw"></i> Talk</a>
+        <a href="https://www.youtube.com/watch?v=EztSXgimioo"><i class="fas fa-video fa-fw"></i> Video</a>
+    </p>
+</article>
 
-<p class="publication-row">
-    <a href="publications/volume_product_sampling.html"><img class="publication-cover" src="imgs/publications/volume_product_sampling_cover.jpg"></a>
-    <h2 class="publication-title"><a href="publications/volume_product_sampling.html">Practical Product Sampling for Single Scattering in Media</a></h2>
-    <p class="publication-author">Keven Villeneuve, Adrien Gruson, Iliyan Georgiev, Derek Nowrouzezahrai</p>
-    <p class="publication-booktitle">EGSR 2021</p>
-    <a href="publications/volume_product_sampling.html"><i class="fas fa-globe-americas"></i> Project</a>
-    <a href="docs/volume_product_sampling.pdf"><i class="far fa-file-pdf"></i> Paper</a>
-    <a href="docs/volume_product_sampling_supplemental.pdf"><i class="far fa-file-pdf"></i> Supplemental</a>
-    <a href="docs/volume_product_sampling_EGSR2021.pdf"><i class="far fa-file-pdf"></i> Slides</a>
-    <a href="docs/volume_product_sampling_EGSR2021.pptx"><i class="far fa-file-powerpoint"></i> Slides</a>
-    <a href="https://www.youtube.com/embed/iETDEkcRI8M?start=2075&end=2948"><i class="fas fa-video fa-fw"></i> Video</a>
-    <a href="https://github.com/beltegeuse/rustlight/tree/point-normal"><i class="fab scicon3 fa-fw"></i> Code</a>
-</p>
+<article>
+    <h3>
+        <a href="publications/volume_product_sampling.html">
+        Practical Product Sampling for Single Scattering in Media
+        </a>
+    </h3>
+    <p class="link-button">
+        Keven Villeneuve, Adrien Gruson, Iliyan Georgiev, Derek Nowrouzezahrai<br/>
+        <i>EGSR 2021</i><br>
+        <img src="imgs/publications/volume_product_sampling_cover.jpg"/><br>
+    
+        <a href="publications/volume_product_sampling.html"><i class="fas fa-globe-americas"></i> Project</a>
+        <a href="docs/volume_product_sampling.pdf"><i class="far fa-file-pdf"></i> Paper</a>
+        <a href="docs/volume_product_sampling_supplemental.pdf"><i class="far fa-file-pdf"></i> Supplemental</a>
+        <a href="docs/volume_product_sampling_EGSR2021.pdf"><i class="far fa-file-pdf"></i> Slides</a>
+        <a href="docs/volume_product_sampling_EGSR2021.pptx"><i class="far fa-file-powerpoint"></i> Slides</a>
+        <a href="https://www.youtube.com/embed/iETDEkcRI8M?start=2075&end=2948"><i class="fas fa-video fa-fw"></i> Talk</a>
+        <a href="https://github.com/beltegeuse/rustlight/tree/point-normal"><i class="fab fa-github fa-fw"></i> Code</a>
+    </p>
+</article>
 
-<p class="publication-row">
-    <a href="publications/master_thesis.html"><img class="publication-cover" src="imgs/publications/thesis_cover.jpg"></a>
-    <h2 class="publication-title"><a href="publications/master_thesis.html">Importance Sampling Polygonal Lights in Participating Media</a></h2>
-    <p class="publication-author">Keven Villeneuve</p>
-    <p class="publication-booktitle">M.Eng. thesis, McGill University, 2019 (Advisor: <a href="http://www.cim.mcgill.ca/~derek/">Derek Nowrouzezahrai</a>)</p>
-    <a href="publications/master_thesis.html"><i class="fas fa-globe-americas"></i> Project</a>
-    <a href="docs/keven_villeneuve_thesis_meng.pdf"><i class="far fa-file-pdf"></i> Thesis</a>
-</p>
+<article>
+    <h3>
+        <a href="publications/master_thesis.html">
+        Importance Sampling Polygonal Lights in Participating Media
+        </a>
+    </h3>
+    <p class="link-button">
+        Keven Villeneuve<br/>
+        <i>M.Eng. thesis, McGill University, 2019 (Advisor: <a href="http://www.cim.mcgill.ca/~derek/">Derek Nowrouzezahrai</a>)</i><br/>
+        <img src="imgs/publications/thesis_cover.jpg"/><br/>
+    
+        <a href="publications/master_thesis.html"><i class="fas fa-globe-americas"></i> Project</a>
+        <a href="docs/keven_villeneuve_thesis_meng.pdf"><i class="far fa-file-pdf"></i> Thesis</a>
+    </p>
+</article>
 
-</div>
+        <hr>
         <footer>
-        	Keven Villeneuve &copy; 2021
+            <p>
+                <a href="https://github.com/kevenv"><i class="fab fa-github fa-lg"></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://twitter.com/keven_v"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class="fas fa-envelope fa-lg"></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
         </footer>
     </body>
-    <!-- Highlight selected tab in navbar -->
-    <script type="text/javascript">
-        document.getElementById("publicationsNav").className += " active";
-    </script>
 </html>
