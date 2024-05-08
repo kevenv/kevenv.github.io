@@ -51,7 +51,9 @@ if __name__ == '__main__':
         out_page = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
-        out_page = textwrap.indent(out_page, 8 * ' ')
+        if not 'publications/' in p:
+            # TODO: hacky way to avoid indenting <pre>
+            out_page = textwrap.indent(out_page, 8 * ' ')
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
             'body': out_page, 'pageName': p,
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
