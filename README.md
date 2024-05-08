@@ -2,22 +2,21 @@
 Personal website
 
 ## Philosophy
-
 - no web frameworks
 - no useless js, jquery BS
 - no complex packages management
 - minimal css
 
 ## Install
-
-`pip3 install --user -r tools/requirements.txt`
+`pip install --user -r tools/requirements.txt`
 
 ## Build
+`python tools/build_site.py`
 
-`python3 tools/build_site.py`
+## Test
+`python -m http.server`
 
 ## Dependencies
-
 - python3
 - pystache
 - markdown
@@ -26,5 +25,4 @@ Personal website
 - fontawesome.js
 
 ## Tools
-
-- sublime text packages: mustache, markdown
+- vscode with python, mustache extension

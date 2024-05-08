@@ -21,47 +21,47 @@
             </nav>
         </header>
         <hr>
-<h1>Direct Delta Mush Skinning Compression with Continuous Examples</h1>
-<p>
-    Binh Huy Le, Keven Villeneuve, and Carlos Gonzalez-Ochoa<br>
-    <i>SIGGRAPH 2021</i>
-</p>
+        <h1>Direct Delta Mush Skinning Compression with Continuous Examples</h1>
+        <p>
+            Binh Huy Le, Keven Villeneuve, and Carlos Gonzalez-Ochoa<br>
+            <i>SIGGRAPH 2021</i>
+        </p>
 
-<img style="max-width: 100%" src="../imgs/publications/ddm_compression_cover.jpg">
+        <img style="max-width: 100%" src="../imgs/publications/ddm_compression_cover.jpg">
 
-<h3>Abstract</h3>
-<p class="justify">
-    Direct Delta Mush (DDM) is a high-quality, direct skinning method with a low setup cost. However, its storage and run-time computing cost are relatively high for two reasons: its skinning weights are 4×4 matrices instead of scalars like other direct skinning methods, and its computation requires one 3×3 Singular Value Decomposition per vertex.
-</p>
-<p class="justify">
-	In this paper, we introduce a compression method that takes a DDM model and splits it into two layers: the first layer is a smaller DDM model that computes a set of virtual bone transformations and the second layer is a Linear Blend Skinning model that computes per-vertex transformations from the output of the first layer. The two-layer model can approximate the deformation of the original DDM model with significantly lower costs.
-</p>
-<p class="justify">
-	Our main contribution is a novel problem formulation for the DDM compression based on a continuous example-based technique, in which we minimize the compression error on an uncountable set of example poses. This formulation provides an elegant metric for the compression error and simplifies the problem to the common linear matrix factorization. Our formulation also takes into account the skeleton hierarchy of the model, the bind pose, and the range of motions. In addition, we propose a new update rule to optimize DDM weights of the first layer and a modification to resolve the floating-point cancellation issue of DDM.
-</p>
+        <h3>Abstract</h3>
+        <p class="justify">
+            Direct Delta Mush (DDM) is a high-quality, direct skinning method with a low setup cost. However, its storage and run-time computing cost are relatively high for two reasons: its skinning weights are 4×4 matrices instead of scalars like other direct skinning methods, and its computation requires one 3×3 Singular Value Decomposition per vertex.
+        </p>
+        <p class="justify">
+        	In this paper, we introduce a compression method that takes a DDM model and splits it into two layers: the first layer is a smaller DDM model that computes a set of virtual bone transformations and the second layer is a Linear Blend Skinning model that computes per-vertex transformations from the output of the first layer. The two-layer model can approximate the deformation of the original DDM model with significantly lower costs.
+        </p>
+        <p class="justify">
+        	Our main contribution is a novel problem formulation for the DDM compression based on a continuous example-based technique, in which we minimize the compression error on an uncountable set of example poses. This formulation provides an elegant metric for the compression error and simplifies the problem to the common linear matrix factorization. Our formulation also takes into account the skeleton hierarchy of the model, the bind pose, and the range of motions. In addition, we propose a new update rule to optimize DDM weights of the first layer and a modification to resolve the floating-point cancellation issue of DDM.
+        </p>
 
-<h3>Downloads</h3>
-<p class="link-button">
-    <a href="../docs//ddm_compression_continuous_examples.pdf"><i class="far fa-file-pdf"></i> Paper</a>
-    <a href="https://www.youtube.com/watch?v=f62iLgiUuMw"><i class="fas fa-video fa-fw"></i> Talk</a>
-    <a href="https://www.youtube.com/watch?v=EztSXgimioo"><i class="fas fa-video fa-fw"></i> Video</a>
-</p>
+        <h3>Downloads</h3>
+        <p class="link-button">
+            <a href="../docs//ddm_compression_continuous_examples.pdf"><i class="far fa-file-pdf"></i> Paper</a>
+            <a href="https://www.youtube.com/watch?v=f62iLgiUuMw"><i class="fas fa-video fa-fw"></i> Talk</a>
+            <a href="https://www.youtube.com/watch?v=EztSXgimioo"><i class="fas fa-video fa-fw"></i> Video</a>
+        </p>
 
-<h3>BibTeX</h3>
-<pre class="bibtex">
-@article{Le:2021:DDMCompression,
-  author = {Le, Binh Huy and Villeneuve, Keven and Gonzalez-Ochoa, Carlos},
-  title = {Direct Delta Mush Skinning Compression with Continuous Examples},
-  journal = {ACM Trans. Graph.},
-  volume = {40},
-  number = {4},
-  articleno = {72},
-  year = {2021},
-  month = {jul},
-  doi = {10.1145/3450626.3459779},
-  keywords = {sparse coding, delta mush, deformation, skeletal animation, linear blend skinning}
-}
-</pre>
+        <h3>BibTeX</h3>
+        <pre class="bibtex">
+        @article{Le:2021:DDMCompression,
+          author = {Le, Binh Huy and Villeneuve, Keven and Gonzalez-Ochoa, Carlos},
+          title = {Direct Delta Mush Skinning Compression with Continuous Examples},
+          journal = {ACM Trans. Graph.},
+          volume = {40},
+          number = {4},
+          articleno = {72},
+          year = {2021},
+          month = {jul},
+          doi = {10.1145/3450626.3459779},
+          keywords = {sparse coding, delta mush, deformation, skeletal animation, linear blend skinning}
+        }
+        </pre>
 
         <hr>
         <footer>

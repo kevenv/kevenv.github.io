@@ -7,9 +7,22 @@
         <link rel="icon" href="icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <link rel="stylesheet" href="codehilite.css">
+        <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+          integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs"
+          crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="codehilite.css">
-    
+        <style type="text/css">
+            .katex img {
+              object-fit: fill;
+              padding: unset;
+              display: block;
+              position: absolute;
+              width: 100%;
+              height: inherit;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -23,94 +36,80 @@
             </nav>
         </header>
         <hr>
-<link rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
-  integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs"
-  crossorigin="anonymous" />
 
-<style type="text/css">
-    .katex img {
-      object-fit: fill;
-      padding: unset;
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: inherit;
-    }
-</style>
-<h1>Simulation of stuff</h1>
-<p>Hello todya we are going to learn how to simulate stuff! First thing, we must explain our assumptions. Here we will take into account that the speed of light is infinite and the mass of the sun is infinite.</p>
-<h2>bla</h2>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msubsup><mo>∫</mo><mrow><mo>−</mo><mi mathvariant="normal">∞</mi></mrow><mi mathvariant="normal">∞</mi></msubsup><mover accent="true"><mi>f</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>ξ</mi><mo stretchy="false">)</mo><mtext> </mtext><msup><mi>e</mi><mrow><mn>2</mn><mi>π</mi><mi>i</mi><mi>ξ</mi><mi>x</mi></mrow></msup><mtext> </mtext><mi>d</mi><mi>ξ</mi></mrow><annotation encoding="application/x-tex">
-f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x} \,d\xi
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3846em;vertical-align:-0.9703em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4143em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">∞</span></span></span></span><span style="top:-3.8129em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9703em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0833em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.04601em;">ξ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">πi</span><span class="mord mathnormal mtight" style="margin-right:0.04601em;">ξ</span><span class="mord mathnormal mtight">x</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.04601em;">ξ</span></span></span></span></span></p>
-<p>Here are the required steps:
-- asdasd
-- asdad
-- asdasd <code>asdad</code></p>
-<p>Which we can code using this function:</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fct</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span>
-</code></pre></div></td></tr></table></div>
+        <h1>Simulation of stuff</h1>
+        <p>Hello todya we are going to learn how to simulate stuff! First thing, we must explain our assumptions. Here we will take into account that the speed of light is infinite and the mass of the sun is infinite.</p>
+        <h2>bla</h2>
+        <p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msubsup><mo>∫</mo><mrow><mo>−</mo><mi mathvariant="normal">∞</mi></mrow><mi mathvariant="normal">∞</mi></msubsup><mover accent="true"><mi>f</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>ξ</mi><mo stretchy="false">)</mo><mtext> </mtext><msup><mi>e</mi><mrow><mn>2</mn><mi>π</mi><mi>i</mi><mi>ξ</mi><mi>x</mi></mrow></msup><mtext> </mtext><mi>d</mi><mi>ξ</mi></mrow><annotation encoding="application/x-tex">
+        f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x} \,d\xi
+        </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3846em;vertical-align:-0.9703em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4143em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">∞</span></span></span></span><span style="top:-3.8129em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9703em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0833em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.04601em;">ξ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">πi</span><span class="mord mathnormal mtight" style="margin-right:0.04601em;">ξ</span><span class="mord mathnormal mtight">x</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.04601em;">ξ</span></span></span></span></span></p>
+        <p>Here are the required steps:
+        - asdasd
+        - asdad
+        - asdasd <code>asdad</code></p>
+        <p>Which we can code using this function:</p>
+        <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+        <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fct</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span>
+        </code></pre></div></td></tr></table></div>
 
-<p>c++:</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Base</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">blabla</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">stuff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make</span><span class="p">();</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="p">};</span>
-</code></pre></div></td></tr></table></div>
+        <p>c++:</p>
+        <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+        <span class="normal">2</span>
+        <span class="normal">3</span>
+        <span class="normal">4</span>
+        <span class="normal">5</span>
+        <span class="normal">6</span>
+        <span class="normal">7</span>
+        <span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Base</span><span class="w"> </span><span class="p">{</span>
+        <span class="k">public</span><span class="o">:</span>
+        <span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+        <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">blabla</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+        <span class="w">            </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">stuff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make</span><span class="p">();</span>
+        <span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+        <span class="w">        </span><span class="p">}</span>
+        <span class="p">};</span>
+        </code></pre></div></td></tr></table></div>
 
-<p>glsl:</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">blabla</span><span class="p">(</span><span class="kt">vec3</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">xyz</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></td></tr></table></div>
+        <p>glsl:</p>
+        <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+        <span class="normal">2</span>
+        <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">blabla</span><span class="p">(</span><span class="kt">vec3</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+        <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">xyz</span><span class="p">;</span>
+        <span class="p">}</span>
+        </code></pre></div></td></tr></table></div>
 
-<p><a href="https://www.google.com">I'm an inline-style link</a></p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align: center;">Are</th>
-<th style="text-align: right;">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align: center;">right-aligned</td>
-<td style="text-align: right;">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align: center;">centered</td>
-<td style="text-align: right;">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align: center;">are neat</td>
-<td style="text-align: right;">$1</td>
-</tr>
-</tbody>
-</table>
-<p>Inline-style: 
-<img alt="alt text" src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" title="Logo Title Text 1" /></p>
-<p><img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /> <img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /></p>
-<p><img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /> <img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /></p>
+        <p><a href="https://www.google.com">I'm an inline-style link</a></p>
+        <table>
+        <thead>
+        <tr>
+        <th>Tables</th>
+        <th style="text-align: center;">Are</th>
+        <th style="text-align: right;">Cool</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>col 3 is</td>
+        <td style="text-align: center;">right-aligned</td>
+        <td style="text-align: right;">$1600</td>
+        </tr>
+        <tr>
+        <td>col 2 is</td>
+        <td style="text-align: center;">centered</td>
+        <td style="text-align: right;">$12</td>
+        </tr>
+        <tr>
+        <td>zebra stripes</td>
+        <td style="text-align: center;">are neat</td>
+        <td style="text-align: right;">$1</td>
+        </tr>
+        </tbody>
+        </table>
+        <p>Inline-style: 
+        <img alt="alt text" src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" title="Logo Title Text 1" /></p>
+        <p><img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /> <img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /></p>
+        <p><img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /> <img alt="alt text" src="imgs/publications/volume_product_sampling_cover.jpg" title="Logo Title Text 2" /></p>
         <hr>
         <footer>
             <p>

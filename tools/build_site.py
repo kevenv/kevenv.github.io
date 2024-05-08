@@ -1,4 +1,5 @@
 import shutil
+import textwrap
 import pystache
 import markdown
 
@@ -6,7 +7,7 @@ TEMPLATES_PATH = 'templates'
 IMAGES_PATH = 'imgs'
 DOCS_PATH = 'docs'
 
-def main():
+if __name__ == '__main__':
     # MUSTACHE
     renderer = pystache.Renderer(search_dirs=TEMPLATES_PATH)
 
@@ -20,10 +21,8 @@ def main():
     }
     md = markdown.Markdown(
         extensions=['tables','fenced_code','codehilite','markdown_katex'],
-        extension_configs=extension_configs)
-    header = '''
-    <link rel="stylesheet" href="codehilite.css">
-    '''
+        extension_configs=extension_configs
+    )
 
     # CSS
     shutil.copyfile('{}/style.css'.format(TEMPLATES_PATH), 'style.css')
@@ -52,6 +51,7 @@ def main():
         out_page = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
+        out_page = textwrap.indent(out_page, 8 * ' ')
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
             'body': out_page, 'pageName': p,
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
@@ -68,11 +68,15 @@ def main():
 
         with open('{}/blog/{}.md'.format(TEMPLATES_PATH,p),'r') as f:
             text = f.read()
-        out_page = md.reset().convert(text)
+        out_page = '<link rel="stylesheet" href="codehilite.css">\n'
+        out_page += md.reset().convert(text)
+        out_page = textwrap.indent(out_page, 8 * ' ')
+        # extract header from body
+        idx = out_page.find("</style>") + 8
+        header = out_page[0:idx]
+        out_page = out_page[idx:]
         out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
             { 'body': out_page, 'pageName': 'blog', 'head': header }
         )
         with open('blog_{}.html'.format(p),'w') as f:
             f.write(out)
-
-main()
