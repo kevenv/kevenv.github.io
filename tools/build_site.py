@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
         with open('{}/blog/{}.md'.format(TEMPLATES_PATH,p),'r') as f:
             text = f.read()
-        out_page = '<link rel="stylesheet" href="codehilite.css">\n'
+        out_page = '<link rel="stylesheet" href="style/codehilite.css">\n'
         out_page += md.reset().convert(text)
         # TODO: hacky way to avoid indenting <pre>
         # out_page = textwrap.indent(out_page, 8 * ' ')
