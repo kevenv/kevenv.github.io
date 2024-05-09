@@ -1,4 +1,3 @@
-import shutil
 import textwrap
 import pystache
 import markdown
@@ -23,9 +22,6 @@ if __name__ == '__main__':
         extensions=['tables','fenced_code','codehilite','markdown_katex'],
         extension_configs=extension_configs
     )
-
-    # CSS
-    shutil.copyfile('{}/style.css'.format(TEMPLATES_PATH), 'style.css')
 
     # HTML
     pages = [
