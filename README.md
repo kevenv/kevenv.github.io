@@ -22,7 +22,6 @@ Personal website
 - markdown
 - markdown-katex
 - Pygments
-- fontawesome.js
 
 ## Tools
 - vscode with python, mustache extension

@@ -20,7 +20,7 @@ def fct(x):
 ```
 
 c++:
-```c++
+```c++ hl_lines="3 4"
 class Base {
 public:
         int var = 3;
@@ -47,7 +47,7 @@ void blabla(vec3 v) {
 | zebra stripes | are neat      |    $1 |
 
 Inline-style: 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![alt text](imgs/publications/volume_product_sampling_cover.jpg "Logo Title Text 1")
 
 ![alt text][logo] ![alt text][logo]
 

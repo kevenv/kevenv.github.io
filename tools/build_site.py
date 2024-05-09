@@ -72,7 +72,8 @@ if __name__ == '__main__':
             text = f.read()
         out_page = '<link rel="stylesheet" href="codehilite.css">\n'
         out_page += md.reset().convert(text)
-        out_page = textwrap.indent(out_page, 8 * ' ')
+        # TODO: hacky way to avoid indenting <pre>
+        # out_page = textwrap.indent(out_page, 8 * ' ')
         # extract header from body
         idx = out_page.find("</style>") + 8
         header = out_page[0:idx]

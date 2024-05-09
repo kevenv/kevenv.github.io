@@ -32,6 +32,11 @@ img {
     border: 1px solid black;
 }
 
+i.bx {
+    width: 1.05em;
+    vertical-align: middle;
+}
+
 ul {
     padding: 0;
     padding-left: 16px;
@@ -128,4 +133,12 @@ a:hover {
         justify-content: baseline;
         margin: 0 0 15px;
     }
+}
+
+.linenos {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.code {
+    padding-left: 10px;
 }
