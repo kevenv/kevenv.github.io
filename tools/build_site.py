@@ -35,6 +35,8 @@ if __name__ == '__main__':
             ('publications/volume_product_sampling','../'),
             ('publications/ddm_compression','../'),
         ('blog',''),
+            ('blog/hello','../'),
+            ('blog/heat_equation','../'),
     ]
     for page in pages:
         print(page)
@@ -44,38 +46,27 @@ if __name__ == '__main__':
         root_images = root + IMAGES_PATH + '/'
         root_docs = root + DOCS_PATH + '/'
         
-        out_page = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
-            'root': root, 'rootImages': root_images, 'rootDocs': root_docs
-        })
-        if not 'publications/' in p:
-            # TODO: hacky way to avoid indenting <pre>
-            out_page = textwrap.indent(out_page, 8 * ' ')
-        out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
-            'body': out_page, 'pageName': p,
+        if 'blog/' in p:
+            page_md = renderer.render_path('{}/{}.md'.format(TEMPLATES_PATH,p), {
+                'root': root, 'rootImages': root_images, 'rootDocs': root_docs
+            })
+            page_html = '<link rel="stylesheet" href="{}style/codehilite.css">\n'.format(root)
+            page_html += md.reset().convert(page_md)
+            # extract head from body
+            idx = page_html.find("</style>") + 8
+            head = page_html[0:idx]
+            page_html = page_html[idx:]
+        else:
+            head = ''
+            page_html = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
+                'root': root, 'rootImages': root_images, 'rootDocs': root_docs
+            })
+        # TODO: hacky way to avoid indenting <pre>
+        if (not 'publications/' in p) and (not 'blog/' in p):
+            page_html = textwrap.indent(page_html, 8 * ' ')
+        page_html = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
+            'body': page_html, 'pageName': p, 'head': head,
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
         with open('{}.html'.format(p),'w') as f:
-            f.write(out)
-    
-    # BLOG
-    posts = [
-        'hello'
-    ]
-    for p in posts:
-        print('blog/{}'.format(p))
-
-        with open('{}/blog/{}.md'.format(TEMPLATES_PATH,p),'r') as f:
-            text = f.read()
-        out_page = '<link rel="stylesheet" href="style/codehilite.css">\n'
-        out_page += md.reset().convert(text)
-        # TODO: hacky way to avoid indenting <pre>
-        # out_page = textwrap.indent(out_page, 8 * ' ')
-        # extract header from body
-        idx = out_page.find("</style>") + 8
-        header = out_page[0:idx]
-        out_page = out_page[idx:]
-        out = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH),
-            { 'body': out_page, 'pageName': 'blog', 'head': header }
-        )
-        with open('blog_{}.html'.format(p),'w') as f:
-            f.write(out)
+            f.write(page_html)

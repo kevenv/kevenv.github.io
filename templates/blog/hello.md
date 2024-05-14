@@ -47,10 +47,10 @@ void blabla(vec3 v) {
 | zebra stripes | are neat      |    $1 |
 
 Inline-style: 
-![alt text](imgs/publications/volume_product_sampling_cover.jpg "Logo Title Text 1")
+![alt text]({{rootImages}}publications/volume_product_sampling_cover.jpg "Logo Title Text 1")
 
 ![alt text][logo] ![alt text][logo]
 
 ![alt text][logo] ![alt text][logo]
 
-[logo]: imgs/publications/volume_product_sampling_cover.jpg "Logo Title Text 2"
+[logo]: {{rootImages}}publications/volume_product_sampling_cover.jpg "Logo Title Text 2"
