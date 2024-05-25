@@ -53,7 +53,7 @@ if __name__ == '__main__':
             page_html = '<link rel="stylesheet" href="{}style/codehilite.css">\n'.format(root)
             page_html += md.reset().convert(page_md)
             # extract head from body
-            idx = page_html.find("</style>") + 8
+            idx = page_html.find("<h1>")
             head = page_html[0:idx]
             page_html = page_html[idx:]
         else:
