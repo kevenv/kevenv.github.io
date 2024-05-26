@@ -74,7 +74,7 @@ a:hover {
     margin: 2px;
 }
 
-.cmd {
+p code, li code {
     background-color: AliceBlue;
     border: 1px solid black;
     padding: 0.1rem 0.3rem;

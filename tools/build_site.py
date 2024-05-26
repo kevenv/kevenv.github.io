@@ -35,8 +35,10 @@ if __name__ == '__main__':
             ('publications/volume_product_sampling','../'),
             ('publications/ddm_compression','../'),
         ('blog',''),
-            ('blog/hello','../'),
-            ('blog/heat_equation','../'),
+            ('blog/cuda_hello','../'),
+            # ('blog/zip_format','../'),
+            # ('blog/hello','../'),
+            # ('blog/heat_equation','../'),
     ]
     for page in pages:
         print(page)
