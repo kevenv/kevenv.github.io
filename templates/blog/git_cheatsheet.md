@@ -6,11 +6,21 @@
                    add                      commit           push
 ```
 
-## Init
-- `git config --global user.name "John Doe"`
-- `git config --global user.email johndoe@example.com`
-- `git config --list` : show git config at `~/.gitconfig`
- 
+## Config
+- `git config --list` : show git config
+- `git config --global --edit` : edit git config
+```
+# ~/.gitconfig
+
+[user]
+      name = [FIRST NAME] [LAST NAME]
+      email = [EMAIL]
+[log]
+      date = local
+[format]
+      pretty = format:%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s
+```
+
 ## Basic
 - `git init` : init directory as a git repo
 - `git clone [url]` : clone repo

@@ -30,12 +30,30 @@
                    add                      commit           push
 </code></pre></div></td></tr></table></div>
 
-<h2>Init</h2>
+<h2>Config</h2>
 <ul>
-<li><code>git config --global user.name "John Doe"</code></li>
-<li><code>git config --global user.email johndoe@example.com</code></li>
-<li><code>git config --list</code> : show git config at <code>~/.gitconfig</code></li>
+<li><code>git config --list</code> : show git config</li>
+<li><code>git config --global --edit</code> : edit git config</li>
 </ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code># ~/.gitconfig
+
+[user]
+      name = [FIRST NAME] [LAST NAME]
+      email = [EMAIL]
+[log]
+      date = local
+[format]
+      pretty = format:%C(yellow)%h %Cblue%&gt;(12)%ad %Cgreen%&lt;(7)%aN%Cred%d %Creset%s
+</code></pre></div></td></tr></table></div>
+
 <h2>Basic</h2>
 <ul>
 <li><code>git init</code> : init directory as a git repo</li>
