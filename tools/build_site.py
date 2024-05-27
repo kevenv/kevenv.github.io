@@ -25,29 +25,30 @@ if __name__ == '__main__':
 
     # HTML
     pages = [
-        ('index',''),
-        ('about',''),
-        ('projects',''),
-            ('projects/chip8','../'),
-            ('projects/europa','../'),
-        ('publications',''),
-            ('publications/master_thesis','../'),
-            ('publications/volume_product_sampling','../'),
-            ('publications/ddm_compression','../'),
-        ('blog',''),
-            ('blog/linux_cheatsheet','../'),
-            ('blog/git_cheatsheet','../'),
-            # ('blog/phys_mec_cheatsheet','../'),
-            ('blog/cuda_hello','../'),
-            # ('blog/zip_format','../'),
-            # ('blog/hello','../'),
-            # ('blog/heat_equation','../'),
+        ('index','','Home'),
+        ('about','','About'),
+        ('projects','','Projects'),
+            ('projects/chip8','../','Projects Chip8'),
+            ('projects/europa','../','Project Europa'),
+        ('publications','','Publications'),
+            ('publications/master_thesis','../','Master\'s Thesis'),
+            ('publications/volume_product_sampling','../','Volume Product Sampling'),
+            ('publications/ddm_compression','../','DDM Compression'),
+        ('blog','','Blog'),
+            ('blog/linux_cheatsheet','../','Linux Cheatsheet'),
+            ('blog/git_cheatsheet','../','Git Cheatsheet'),
+            # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
+            ('blog/cuda_hello','../','CUDA Tutorial - Hello World!'),
+            # ('blog/zip_format','../','ZIP Format'),
+            # ('blog/hello','../','Hello'),
+            # ('blog/heat_equation','../','Heat Equation'),
     ]
     for page in pages:
         print(page)
         
         p = page[0]
         root = page[1]
+        title = page[2]
         root_images = root + IMAGES_PATH + '/'
         root_docs = root + DOCS_PATH + '/'
         
@@ -70,7 +71,7 @@ if __name__ == '__main__':
         if (not 'publications/' in p) and (not 'blog/' in p):
             page_html = textwrap.indent(page_html, 8 * ' ')
         page_html = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
-            'body': page_html, 'pageName': p, 'head': head,
+            'body': page_html, 'title': title, 'head': head,
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
         with open('{}.html'.format(p),'w') as f:
