@@ -35,6 +35,8 @@ if __name__ == '__main__':
             ('publications/volume_product_sampling','../'),
             ('publications/ddm_compression','../'),
         ('blog',''),
+            ('blog/linux_cheatsheet','../'),
+            ('blog/git_cheatsheet','../'),
             ('blog/cuda_hello','../'),
             # ('blog/zip_format','../'),
             # ('blog/hello','../'),

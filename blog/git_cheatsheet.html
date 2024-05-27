@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv's website</title>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Git Cheatsheet</h1>
+<h2>Flow</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>[Working directory] -&gt; [Staging Area (Index)] -&gt; [Repository] -&gt; [Remote]
+                   add                      commit           push
+</code></pre></div></td></tr></table></div>
+
+<h2>Init</h2>
+<ul>
+<li><code>git config --global user.name "John Doe"</code></li>
+<li><code>git config --global user.email johndoe@example.com</code></li>
+<li><code>git config --list</code> : show git config at <code>~/.gitconfig</code></li>
+</ul>
+<h2>Basic</h2>
+<ul>
+<li><code>git init</code> : init directory as a git repo</li>
+<li><code>git clone [url]</code> : clone repo</li>
+<li><code>git branch</code> : list branches</li>
+<li><code>git checkout [branch]</code> : switch branch</li>
+<li><code>git checkout -b [branch]</code> : create new branch</li>
+<li><code>git checkout [commit hash]</code> : switch branch to specific commit</li>
+<li><code>git fetch</code> : fetch changes</li>
+<li><code>git pull</code> : fetch + merge changes</li>
+<li><code>git push</code> : push changes<ul>
+<li><code>git push origin [branch]</code> : push branch</li>
+<li><code>git push --force origin [branch]</code> : push branch after rebase</li>
+</ul>
+</li>
+<li><code>git add [file]</code> : add changes<ul>
+<li><code>git add .</code> : add all changes</li>
+<li><code>git add -p</code> : add changes interactively</li>
+</ul>
+</li>
+<li><code>git commit -m "[message]"</code> : commit changes</li>
+<li><code>git status</code> : status of local repo</li>
+<li><code>git diff [file a] [file b]</code> : diff two files<ul>
+<li><code>--cached</code> : diff the added files</li>
+<li><code>-b</code> : ignore endlines</li>
+<li><code>-w</code> : ignore whitespaces</li>
+</ul>
+</li>
+</ul>
+<h2>Stash &amp; Patch</h2>
+<ul>
+<li><code>git stash</code> : stash current changes<ul>
+<li><code>list</code> : show stash</li>
+<li><code>pop</code> : pop stash</li>
+<li><code>apply stash@{0}</code> : apply stash</li>
+<li><code>show -p stash@{0}</code> : show stash changes</li>
+</ul>
+</li>
+<li><code>git diff &gt; [patch file].patch</code> : create patch from unstaged changes</li>
+<li><code>git diff --cached &gt; [patch file].patch</code> : create patch from staged changes</li>
+<li><code>git apply [patch file].patch</code> : apply patch file</li>
+</ul>
+<h2>Info</h2>
+<ul>
+<li><code>git log</code> : show changes log</li>
+<li><code>git remote -v</code> : list remote</li>
+<li><code>git remote show origin</code> : info on remote</li>
+<li><code>git remote add [remote name] [remote url]</code> : add remote</li>
+</ul>
+<h2>Merge</h2>
+<ul>
+<li><code>git rebase [src branch]</code> : rebase current branch from another branch</li>
+<li><code>git merge [branch]</code> : merge branch into current branch</li>
+<li><code>git cherry-pick [commit hash]</code> : pull specific commit</li>
+</ul>
+<h2>Revert</h2>
+<ul>
+<li><code>git reset</code> hard, soft?
+revert
+checkout
+clean</li>
+</ul>
+<h2>Submodules</h2>
+<ul>
+<li><code>git clone --recursive</code> : clone with submodules</li>
+<li><code>git submodule update --init --recursive</code> : pull submodules after clone</li>
+<li><code>git submodule add [submodule url]</code> : add submodule</li>
+</ul>
+<h3>Remove submodule</h3>
+<ol>
+<li><code>git rm [submodule]</code></li>
+<li><code>rm -rf .git/modules/[submodule]</code></li>
+<li><code>git config --remove-section submodule.[submodule]</code></li>
+<li><code>git commit</code></li>
+</ol>
+<h2>Binary files - LFS (Large File Storage)</h2>
+<ol>
+<li><code>git lfs install</code> : install LFS, once per user</li>
+<li><code>git lfs track "*.[file type]"</code> : add file type to track with LFS</li>
+<li><code>git add .gitattributes</code> : make sure that this is tracked</li>
+</ol>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>

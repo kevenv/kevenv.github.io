@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv's website</title>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Linux Cheatsheet</h1>
+<h2>Paths</h2>
+<ul>
+<li><code>.</code> : current directory</li>
+<li><code>..</code> : parent directory</li>
+<li><code>~</code> : home directory</li>
+<li><code>../relative/path</code> : relative path</li>
+<li><code>/absolute/path</code> : absolute path</li>
+</ul>
+<h2>Pipes</h2>
+<ul>
+<li><code>A | B</code> : run A and transfer its output to B</li>
+<li><code>A &amp; B</code> : run A then B</li>
+<li><code>A &amp;&amp; B</code> : run A then B only if A succeeds</li>
+<li><code>| grep [some string]</code> : filter out stdout</li>
+</ul>
+<h2>Redirect</h2>
+<ul>
+<li><code>&gt;</code> : stdout</li>
+<li><code>&lt;</code> : stdin</li>
+<li><code>&amp;&gt;</code> : stdout + stderr</li>
+<li><code>1&gt;</code> : stdout</li>
+<li><code>2&gt;</code> : stderr</li>
+</ul>
+<h2>Basic</h2>
+<ul>
+<li><code>cd [directory]</code> : change directory</li>
+<li><code>ls [directory]</code> : list files &amp; directories<ul>
+<li>-l : list</li>
+<li>-a : all (hidden too)</li>
+<li>-h : human sizes</li>
+</ul>
+</li>
+<li><code>cp [src] [dst]</code> : copy src to dst<ul>
+<li>-r : recursive (directory)</li>
+</ul>
+</li>
+<li><code>rm [file or directory]</code> : remove file or directory<ul>
+<li>-r : recursive (directory)</li>
+<li>-f : force</li>
+</ul>
+</li>
+<li><code>mkdir [directory]</code> : create directory<ul>
+<li>p : create parent directories as needed</li>
+</ul>
+</li>
+<li><code>ln -s [target] [symlink]</code> : create a symlink</li>
+<li><code>touch [file]</code> : create empty file, mark file as newly edited</li>
+<li><code>source [file]</code> : execute a <code>.sh</code> file within the current shell</li>
+<li><code>cat [file]</code> : print file to the screen</li>
+<li><code>file [file]</code> : get file type</li>
+<li><code>stat [file]</code> : get file info</li>
+<li><code>man [cmd]</code> : show manual for cmd</li>
+<li><code>pwd</code> : show current directory</li>
+<li><code>which [cmd]</code> : show where cmd is located</li>
+<li><code>find</code> : find files<ul>
+<li><code>find [directory] -name [file]</code> : find file in directory</li>
+<li><code>find [directory] -name *.[ext]</code> : find all files of a given type</li>
+<li><code>find [directory] -type f -exec grep "[text]" '{}' \; -print</code> : find text in files</li>
+</ul>
+</li>
+</ul>
+<h2>Permissions</h2>
+<ul>
+<li><code>sudo [cmd]</code> : run a cmd as root</li>
+<li><code>chmod [file]</code> : change file permissions<ul>
+<li>-R : recursive</li>
+<li>+x : make a file executable</li>
+<li>+rw : make a file read-write</li>
+<li>-w : make a file read-only</li>
+</ul>
+</li>
+<li><code>chown [owner]:[group] [file]</code> : change the owner of a file</li>
+<li><code>groups [user]</code> : list groups of a user</li>
+<li><code>cat /etc/group</code> : list all groups</li>
+</ul>
+<h2>Environment variables</h2>
+<ul>
+<li><code>export [var]=[name]</code> : set an env variable</li>
+<li><code>echo $[var]</code> : print env variable</li>
+<li><code>echo $PATH</code> : show system PATH</li>
+<li><code>export PATH=$PATH:[directory path]</code> : add directory to system PATH</li>
+<li><code>echo "export PATH=$PATH:[directory path]" &gt;&gt; ~/.bashrc</code> : change the system PATH permanently</li>
+</ul>
+<h2>Other</h2>
+<ul>
+<li><code>ssh -p [port] [user]@[ip]</code> : login to SSH</li>
+<li><code>reboot</code> : reboot system</li>
+<li><code>poweroff</code> : shutdown system</li>
+<li><code>wget</code> : ?</li>
+<li><code>zip</code> : ?</li>
+<li><code>unzip</code> : ?</li>
+<li><code>hexdump</code> : dump file as hexa</li>
+<li><code>find . -name [file] | entr [cmd]</code> : run a cmd whenever a file changes</li>
+</ul>
+<h2>Disk</h2>
+<ul>
+<li><code>lsblk</code> : list disk</li>
+<li><code>fdisk -l</code> : disk info</li>
+<li><code>fdisk [disk]</code> : partition disk</li>
+<li><code>mount [disk name] [directory]</code> : mount disk</li>
+<li><code>umount [directory]</code> : unmount disk</li>
+<li><code>cat /proc/mounts</code> : mount info</li>
+</ul>
+<h2>Info</h2>
+<ul>
+<li><code>uname -a</code> : show kernel version</li>
+<li><code>lspci</code> : list PCI devices (Bus:Device.Function)<ul>
+<li>-v : verbose</li>
+<li>-vv : very verbose</li>
+<li>-tv : tree</li>
+<li>-k : kernel modules/drivers in use</li>
+<li>-n : ID of PCI device (VendorID:deviceID)</li>
+</ul>
+</li>
+<li><code>lsusb</code> : list USB devices<ul>
+<li>-v : verbose</li>
+<li>-t : tree</li>
+</ul>
+</li>
+<li><code>ifconfig</code> : show network info</li>
+<li><code>nvidia-smi</code> : show GPU info</li>
+<li><code>df -h</code> : show disk usage</li>
+<li><code>free -h --si</code> : show how much RAM</li>
+<li><code>htop</code> : list process, kill process</li>
+<li><code>sensors</code> : show temperature</li>
+<li><code>watch -t -n 1 "sensors | grep 'Core 0:'"</code> : show CPU temperature</li>
+<li><code>cat /proc/[pid]</code> : procfs, running processes</li>
+<li><code>cat /proc/meminfo</code> : memory info</li>
+<li><code>cat /proc/cpuinfo</code> : CPU info (CPUID)</li>
+<li><code>cat /proc/interrupts</code> : interrupts in</li>
+<li><code>cat /proc/ioports</code> : IO ports</li>
+<li><code>cat /proc/iomem</code> : MMIO</li>
+<li><code>cat /proc/stat</code> : all process stats</li>
+<li><code>cat /proc/[pid]/stat</code> : process stats</li>
+<li><code>iftop</code> : list TCP sockets</li>
+<li><code>netstat -nat</code> : list TCP sockets</li>
+</ul>
+<h2>Kernel</h2>
+<ul>
+<li><code>lsmod</code> : list kernel modules<ul>
+<li>also <code>cat /proc/modules</code></li>
+</ul>
+</li>
+<li><code>insmod [module].ko</code> : install kernel module</li>
+<li><code>rmmod [module]</code> : remove kernel module</li>
+<li><code>dmesg | tail -n 5</code> : show kernel log</li>
+<li><code>ls -l /dev</code> : list device files<ul>
+<li>major, minor</li>
+</ul>
+</li>
+<li><code>cat /proc/devices</code> : list assigned device numbers</li>
+<li><code>mknod [device] c [major] [minor]</code> : create character device</li>
+<li><code>rmnod [device]</code></li>
+<li><code>head -c 1 [file]</code> : output the first byte of a file</li>
+</ul>
+<h2>Filesystem</h2>
+<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">FSH</a></p>
+<ul>
+<li><code>/proc</code> : procfs, running processes</li>
+<li><code>/dev</code> : udev, devices files</li>
+<li><code>/sys</code> : sysfs, devices/bus/drivers/kernel<ul>
+<li><code>/sys/bus/pci/devices</code></li>
+</ul>
+</li>
+</ul>
+<h2>Fedora</h2>
+<h3>DNF</h3>
+<ul>
+<li><code>dnf search [package]</code> : search for package in repos</li>
+<li><code>dnf info [package]</code> : get info about package</li>
+<li><code>dnf install [package]</code> : install package</li>
+<li><code>dnf remove [package]</code> : remove package</li>
+<li><code>dnf list installed</code> : list installed packages</li>
+<li><code>dnf list available</code> : list all availables packages</li>
+<li><code>dnf upgrade</code> : upgrade/update all packages</li>
+<li><code>dnf autoremove</code> : remove unused packages</li>
+<li><code>dnf clean all</code> : clear cached packages</li>
+<li><code>dnf history</code> : show dnf history</li>
+<li><code>dnf repolist all</code> : list packages repos</li>
+<li><code>dnf provides [file]</code> : find package that provides a file</li>
+<li><code>dnf repoquery -l [package]</code> : list files in package</li>
+<li><code>dnf repoquery --requires [package]</code>: list dependencies of package</li>
+<li><code>dnf repoquery --whatrequires [package]</code> : list packages that depends on a package</li>
+</ul>
+<h3>Services</h3>
+<ul>
+<li><code>systemctl status [service]</code> : get status of service</li>
+<li><code>systemctl enable [service]</code> : enable service at boot</li>
+<li><code>systemctl disable [service]</code> : disable service at boot</li>
+<li><code>systemctl start [service]</code> : start service</li>
+<li><code>systemctl stop [service]</code> : stop service</li>
+<li><code>systemctl restart [service]</code> : restart service</li>
+<li><code>systemctl list-units</code> : list services running</li>
+</ul>
+<h2>Python</h2>
+<ul>
+<li><code>pip list</code> : list installed python libs</li>
+<li><code>pip install --user [lib]</code> : install python lib</li>
+<li><code>pip install --user -r requirements.txt</code> : install all python libs in requirements file</li>
+<li><code>pipreqs requirements.txt</code> : create requirements.txt for current project</li>
+<li><code>python -m http.server</code> : run HTTP server</li>
+</ul>
+<h3>Virtual Environment (venv)</h3>
+<ul>
+<li><code>python -m venv [venv]</code> : create venv</li>
+<li><code>source [venv]/bin/activate</code> : enable venv</li>
+<li><code>pip freeze &gt; requirements.txt</code> : create requirements.txt</li>
+<li><code>deactivate</code> : disable venv</li>
+<li><code>rm -rf [venv]</code> : remove venv</li>
+</ul>
+<h3>Debugger (pdb)</h3>
+<p>?</p>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>
