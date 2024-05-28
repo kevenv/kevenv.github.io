@@ -38,7 +38,7 @@ if __name__ == '__main__':
             ('blog/linux_cheatsheet','../','Linux Cheatsheet'),
             ('blog/git_cheatsheet','../','Git Cheatsheet'),
             # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
-            ('blog/cuda_hello','../','CUDA Tutorial - Hello World!'),
+            ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
             # ('blog/zip_format','../','ZIP Format'),
             # ('blog/hello','../','Hello'),
             # ('blog/heat_equation','../','Heat Equation'),

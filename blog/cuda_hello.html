@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Keven Villeneuve's personal website">
-        <title>Kevenv - CUDA Tutorial - Hello World!</title>
+        <title>Kevenv - CUDA Tutorial 1 - Hello World!</title>
         <link rel="icon" href="../imgs/icon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="../style/style.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -23,8 +23,8 @@
             </nav>
         </header>
         <hr>
-<h1>CUDA Tutorial - Hello World!</h1>
-<p>Welcome to this tutorial on CUDA! Before we get started we should setup our development environnment.</p>
+<h1>CUDA Tutorial 1 - Hello World!</h1>
+<p>Welcome to this tutorial on CUDA! Before we get started we should setup our development environment.</p>
 <h2>Installation</h2>
 <ol>
 <li>
@@ -32,10 +32,10 @@
 <p>Download and follow the instructions at
 <a href="https://developer.nvidia.com/cuda-downloads">https://developer.nvidia.com/cuda-downloads</a> to install the toolkit corresponding to your system.</p>
 <p>In my case, I am using Fedora so I need to download and install:</p>
-<p><code>Linux / x86_64 / Fedora / 39 / rpm (local)</code>.</p>
+<p><code>Linux / x86_64 / Fedora / 39 / rpm (local)</code></p>
 </li>
 <li>
-<p>Reboot your system to make sure everything is setup and initialized properly.</p>
+<p>Reboot your system to make sure that everything is setup and initialized properly.</p>
 </li>
 <li>
 <p>Add the toolkit to your system <code>PATH</code>:</p>
@@ -43,7 +43,7 @@
 </li>
 </ol>
 <h2>Validation</h2>
-<p>Once the CUDA toolkit is installed, it is good to make sure that everything works as expected. The best way to do that is to build and run the <a href="https://github.com/NVIDIA/cuda-samples">cuda-samples</a>:</p>
+<p>Once the CUDA toolkit is installed, it is good to verify that everything works as expected. The best way to do that is to build and run the <a href="https://github.com/NVIDIA/cuda-samples">cuda-samples</a>:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>git clone https://github.com/NVIDIA/cuda-samples.git
@@ -59,7 +59,7 @@ make
 
 <h2>First kernel</h2>
 <p>Now that we know that the CUDA toolkit is installed and working, let's write our first CUDA program.</p>
-<p>Create a new file <code>hello.cu</code> with the following code:</p>
+<p>Create a new file named <code>hello.cu</code> with the following code:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -87,15 +87,14 @@ make
 <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
-<p>We can immediately see the ressemblance to usual C code however some things are different.</p>
-<p>The <code>__global__</code> attribute signals that the given function should be run on the GPU, in CUDA parlance this is known as a "CUDA kernel".</p>
+<p>We can immediately see the resemblance to usual C code however some things are different.</p>
+<p>The <code>__global__</code> attribute signals that the given function should be run on the GPU instead of the CPU, in CUDA parlance this is known as a "CUDA kernel".</p>
 <p>To launch our <code>hello</code> kernel we must use the syntax <code>hello&lt;&lt;&lt;1,1&gt;&gt;&gt;()</code>.
 The meaning of the <code>&lt;&lt;&lt;1,1&gt;&gt;&gt;</code> will be explained in the next tutorial in details but in this case it specifies that the kernel should run only on a single thread.</p>
-<p>Finally we must call <code>cudaDeviceSynchronize()</code> to make sure that the kernel finishes executing since kernels on the GPU runs asynchronously to the CPU.</p>
-<p>Note that we can use <code>printf</code> on the GPU (and CPU) with <code>#include &lt;stdio.h&gt;</code>.</p>
+<p>Finally we must call <code>cudaDeviceSynchronize()</code> to ensure that the kernel finishes executing since kernels on the GPU runs asynchronously to the CPU.</p>
+<p>Note that we can use <code>printf()</code> on the GPU (and CPU) with <code>#include &lt;stdio.h&gt;</code>.</p>
 <p>To compile our program we must use the <code>nvcc</code> compiler <code>nvcc hello.cu -o hello</code>.
-After running our program <code>./hello</code> we should see "hello world!" printed on the screen.</p>
-<p>The source code for this tutorial is available on <a href="https://github.com/kevenv/cuda_exercises/tree/master/hello">github</a>.</p>
+After running our program with <code>./hello</code> we should see "hello world!" printed on the screen.</p>
 <h2>Tools</h2>
 <p>When developping CUDA programs, a bunch of tools can be useful:</p>
 <ul>
@@ -122,9 +121,10 @@ As a bonus you also get syntax highlighting and intellisense.</p>
 </code></pre></div></td></tr></table></div>
 
 <h2>Next</h2>
-<p>This concludes our first tutorial.
+<p>This concludes the first tutorial.
 Our first kernel didn't do much, in fact it didn't take advantage of the GPU at all since it was running on a single thread.
 In the <a href="../blog/cuda_basic_kernel.html">next one</a> we will see how to write a more useful kernel and wake up that GPU!</p>
+<p>The source code for this tutorial is available on <a href="https://github.com/kevenv/cuda_exercises/tree/master/hello">github</a>.</p>
         <hr>
         <footer>
             <p>

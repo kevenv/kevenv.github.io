@@ -1,6 +1,6 @@
-# CUDA Tutorial - Hello World!
+# CUDA Tutorial 1 - Hello World!
 
-Welcome to this tutorial on CUDA! Before we get started we should setup our development environnment.
+Welcome to this tutorial on CUDA! Before we get started we should setup our development environment.
 
 ## Installation
 1. Install the latest version of the "CUDA Toolkit".
@@ -10,16 +10,16 @@ Welcome to this tutorial on CUDA! Before we get started we should setup our deve
 
     In my case, I am using Fedora so I need to download and install:
 
-    `Linux / x86_64 / Fedora / 39 / rpm (local)`.
+    `Linux / x86_64 / Fedora / 39 / rpm (local)`
 
-2. Reboot your system to make sure everything is setup and initialized properly.
+2. Reboot your system to make sure that everything is setup and initialized properly.
 
 3. Add the toolkit to your system `PATH`:
 
     `export PATH=/usr/local/cuda-12.5/bin${PATH:+:${PATH}}`
 
 ## Validation
-Once the CUDA toolkit is installed, it is good to make sure that everything works as expected. The best way to do that is to build and run the [cuda-samples](https://github.com/NVIDIA/cuda-samples):
+Once the CUDA toolkit is installed, it is good to verify that everything works as expected. The best way to do that is to build and run the [cuda-samples](https://github.com/NVIDIA/cuda-samples):
 ```
 git clone https://github.com/NVIDIA/cuda-samples.git
 cd cuda-samples
@@ -35,7 +35,7 @@ You can then run a sample such as:
 ## First kernel
 Now that we know that the CUDA toolkit is installed and working, let's write our first CUDA program.
 
-Create a new file `hello.cu` with the following code:
+Create a new file named `hello.cu` with the following code:
 ```CUDA
 #include <stdio.h> // printf
 
@@ -52,21 +52,19 @@ int main()
 }
 ```
 
-We can immediately see the ressemblance to usual C code however some things are different.
+We can immediately see the resemblance to usual C code however some things are different.
 
-The `__global__` attribute signals that the given function should be run on the GPU, in CUDA parlance this is known as a "CUDA kernel".
+The `__global__` attribute signals that the given function should be run on the GPU instead of the CPU, in CUDA parlance this is known as a "CUDA kernel".
 
 To launch our `hello` kernel we must use the syntax `hello<<<1,1>>>()`.
 The meaning of the `<<<1,1>>>` will be explained in the next tutorial in details but in this case it specifies that the kernel should run only on a single thread.
 
-Finally we must call `cudaDeviceSynchronize()` to make sure that the kernel finishes executing since kernels on the GPU runs asynchronously to the CPU.
+Finally we must call `cudaDeviceSynchronize()` to ensure that the kernel finishes executing since kernels on the GPU runs asynchronously to the CPU.
 
-Note that we can use `printf` on the GPU (and CPU) with `#include <stdio.h>`.
+Note that we can use `printf()` on the GPU (and CPU) with `#include <stdio.h>`.
 
 To compile our program we must use the `nvcc` compiler `nvcc hello.cu -o hello`.
-After running our program `./hello` we should see "hello world!" printed on the screen.
-
-The source code for this tutorial is available on [github](https://github.com/kevenv/cuda_exercises/tree/master/hello).
+After running our program with `./hello` we should see "hello world!" printed on the screen.
 
 ## Tools
 When developping CUDA programs, a bunch of tools can be useful:
@@ -94,6 +92,8 @@ For this to work, make sure that the CUDA toolkit is in your system `PATH` and t
 ```
 
 ## Next
-This concludes our first tutorial.
+This concludes the first tutorial.
 Our first kernel didn't do much, in fact it didn't take advantage of the GPU at all since it was running on a single thread.
 In the [next one]({{root}}blog/cuda_basic_kernel.html) we will see how to write a more useful kernel and wake up that GPU!
+
+The source code for this tutorial is available on [github](https://github.com/kevenv/cuda_exercises/tree/master/hello).
