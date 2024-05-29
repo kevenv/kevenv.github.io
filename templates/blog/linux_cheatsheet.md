@@ -37,6 +37,7 @@
 - `touch [file]` : create empty file, mark file as newly edited
 - `source [file]` : execute a `.sh` file within the current shell
 - `cat [file]` : print file to the screen
+- `tail -n [num of lines] [file]` : show last N lines of a file
 - `file [file]` : get file type
 - `stat [file]` : get file info
 - `man [cmd]` : show manual for cmd

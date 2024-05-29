@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Bash Cheatsheet</title>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Bash Cheatsheet</h1>
+<h2>Useful commands</h2>
+<ul>
+<li><code>dirname [file]</code> : get path of a file</li>
+<li><code>pushd [directory]</code> : push cwd to stack, set cwd to directory</li>
+<li><code>popd</code> : pop stack to cwd</li>
+<li><code>exit [status]</code> : terminate a script</li>
+<li><code>set -e</code> : terminate script if any cmds exits with error</li>
+<li><code>A || B</code> : exec B only if A fails</li>
+</ul>
+<h2>Variables</h2>
+<ul>
+<li><code>VAR=VALUE</code> : set variable</li>
+<li><code>${VAR}</code> : get variable</li>
+<li><code>$VAR</code> : get variable</li>
+<li><code>VAR=$(CMD)</code> : store result of cmd exec in variable</li>
+</ul>
+<h2>Special variables</h2>
+<ul>
+<li><code>$0</code> : first arg of script = name of script</li>
+<li><code>$@</code> : cmd args of script</li>
+<li><code>$#</code> : num of args</li>
+<li><code>$?</code> : exit status of last command executed</li>
+<li><code>${BASH_SOURCE}</code> : filename+path of the current script being executed</li>
+<li><code>#!/bin/bash</code> : Specifies which shell should be used to execute the script</li>
+</ul>
+<h2>Conditions</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>...<span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="c1"># something</span>
+<span class="k">elif</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>...<span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="c1"># something else</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="c1"># something else</span>
+<span class="k">fi</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Conditional expressions</h3>
+<p>Always enclose variable with <code>" "</code>!</p>
+<ul>
+<li><code>VAR == "debug"</code> : == string</li>
+<li><code>"$VAR" != "string"</code> : != string</li>
+<li><code>-eq 0</code> : == value</li>
+<li><code>! -eq 0</code> : != value</li>
+<li><code>-gt 0</code> : &gt; value</li>
+<li><code>-v VAR</code> : variable is set/exists</li>
+<li><code>-z VAR</code> : variable is unset/empty</li>
+<li><code>-n "$VAR"</code> : string in variable is empty</li>
+<li><code>-f "file.txt"</code> : file exists</li>
+</ul>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>
