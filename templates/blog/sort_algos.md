@@ -360,7 +360,7 @@ A sorting algorithm is said to be "stable" if identical elements keep their orig
 ```
 This does not matter if the elements are numbers but can matter if they are more complex objects.
 
-## Shared code
+### Swap
 ```C
 inline void swap(int* a, int* b)
 {
