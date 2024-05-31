@@ -25,10 +25,6 @@
         <hr>
 <h1>Sorting algorithms</h1>
 <p>Sort the array <code>[3,4,1,2]</code> in ascending order (from smallest to biggest).</p>
-<ul>
-<li>Best: <code>[1,2,3,4]</code> (already sorted)</li>
-<li>Worst: <code>[4,3,2,1]</code> (reversed)</li>
-</ul>
 <h2>Bubble sort</h2>
 <p>Bruteforce way to sort.</p>
 <h3>Intuition</h3>
@@ -609,6 +605,20 @@ we need to compare it with every element at its left, which will be already done
 </li>
 <li>radix sort</li>
 </ul>
+<h2>Definitions</h2>
+<h3>Best/Worst</h3>
+<ul>
+<li>Best: <code>[1,2,3,4]</code> (already sorted)</li>
+<li>Worst: <code>[4,3,2,1]</code> (reversed)</li>
+</ul>
+<h3>Stability</h3>
+<p>A sorting algorithm is said to be "stable" if identical elements keep their original position relative to each other. For example:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># unstable since the two &#39;2&#39; have been swapped</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2_1</span><span class="p">,</span><span class="mi">2_2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2_2</span><span class="p">,</span><span class="mi">2_1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This does not matter if the elements are numbers but can matter if they are more complex objects.</p>
 <h2>Shared code</h2>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>

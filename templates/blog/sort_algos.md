@@ -2,9 +2,6 @@
 
 Sort the array `[3,4,1,2]` in ascending order (from smallest to biggest).
 
-- Best: `[1,2,3,4]` (already sorted)
-- Worst: `[4,3,2,1]` (reversed)
-
 ## Bubble sort
 Bruteforce way to sort.
 
@@ -349,6 +346,19 @@ TODO:
 - counting sort
     - assume int only, no need comparisons, not in-place
 - radix sort
+
+## Definitions
+### Best/Worst
+- Best: `[1,2,3,4]` (already sorted)
+- Worst: `[4,3,2,1]` (reversed)
+
+### Stability
+A sorting algorithm is said to be "stable" if identical elements keep their original position relative to each other. For example:
+```python
+# unstable since the two '2' have been swapped
+[4,2_1,2_2,1] -> [1,2_2,2_1,4]
+```
+This does not matter if the elements are numbers but can matter if they are more complex objects.
 
 ## Shared code
 ```C
