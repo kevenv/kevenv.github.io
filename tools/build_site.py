@@ -40,7 +40,7 @@ if __name__ == '__main__':
             ('blog/bash_cheatsheet','../','Bash Cheatsheet'),
             # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
-            # ('blog/zip_format','../','ZIP Format'),
+            ('blog/sort_algos','../','Sorting algorithms'),
             # ('blog/hello','../','Hello'),
             # ('blog/heat_equation','../','Heat Equation'),
     ]
