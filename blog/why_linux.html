@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Why Linux</title>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Why Linux?</h1>
+<p>After using Windows most of my life, I chose to move to Linux because I am sick and tired of the new direction of Windows.
+Unfortunately Linux isn't perfect either, it is much more fragile and does not work as well with proprietary stuff.</p>
+<p>I am now in the stage of my life where I just want things to work.
+I don't want to spend time debugging, configuring and fixing issues.
+Life is too short, I want my computer to work whenever I need it so that I can focus on projects that I find interesting.</p>
+<p>This is why my setup is now:</p>
+<ul>
+<li>Desktop with Fedora for programming projects</li>
+<li>Macbook with MacOS for casual stuff (web, email, video streaming, pictures...)</li>
+</ul>
+<h2>Philosophy</h2>
+<p>After years of working in the software industry I have realized that
+software can break in the most absurd stupid ways
+due to thing that should have no link to each others but yet they somehow do.
+Absolutely anything and everything can break it and Murphy's Law says that if there is a way for something to break it will.
+The universe is against you on this, the second law of thermodynamics says that entropy only increases.</p>
+<p>When we talk about "Linux" as an OS, we mean a linux <em>distribution</em>, meaning the Linux kernel with a bunch of packages and apps "taped" together.</p>
+<p>I said that Linux is fragile, this is probably the main reason. It is not an OS but a collection of OS sharing most stuff but each one is annoyingly a little bit different from each other.
+Everything is highly customizable, no one has the same configuration, leading to untested use cases and bugs!</p>
+<p>On top of that, big components of the OS are developped by wastly different teams of people
+from all over the world with sometimes hard philosophical opinions, leading to harsh disagreements and even project forks. No wonder it sometimes feels like an inconsistent mess.</p>
+<p>This is why I now try to use everything by default. This is the most tested configuration which in theory should have lower chance of stupid bugs.</p>
+<h2>Why Fedora?</h2>
+<h3>Fedora</h3>
+<ul>
+<li><i class='bx bx-plus' ></i> set it and forget, just works</li>
+<li><i class='bx bx-plus' ></i> popular<ul>
+<li>used by kernel devs (Linus Torvalds)</li>
+</ul>
+</li>
+<li><i class='bx bx-plus' ></i> backed by Red Hat<ul>
+<li>commercial support</li>
+<li>upstream of RHEL</li>
+<li>major contributor of kernel, gnome, wayland, systemd, pulseaudio, kvm...</li>
+</ul>
+</li>
+<li><i class='bx bx-plus' ></i> target audience seems to be devs</li>
+<li><i class='bx bx-plus' ></i> has the newest stuff first</li>
+<li><i class='bx bx-minus' ></i> packages manager is slow</li>
+</ul>
+<h3>Ubuntu</h3>
+<ul>
+<li><i class='bx bx-plus' ></i> most popular, most commercial support</li>
+<li><i class='bx bx-minus' ></i> target everyone<ul>
+<li>going the same way as Windows (corporate BS)</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> strange bugs</li>
+<li><i class='bx bx-minus' ></i> outdated packages</li>
+<li><i class='bx bx-minus' ></i> not a fan of Unity interface</li>
+</ul>
+<h3>Arch</h3>
+<ul>
+<li><i class='bx bx-plus' ></i> great documentation</li>
+<li><i class='bx bx-plus' ></i> pacman</li>
+<li><i class='bx bx-plus' ></i> AUR</li>
+<li><i class='bx bx-plus' ></i> rolling-release<ul>
+<li>in theory this is great but in practice it's annoying</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> too much setup</li>
+<li><i class='bx bx-minus' ></i> too much maintenance</li>
+<li><i class='bx bx-minus' ></i> too much customization -&gt; bugs</li>
+</ul>
+<p>After using it daily for a few years, it is not for me.</p>
+<h2>Why Gnome?</h2>
+<ul>
+<li>Gnome<ul>
+<li><i class='bx bx-plus' ></i> pretty &amp; finished</li>
+<li><i class='bx bx-plus' ></i> default for Fedora (and many other)</li>
+<li><i class='bx bx-plus' ></i> best wayland support</li>
+<li><i class='bx bx-minus' ></i> new UI is strange, need extensions like <code>Dash to Panel</code> and <code>Arc Menu</code></li>
+<li><i class='bx bx-minus' ></i> strong opinions (no tray icons seriously??)</li>
+</ul>
+</li>
+<li>KDE<ul>
+<li><i class='bx bx-plus' ></i> full featured</li>
+<li><i class='bx bx-minus' ></i> ugly, messy, bloated UI</li>
+<li><i class='bx bx-minus' ></i> wayland support is less good</li>
+</ul>
+</li>
+<li>Xfce<ul>
+<li><i class='bx bx-plus' ></i> light &amp; fast</li>
+<li><i class='bx bx-minus' ></i> missing basic features</li>
+<li><i class='bx bx-minus' ></i> doesn't feel finished</li>
+<li><i class='bx bx-minus' ></i> no wayland support</li>
+<li><i class='bx bx-minus' ></i> not as many users, not as many devs -&gt; bugs</li>
+</ul>
+</li>
+</ul>
+<h2>Why Windows sucks</h2>
+<ul>
+<li><i class='bx bx-plus' ></i> it just works</li>
+<li><i class='bx bx-plus' ></i> best hardware compatibility by far</li>
+<li><i class='bx bx-plus' ></i> most commercial support</li>
+<li><i class='bx bx-plus' ></i> great for games</li>
+</ul>
+<p>As a dev environment it is not that great:</p>
+<ul>
+<li><i class='bx bx-minus' ></i> reboot automatically after updates and no way to disable it</li>
+<li><i class='bx bx-minus' ></i> updates that need multiple reboots to install more updates</li>
+<li><i class='bx bx-minus' ></i> install &amp; update programs (setup.exe)<ul>
+<li><code>winget</code> now but not everything is in there and doesn't always work</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> install dev libs<ul>
+<li><code>vcpkg</code> now</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> terminal &amp; shell is not that nice<ul>
+<li><code>Windows Terminal</code> now but it's slow as hell</li>
+<li><code>WSL</code> but its not the same, it's a weird mix with weirds bugs, runs in a VM</li>
+</ul>
+</li>
+</ul>
+<p>Even for casual stuff it is becoming a massive pain to use:</p>
+<ul>
+<li><i class='bx bx-minus' ></i> telemetry</li>
+<li><i class='bx bx-minus' ></i> bloated<ul>
+<li>cortana</li>
+<li>AI</li>
+<li>web apps</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> stupid UI changes -&gt; messy inconsistent UI<ul>
+<li>mix of XP old ones, new ones, new new ones..</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> slow apps<ul>
+<li>the new UI apps are slow as hell, the new image viewer is a disaster</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> arbitrary hardware requirements (programmed obsolescence)</li>
+</ul>
+<h2>Why MacOS sucks</h2>
+<ul>
+<li><i class='bx bx-plus' ></i> pretty &amp; cohesive</li>
+<li><i class='bx bx-plus' ></i> easy</li>
+<li><i class='bx bx-plus' ></i> great integration with other Apple products</li>
+<li><i class='bx bx-plus' ></i> better privacy than most other tech companies</li>
+<li><i class='bx bx-plus' ></i> great hardware, battery life</li>
+<li><i class='bx bx-minus' ></i> pain to develop on<ul>
+<li>feels like Unix but not Unix, tons of little incompatible annoyances</li>
+<li>strong opinions, "the Apple way"</li>
+<li>not a big fan of <code>homebrew</code>, not official, can break things</li>
+<li>Xcode LOL!</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> buggy, crashes (yes even with latest HW &amp; SW doing casual stuff...)</li>
+<li><i class='bx bx-minus' ></i> closed ecosystem (golden jail)<ul>
+<li>they do a very good job at making sure you only use their products and not the one of competitors..</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> programmed obsolescence</li>
+<li><i class='bx bx-minus' ></i> expensive hardware</li>
+</ul>
+<h2>Why Linux sucks</h2>
+<ul>
+<li><i class='bx bx-plus' ></i> free</li>
+<li><i class='bx bx-plus' ></i> open source</li>
+<li><i class='bx bx-plus' ></i> light &amp; fast</li>
+<li><i class='bx bx-plus' ></i> nice dev environment</li>
+<li><i class='bx bx-minus' ></i> buggy, fragile, things often break</li>
+<li><i class='bx bx-minus' ></i> inconsistent: many distributions, many desktop environments</li>
+<li><i class='bx bx-minus' ></i> distributing binaries is very hard<ul>
+<li>now there is <code>flatpak</code> and <code>snap</code> (great now we have two standards...)</li>
+</ul>
+</li>
+<li><i class='bx bx-minus' ></i> proprietary apps might not work well</li>
+<li><i class='bx bx-minus' ></i> UI apps are often ugly</li>
+</ul>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>

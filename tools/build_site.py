@@ -41,6 +41,7 @@ if __name__ == '__main__':
             # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
             ('blog/sort_algos','../','Sorting algorithms'),
+            ('blog/why_linux','../','Why Linux'),
             # ('blog/hello','../','Hello'),
             # ('blog/heat_equation','../','Heat Equation'),
     ]
