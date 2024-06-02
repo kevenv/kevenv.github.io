@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Makefile Cheatsheet</title>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Makefile Cheatsheet</h1>
+<h2>Usage</h2>
+<p><code>make</code> looks for the file named <code>Makefile</code> in the CWD.</p>
+<ul>
+<li><code>make</code> : make the first target</li>
+<li><code>make all</code> : make all targets</li>
+<li><code>make clean</code> : clean the build</li>
+</ul>
+<h3>Options</h3>
+<ul>
+<li><code>-j [num of jobs]</code> : specify how many threads</li>
+<li><code>-d</code> : show debug info</li>
+<li><code>--debug</code> : show more debug info</li>
+<li><code>-p</code> : show rules and variable values</li>
+<li><code>--trace</code> : trace make (verbose)</li>
+</ul>
+<h2>Target</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="n">target</span>
+
+<span class="nf">target</span><span class="o">:</span><span class="w"> </span><span class="n">dep</span>1 <span class="n">dep</span>2
+<span class="w">    </span>build<span class="w"> </span>cmds
+
+<span class="nf">dep1</span><span class="o">:</span>
+<span class="w">    </span>build<span class="w"> </span>cmds
+
+<span class="nf">dep2</span><span class="o">:</span>
+<span class="w">    </span>build<span class="w"> </span>cmds
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>clean<span class="w"> </span>cmds
+
+<span class="err">.PHONY</span><span class="w"> </span><span class="err">clean</span><span class="w"> </span><span class="err">all</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Variable</h2>
+<ul>
+<li><code>VAR := VALUE</code> : set variable, expands immediately (at the time of assignment)</li>
+<li><code>VAR = VALUE</code> : set variable, expands lazily (at the time of use)</li>
+<li><code>$(VAR)</code> : get variable</li>
+</ul>
+<h3>Multi-lines</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nv">VAR</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>VERY<span class="w"> </span>VERY<span class="w"> </span>VERY<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>VERY<span class="w"> </span>VERY<span class="w"> </span>LONG<span class="w"> </span><span class="se">\</span>
+<span class="w">       </span>CMD
+</code></pre></div></td></tr></table></div>
+
+<h2>Common variables</h2>
+<ul>
+<li><code>CC</code> : path to the C compiler</li>
+<li><code>CFLAGS</code> : C compiler flags</li>
+<li><code>LD</code> : path to the C linker</li>
+<li><code>LDFLAGS</code> : C linker flags</li>
+<li><code>TARGET</code> : name of the executable</li>
+<li><code>SRC</code> : list of all source files</li>
+<li><code>OBJ</code> : list of all object files</li>
+</ul>
+<h2>Special variables</h2>
+<ul>
+<li><code>%.o</code> : match all .o files</li>
+<li><code>$@</code> : target</li>
+<li><code>$&lt;</code> : first dependency of target</li>
+<li><code>$^</code> : all dependencies of target</li>
+</ul>
+<p>For example:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nf">output.txt</span><span class="o">:</span><span class="w"> </span><span class="n">input</span>1.<span class="n">txt</span> <span class="n">input</span>2.<span class="n">txt</span>
+<span class="w">    </span>cat<span class="w"> </span>$^<span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$@</span>
+<span class="c"># $^ : input1.txt input2.txt</span>
+<span class="c"># $@ : output.txt</span>
+<span class="c"># $&lt; : input1.txt</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Other</h2>
+<ul>
+<li><code>.PHONY clean all</code> : make sure that the target always rebuilds</li>
+<li><code>.DEFAULT_GOAL := all</code> : change the default target</li>
+<li><code>$(SRC:.c=.o)</code> : generate list of .o from list of .c</li>
+<li><code>$(addprefix $(BUILD_DIR), $(SRC:.c=.o))</code></li>
+<li><code>$(patsubst %.c, $(BUILD_DIR)/%.o, $(SRC))</code></li>
+</ul>
+<h2>Detect changes in .h dependencies</h2>
+<ol>
+<li>Use <code>gcc</code> with:<ul>
+<li><code>-MMD</code> : generate dependency files (.d)</li>
+<li><code>-MP</code> : avoid errors if header file (.h) is deleted/renamed</li>
+</ul>
+</li>
+<li>Use <code>-include $(OBJ:.o=.d)</code> in the Makefile to include all dependency files (.d)</li>
+</ol>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>

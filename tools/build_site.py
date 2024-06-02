@@ -38,6 +38,7 @@ if __name__ == '__main__':
             ('blog/linux_cheatsheet','../','Linux Cheatsheet'),
             ('blog/git_cheatsheet','../','Git Cheatsheet'),
             ('blog/bash_cheatsheet','../','Bash Cheatsheet'),
+            ('blog/makefile_cheatsheet','../','Makefile Cheatsheet'),
             # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
             ('blog/sort_algos','../','Sorting algorithms'),
