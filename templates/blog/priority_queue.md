@@ -108,11 +108,11 @@ void pqueue_push(pqueue* q, element e)
 {
     // shift elements to the right
     int i = q->size;
-    for (; i > 0 && element.priority < q->queue[i-1].priority; i--) {
+    for (; i > 0 && e.priority < q->queue[i-1].priority; i--) {
         q->queue[i] = q->queue[i-1];
     }
     // insert element at the correct position
-    q->queue[i] = element;
+    q->queue[i] = e;
     q->size++;
 }
 ```
