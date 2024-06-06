@@ -222,10 +222,10 @@ void sort(int* array, int n)
 ## Insertion sort
 Same as sorting cards.
 
-- simple
-- faster than selection sort and bubble sort
-- fast for very small arrays (~7-50 elements)
-    - faster than quicksort!
+- Simple
+- Faster than selection sort and bubble sort
+- Fast for very small arrays (~7-50 elements)
+    - Faster than quicksort!
 
 ### Intuition
 ```python
@@ -328,6 +328,137 @@ void sort(int* array, int n)
 - Memory: O(1)
 - Stable: yes
 
+## Merge sort
+Divide and conquer approach to sorting.
+
+- Easy to understand
+- Fast
+- Highly parallelizable
+
+### Intuition
+
+```python
+# given the following unsorted array
+[2,8,5,3,9,4,1,7]
+
+# split in 2 arrays until each array only has 1 element
+[2,8,5,3][9,4,1,7]
+[2,8][5,3][9,4][1,7]
+[2][8][5][3][9][4][1][7]
+# merge 2 arrays by making sure that
+# the element added are in the correct order
+[2,8][3,5][4,9][1,7]
+# continue merging until you cannot merge anymore
+# (only a single array with all the elements)
+[2,3,5,8][1,4,7,9]
+[1,2,3,4,5,7,8,9]
+```
+
+Note the recursivity of the algorithm which makes it easy to parallelize.
+
+How to split arrays without creating new arrays?
+By using 3 indices we can view the original array as 2 arrays:
+```python
+# 2 arrays
+[2,8,5,3][9,4,1,7]
+
+# 1 array, 3 indices
+ begin   mid   end
+ v       v     v
+[2,8,5,3|9,4,1,7] 
+```
+
+How to merge arrays without allocating a new array every time?
+Unfortunately this algortihm cannot be done _in-place_ easily, at each merging step we need a source array and a destination array:
+```python
+[2,3,5,8|1,4,7,9] # source array
+#   \_______/
+[1,2,3,4,5,7,8,9] # destination array
+```
+
+We thus need two arrays, we already have the input array (the original unsorted array) that we can reuse and we create another array as a temporary work array.
+At each step we interchange the role of the input and work array, sometimes acting as a source and sometimes as destination.
+We can do that efficiently by changing the source/destination via pointers.
+
+Since we will overwrite the input array, we should make sure that it contains the sorted array at the end of the algorithm.
+For that we first copy the input array into the work array and start sorting the work array into the input array:
+```python
+input array = unsorted array
+work array = empty
+src = work array
+dst = input array
+merge_sort(src, dst)
+```
+
+All together we get something like:
+```python
+[2,8|3,5|4,9|1,7] # input array | src
+# \___/   \___/                 |
+[2,3,5,8|1,4,7,9] # work array  | dst | src
+#   \_______/                         |
+[1,2,3,4,5,7,8,9] # input array       | dst
+```
+
+Now let's figure out how to implement the "merge" operation.
+TODO:
+
+### Implementation
+```C
+#include <stdlib.h> // malloc
+#include <string.h> // memcpy
+
+void sort(int* array, int n)
+{
+    int* tmp = (int*)malloc(n * sizeof(int));
+    // copy array into tmp
+    memcpy(tmp, array, n * sizeof(int));
+    // merge tmp into array
+    merge_sort(tmp, 0, n, array);
+    free(tmp);
+}
+
+// recursively split & merge arrays (src) into (dst)
+void merge_sort(int* src, int begin, int end, int* dst)
+{
+    if (begin == end-1) {
+        // only 1 element, already sorted
+        // done splitting, start merging
+        return;
+    }
+
+    // split
+    int mid = (begin + end) / 2;
+    merge_sort(src, begin, mid, dst);
+    merge_sort(src, mid, end, dst);
+    // merge src into dst
+    merge(src, begin, mid, end, dst);
+}
+
+// merge 2 arrays (src) into (dst) by adding element in ascending order
+//   split 1 : [begin : mid-1]
+//   split 2 : [mid   : end-1]
+void merge(int* src, int begin, int mid, int end, int* dst)
+{
+    int l = begin;
+    int r = mid;
+    for (int i = begin; i < end; i++) {
+        if (l < mid && (r >= end || src[l] <= src[r])) {
+            dst[i] = src[l];
+            l++;
+        }
+        else {
+            dst[i] = src[r];
+            r++;
+        }
+    }
+}
+```
+
+### Analysis
+- Best: O(N log(N)), Average: O(N log(N)), Worst: O(N log(N))
+- Memory: O(N)
+- Stable: yes
+
 ## Sorting networks
 TODO:
 
@@ -340,7 +471,6 @@ TODO:
     - odd-even sort = parallel bubble sort
 
 ## TODO:
-- merge sort
 - heap sort
 - quick sort
 - counting sort
