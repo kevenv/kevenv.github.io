@@ -136,6 +136,6 @@ Even for casual stuff it is becoming a massive pain to use:
 - <i class='bx bx-minus' ></i> buggy, fragile, things often break
 - <i class='bx bx-minus' ></i> inconsistent: many distributions, many desktop environments
 - <i class='bx bx-minus' ></i> distributing binaries is very hard
-    - now there is `flatpak` and `snap` (great now we have two standards...)
+    - now there is `flatpak`, `snap` and `AppImage` (great now we have 3 standards...)
 - <i class='bx bx-minus' ></i> proprietary apps might not work well
 - <i class='bx bx-minus' ></i> UI apps are often ugly
