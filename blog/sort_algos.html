@@ -619,8 +619,9 @@ we need to compare it with every element at its left, which will be already done
 </code></pre></div></td></tr></table></div>
 
 <p>Note the recursivity of the algorithm which makes it easy to parallelize.</p>
+<h4>Splitting</h4>
 <p>How to split arrays without creating new arrays?
-By using 3 indices we can view the original array as 2 arrays:</p>
+By using 3 indices we can view an array as 2 arrays:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -645,6 +646,7 @@ Unfortunately this algortihm cannot be done <em>in-place</em> easily, at each me
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="c1"># destination array</span>
 </code></pre></div></td></tr></table></div>
 
+<h4>Merging</h4>
 <p>We thus need two arrays, we already have the input array (the original unsorted array) that we can reuse and we create another array as a temporary work array.
 At each step we interchange the role of the input and work array, sometimes acting as a source and sometimes as destination.
 We can do that efficiently by changing the source/destination via pointers.</p>
@@ -655,7 +657,7 @@ For that we first copy the input array into the work array and start sorting the
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">input</span> <span class="n">array</span> <span class="o">=</span> <span class="n">unsorted</span> <span class="n">array</span>
-<span class="n">work</span> <span class="n">array</span> <span class="o">=</span> <span class="n">empty</span>
+<span class="n">work</span> <span class="n">array</span> <span class="o">=</span> <span class="nb">input</span> <span class="n">array</span>
 <span class="n">src</span> <span class="o">=</span> <span class="n">work</span> <span class="n">array</span>
 <span class="n">dst</span> <span class="o">=</span> <span class="nb">input</span> <span class="n">array</span>
 <span class="n">merge_sort</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
@@ -673,8 +675,175 @@ For that we first copy the input array into the work array and start sorting the
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="c1"># input array       | dst</span>
 </code></pre></div></td></tr></table></div>
 
+<h4>Merge operation</h4>
 <p>Now let's figure out how to implement the "merge" operation.
-TODO:</p>
+The trivial case of merging two arrays of one element can be done like this:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">merge</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">array_left</span><span class="p">,</span> <span class="n">array_right</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">array_left</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array_right</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">array</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">array_left</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+    <span class="k">else</span>
+        <span class="n">array</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">array_right</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Generalizing to arrays of N elements is not much more complicated since we know that the left array and right array are sorted:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">merge</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">array_left</span><span class="p">,</span> <span class="n">array_right</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">N</span>
+        <span class="k">if</span> <span class="n">array_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array_right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">array</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">array_left</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+        <span class="k">else</span>
+            <span class="n">array</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">array_right</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Now we relax our assumptions that each array have the same number of elements.
+To handle this we use a single array to hold the left and right array and we index each array separately:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">#    left         right</span>
+<span class="p">[</span><span class="mi">0</span> <span class="o">...</span> <span class="n">mid</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">mid</span> <span class="o">...</span> <span class="n">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">mid</span> <span class="c1"># index for the left array</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-&gt;</span> <span class="n">end</span> <span class="c1"># index for the right array</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This means that we now have two case where the arrays could get out of bounds:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># left array &gt; right array</span>
+     <span class="n">L</span>      <span class="n">R</span>
+     <span class="n">v</span>      <span class="n">v</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">][</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>  
+            <span class="n">x</span>
+
+<span class="c1"># right array &gt; left array</span>
+     <span class="n">L</span>     <span class="n">R</span>
+     <span class="n">v</span>     <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
+     <span class="n">x</span>
+</code></pre></div></td></tr></table></div>
+
+<p>We modify our previous algorithm to handle the two edge cases:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span> <span class="n">L</span> <span class="o">&gt;=</span> <span class="n">mid</span> <span class="o">-&gt;</span> <span class="n">use</span> <span class="n">array</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">R</span> <span class="o">&gt;=</span> <span class="n">end</span> <span class="o">-&gt;</span> <span class="n">use</span> <span class="n">array</span><span class="p">[</span><span class="n">L</span><span class="p">]</span>
+<span class="k">else</span>
+    <span class="k">if</span> <span class="n">array</span><span class="p">[</span><span class="n">L</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+        <span class="n">use</span> <span class="n">array</span><span class="p">[</span><span class="n">L</span><span class="p">]</span>
+    <span class="k">else</span>
+        <span class="n">use</span> <span class="n">array</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+
+<p>It is important to realize that the <code>L</code> and <code>R</code> counters should not be incremented in <strong>lockstep</strong>! Consider this case:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code> <span class="n">L</span>   <span class="n">R</span>
+ <span class="n">v</span>   <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">|</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 1 &lt; 3 so add 1 to merged array</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># then add 3 to merged array</span>
+<span class="n">L</span><span class="o">++</span>
+<span class="n">R</span><span class="o">++</span>
+
+   <span class="n">L</span>   <span class="n">R</span>
+   <span class="n">v</span>   <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">|</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># 2 &lt; 4 so add 2</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># then add 4</span>
+<span class="n">L</span><span class="o">++</span>
+<span class="n">R</span><span class="o">++</span>
+<span class="c1"># the algorithm is done but </span>
+<span class="c1"># the array is not sorted!</span>
+</code></pre></div></td></tr></table></div>
+
+<p>To sort this array correctly we must increment the counters <strong>independently</strong>:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code> <span class="n">L</span>   <span class="n">R</span>
+ <span class="n">v</span>   <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">|</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 1 &lt; 3 so add 1 to merged array</span>
+<span class="n">R</span><span class="o">++</span> <span class="c1"># increment only the choosen side (right)</span>
+
+ <span class="n">L</span>     <span class="n">R</span>
+ <span class="n">v</span>     <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">|</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># 2 &lt; 3 so add 2</span>
+<span class="n">R</span><span class="o">++</span>
+
+ <span class="n">L</span>       <span class="n">R</span>
+ <span class="n">v</span>       <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">|</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># r is out of bounds (R &gt;= end)</span>
+<span class="c1"># we only care about the left array from now on</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># add 3</span>
+<span class="n">L</span><span class="o">++</span>
+
+   <span class="n">L</span>     <span class="n">R</span>
+   <span class="n">v</span>     <span class="n">v</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">|</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># add 4</span>
+<span class="n">L</span><span class="o">++</span>
+</code></pre></div></td></tr></table></div>
+
 <h3>Implementation</h3>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -732,12 +901,12 @@ TODO:</p>
 <span class="w">    </span><span class="c1">// copy array into tmp</span>
 <span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="n">array</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
 <span class="w">    </span><span class="c1">// merge tmp into array</span>
-<span class="w">    </span><span class="n">merge_sort</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">array</span><span class="p">);</span>
+<span class="w">    </span><span class="n">merge_sort</span><span class="p">(</span><span class="n">array</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
 <span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// recursively split &amp; merge arrays (src) into (dst)</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">merge_sort</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">dst</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">merge_sort</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">begin</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">end</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// only 1 element, already sorted</span>
@@ -747,16 +916,16 @@ TODO:</p>
 
 <span class="w">    </span><span class="c1">// split</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">begin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">end</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<span class="w">    </span><span class="n">merge_sort</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="p">);</span>
-<span class="w">    </span><span class="n">merge_sort</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="p">);</span>
+<span class="w">    </span><span class="n">merge_sort</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">);</span>
+<span class="w">    </span><span class="n">merge_sort</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">);</span>
 <span class="w">    </span><span class="c1">// merge src into dst</span>
-<span class="w">    </span><span class="n">merge</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">dst</span><span class="p">);</span>
+<span class="w">    </span><span class="n">merge</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// merge 2 arrays (src) into (dst) by adding element in ascending order</span>
 <span class="c1">//   split 1 : [begin : mid-1]</span>
 <span class="c1">//   split 2 : [mid   : end-1]</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">dst</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">begin</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mid</span><span class="p">;</span>

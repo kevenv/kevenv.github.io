@@ -356,8 +356,9 @@ Divide and conquer approach to sorting.
 
 Note the recursivity of the algorithm which makes it easy to parallelize.
 
+#### Splitting
 How to split arrays without creating new arrays?
-By using 3 indices we can view the original array as 2 arrays:
+By using 3 indices we can view an array as 2 arrays:
 ```python
 # 2 arrays
 [2,8,5,3][9,4,1,7]
@@ -376,6 +377,7 @@ Unfortunately this algortihm cannot be done _in-place_ easily, at each merging s
 [1,2,3,4,5,7,8,9] # destination array
 ```
 
+#### Merging
 We thus need two arrays, we already have the input array (the original unsorted array) that we can reuse and we create another array as a temporary work array.
 At each step we interchange the role of the input and work array, sometimes acting as a source and sometimes as destination.
 We can do that efficiently by changing the source/destination via pointers.
@@ -384,7 +386,7 @@ Since we will overwrite the input array, we should make sure that it contains th
 For that we first copy the input array into the work array and start sorting the work array into the input array:
 ```python
 input array = unsorted array
-work array = empty
+work array = input array
 src = work array
 dst = input array
 merge_sort(src, dst)
@@ -399,8 +401,111 @@ All together we get something like:
 [1,2,3,4,5,7,8,9] # input array       | dst
 ```
 
+#### Merge operation
 Now let's figure out how to implement the "merge" operation.
-TODO:
+The trivial case of merging two arrays of one element can be done like this:
+```python
+merge(array, array_left, array_right)
+    if array_left[0] < array_right[0]
+        array.add( array_left[0] )
+    else
+        array.add( array_right[0] )
+```
+
+Generalizing to arrays of N elements is not much more complicated since we know that the left array and right array are sorted:
+```python
+merge(array, array_left, array_right)
+    for i = 0 -> N
+        if array_left[i] < array_right[i]
+            array.add( array_left[i] )
+        else
+            array.add( array_right[i] )
+```
+
+Now we relax our assumptions that each array have the same number of elements.
+To handle this we use a single array to hold the left and right array and we index each array separately:
+```python
+#    left         right
+[0 ... mid-1][mid ... end-1]
+
+L = 0 -> mid # index for the left array
+R = mid -> end # index for the right array
+```
+
+This means that we now have two case where the arrays could get out of bounds:
+```python
+# left array > right array
+     L      R
+     v      v
+[2,8,9][3,5]  
+            x
+
+# right array > left array
+     L     R
+     v     v
+[3,5] [2,8,9]
+     x
+```
+
+We modify our previous algorithm to handle the two edge cases:
+```python
+if L >= mid -> use array[R]
+if R >= end -> use array[L]
+else
+    if array[L] < array[R]
+        use array[L]
+    else
+        use array[R]
+```
+
+It is important to realize that the `L` and `R` counters should not be incremented in **lockstep**! Consider this case:
+```python
+ L   R
+ v   v
+[3,4|1,2]
+[1] # 1 < 3 so add 1 to merged array
+[1,3] # then add 3 to merged array
+L++
+R++
+
+   L   R
+   v   v
+[3,4|1,2]
+[1,3,2] # 2 < 4 so add 2
+[1,3,2,4] # then add 4
+L++
+R++
+# the algorithm is done but 
+# the array is not sorted!
+```
+To sort this array correctly we must increment the counters **independently**:
+```python
+ L   R
+ v   v
+[3,4|1,2]
+[1] # 1 < 3 so add 1 to merged array
+R++ # increment only the choosen side (right)
+
+ L     R
+ v     v
+[3,4|1,2]
+[1,2] # 2 < 3 so add 2
+R++
+
+ L       R
+ v       v
+[3,4|1,2]
+# r is out of bounds (R >= end)
+# we only care about the left array from now on
+[1,2,3] # add 3
+L++
+
+   L     R
+   v     v
+[3,4|1,2]
+[1,2,3,4] # add 4
+L++
+```
 
 ### Implementation
 ```C
@@ -413,12 +518,12 @@ void sort(int* array, int n)
     // copy array into tmp
     memcpy(tmp, array, n * sizeof(int));
     // merge tmp into array
-    merge_sort(tmp, 0, n, array);
+    merge_sort(array, tmp, 0, n);
     free(tmp);
 }
 
 // recursively split & merge arrays (src) into (dst)
-void merge_sort(int* src, int begin, int end, int* dst)
+void merge_sort(int* dst, int* src, int begin, int end)
 {
     if (begin == end-1) {
         // only 1 element, already sorted
@@ -428,16 +533,16 @@ void merge_sort(int* src, int begin, int end, int* dst)
 
     // split
     int mid = (begin + end) / 2;
-    merge_sort(src, begin, mid, dst);
-    merge_sort(src, mid, end, dst);
+    merge_sort(dst, src, begin, mid);
+    merge_sort(dst, src, mid, end);
     // merge src into dst
-    merge(src, begin, mid, end, dst);
+    merge(dst, src, begin, mid, end);
 }
 
 // merge 2 arrays (src) into (dst) by adding element in ascending order
 //   split 1 : [begin : mid-1]
 //   split 2 : [mid   : end-1]
-void merge(int* src, int begin, int mid, int end, int* dst)
+void merge(int* dst, int* src, int begin, int mid, int end)
 {
     int l = begin;
     int r = mid;
