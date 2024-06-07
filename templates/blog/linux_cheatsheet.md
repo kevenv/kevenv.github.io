@@ -86,6 +86,7 @@
 
 ## Info
 - `uname -a` : show kernel version
+- `lscpu` : list CPU info
 - `lspci` : list PCI devices (Bus:Device.Function)
     - -v : verbose
     - -vv : very verbose
