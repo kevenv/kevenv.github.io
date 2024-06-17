@@ -342,7 +342,7 @@ SDL_UpdateWindowSurface(window);
 That's it! We now have an image viewer that can read BMP images!
 Notice that due to the simplicity of the BMP format we need very few lines of code to implement a basic image viewer.
 
-In this article we have omitted proper errors handling to keep the code short, please see the full source code available on [GitHub](https://github.com/kevenv/image_viewer) for more details.
+In this article **we have omitted proper errors handling** to keep the code short, please see the full source code available on [GitHub](https://github.com/kevenv/image_viewer) for more details.
 
 ## References
 - BMP specification:
