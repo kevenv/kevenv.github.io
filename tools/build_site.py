@@ -41,11 +41,11 @@ if __name__ == '__main__':
             ('blog/makefile_cheatsheet','../','Makefile Cheatsheet'),
             # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
-            ('blog/bmp_format','../','BMP Format'),
+            ('blog/bmp_format','../','BMP Image Format'),
             ('blog/sort_algos','../','Sorting algorithms'),
             ('blog/why_linux','../','Why Linux'),
             ('blog/priority_queue','../','Priority Queue'),
-            ('blog/zip_format','../','ZIP Format'),
+            # ('blog/zip_format','../','ZIP Format'),
             # ('blog/hello','../','Hello'),
             # ('blog/heat_equation','../','Heat Equation'),
     ]
