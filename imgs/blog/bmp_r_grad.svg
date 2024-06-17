@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="188.28236mm"
+   height="21.139585mm"
+   viewBox="0 0 188.28236 21.139585"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient1">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       id="swatch12">
+      <stop
+         style="stop-color:#bcffff;stop-opacity:1;"
+         offset="0"
+         id="stop12" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="10.495589"
+       y1="243.44653"
+       x2="198.77797"
+       y2="243.44653"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-10.495589,-232.87675)">
+    <rect
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.289956;stroke-dasharray:none"
+       id="rect29-2"
+       width="187.9361"
+       height="20.821344"
+       x="10.668735"
+       y="233.04988" />
+    <rect
+       style="display:inline;fill:url(#linearGradient2);stroke:#ffffff;stroke-width:0.290195;stroke-dasharray:none"
+       id="rect29-2-7"
+       width="187.99219"
+       height="20.8494"
+       x="10.640686"
+       y="233.02184" />
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.499999;stroke-opacity:1"
+       x="11.918221"
+       y="246.60179"
+       id="text3"><tspan
+         id="tspan3"
+         style="font-size:8.46667px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"
+         x="11.918221"
+         y="246.60179">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-opacity:1"
+       x="183.01199"
+       y="246.7195"
+       id="text4"><tspan
+         id="tspan4"
+         style="fill:#ffffff;stroke:#ffffff;stroke-width:0.264583;stroke-opacity:1"
+         x="183.01199"
+         y="246.7195">255</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - BMP Format</title>
+        <link rel="icon" href="../imgs/icon.png" type="image/png">
+        <link rel="stylesheet" type="text/css" href="../style/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>BMP Image Format</h1>
+<p>In this article we will see how images are stored in files, specifically <em>BMP</em> files.
+The <em>Bitmap</em> or <em>BMP</em> file is one of the simplest image format, it is widely used to store uncompressed images.
+Most notably, it is the default file format used by the now famous <em>Microsoft Paint</em>.
+After our deep dive into the image format, we will show how to implement a simple BMP image viewer in C with the SDL library.</p>
+<h2>Image</h2>
+<p>What is an image?
+When we take a picture with a camera, it collects the light <em>intensity</em> and <em>color</em> of what is in front ot it for a fraction of a second, freezing a moment in time onto its sensor.
+We call that collection of light an <em>image</em>.
+The image captured on the sensor is essentially a miniaturized version of the 3D scene seen from the point of view of the camera, it projects the 3D scene onto the camera sensor (2D).</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_camera.svg" alt="Camera Imaging"/>
+</p>
+
+<p>The camera sensor does not have infinite resolution, in fact the sensor is actually a grid of tiny sensors capturing light at different positions. This divides the image into a 2D grid of <em>pixels</em>, where each pixel represents the color at a specific position.</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels"/>
+</p>
+
+<p>Due to how the human visual system works, it turns out that we can encode any color using three number: R (Red), G (Green) and B (Blue). Those three numbers are often referred to as <em>color channels</em> and they form the <em>RGB</em> color space.
+This is easier to understand when thinking about mixing lights of different colors:</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model"/>
+</p>
+
+<p>For example by mixing a red light with green one we obtain a yellow light.
+We can get white by merging all the lights together and we get black when all the lights are closed.
+By mixing all three fundamental light colors we can make all the possible colors:</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_colors.svg" alt="Colors Spectrum"/>
+</p>
+
+<p>To be able to recreate any color using the R,G,B triplet we need to be able to 
+change the intensity of each color channel, resulting in different shades of a given color:</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_r_grad.svg" alt="R channel values"/>
+</p>
+
+<p>In nature there is a whole continuous spectrum of colors but computers can only manipulate discrete numbers, therefore we need to assign a number to each color intensity.
+The most common color resolution or <em>color depth</em> is 24-bpp (bits per pixel), that is each color channel is encoded using 8-bit and fits in a single byte.
+This means that there is a maximum of 2^8 = 256 different values per channel.
+All three channels together allows us to define a total of 2^24 = 16 777 216 colors!</p>
+<h2>PPM</h2>
+<p>To store an image we need to know the value of each pixel and the dimensions of the image (width x height).</p>
+<p>Say we have a 3x2 image of 6 pixels:</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_simple.svg" alt="A simple BMP image"/>
+</p>
+
+<p>The simplest way to store this image in a file would probably be something like this:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code>3 x 2       # width x height
+
+255 0   0   # red
+0   255 0   # green
+0   0   255 # blue
+255 255 255 # white
+255 0   255 # purple
+255 255 0   # yellow
+</code></pre></div></td></tr></table></div>
+
+<p>This is basically what the <em>PPM</em> (Portable PixMap) format does:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>P3
+3 2
+255
+255 0   0
+0   255 0
+0   0   255
+255 255 255
+255 0   255
+255 255 0
+</code></pre></div></td></tr></table></div>
+
+<p>The only difference is the presence of a <em>file header</em>.
+The first line is the file signature (used to recognize the file type):</p>
+<ul>
+<li><code>P3</code> pixels are encoded as ASCII characters</li>
+<li><code>P6</code> pixels are encoded as binary numbers</li>
+</ul>
+<p>The second line is the width and height.
+The third line is the maximum value of each pixel channel, usually 255 for 8-bit channel.
+Any string starting with <code>#</code> is considered a comment.
+The pixels data follow the header and are specified from left to right, top to bottom.</p>
+<p>In the case of the ASCII format, triplets are stored as ASCII characters representing the underlying values and each channel is separated by a whitespace. There is usually one line per pixel.
+For example, a purple pixel (R,G,B = 255,0,255) will be encoded as:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>255 0 255
+</code></pre></div></td></tr></table></div>
+
+<p>For the binary format, each pixel takes only 3 bytes and is encoded as a R,G,B triplet in this exact order.
+A channel is encoded as a 8-bit unsigned value and takes 1 byte.
+It should be obvious that the ASCII format is a lot more wasteful, a single pixel takes 12 bytes!</p>
+<p>Note that the file header is <em>always</em> encoded as ASCII characters even in the binary format.</p>
+<h2>BMP</h2>
+<p>The BMP format is not much more complicated than PPM.
+While it does support various encoding and compression methods we will not go over those since in practice BMP is mostly used for uncompressed 24-bpp images.</p>
+<p>The structure of the BMP file for the simplest case is as follow:</p>
+<p align="center">
+    <img src="../imgs/blog/bmp_format.svg" alt="Structure of BMP file"/>
+</p>
+
+<p>It consists of a <em>file header</em> followed by an <em>info header</em>.
+The pixels of the image are usually stored right after.</p>
+<h3>File header</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">bmp_file_header_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">type</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"> </span><span class="c1">// signature (BM)</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="c1">// size of the file</span>
+<span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">reserved1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">reserved2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="w"> </span><span class="c1">// offset to the image data</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<p>The first two bytes of the file header define the file signature which should be "BM" in ASCII characters and is used to detect that the file is a BMP file.</p>
+<p>The most important thing to get from this header is the <code>offset</code> in bytes where the image data is stored.
+It also contains the size of the file and a few reserved bytes that we can ignore.</p>
+<p>Note here that it is important to specify <code>__attribute__((packed))</code> to make sure that the binary representation of the <code>struct</code> matches the spec exactly and does not contain any padding.</p>
+<h3>Info header</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">bmp_info_header_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="c1">// size of the header</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w"> </span><span class="c1">// width of the image</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">height</span><span class="p">;</span><span class="w"> </span><span class="c1">// height of the image</span>
+<span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">planes</span><span class="p">;</span><span class="w"> </span><span class="c1">// hardcoded to 1</span>
+<span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">bpp</span><span class="p">;</span><span class="w"> </span><span class="c1">// bits per pixel</span>
+
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">compression</span><span class="p">;</span><span class="w"> </span><span class="c1">// compression method</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">image_size</span><span class="p">;</span><span class="w"> </span><span class="c1">// size of the image</span>
+
+<span class="w">    </span><span class="c1">// unused with 24-bpp:</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">pixels_per_meter_x</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">pixels_per_meter_y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">used_colors</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">important_colors</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Most of the fields of the info header are self explanatory but the <code>size</code> one needs further explanations.
+There are multiple versions of the BMP file format, each version adds more functionalities and is specified with a different info header.
+The size of the info header will allow us to determine the type of info header:</p>
+<ul>
+<li><code>BITMAPCOREHEADER</code> : the original header</li>
+<li><code>BITMAPINFOHEADER</code> : extends core header to support compression and color palettes</li>
+<li><code>BITMAPV4HEADER</code> : extends info header to support color spaces</li>
+<li><code>BITMAPV5HEADER</code> : extends v4 header to support ICC color profiles</li>
+</ul>
+<p>We will only handle <code>BITMAPINFOHEADER</code> as it the most common by far.</p>
+<p>Since we assume that the image is 24-bpp uncompressed:</p>
+<ul>
+<li><code>compression = 0</code></li>
+<li><code>bpp = 24</code></li>
+<li><code>image_size = width x height x 3 bytes</code></li>
+</ul>
+<h3>Image</h3>
+<p>Contrary to common intuition, the pixels in BMP are stored from left to right but starts from the <em>bottom</em> first. This means that we will need to flip the image vertically to show it correctly on screen.</p>
+<p>Each pixel takes 3 bytes and is encoded as a R,G,B triplet in the B,G,R order.
+Some padding bytes might be added to each row of the pixels grid to make it 4-byte aligned, meaning that the length of each row must be a multiple of 4 bytes.
+This is done to make it fit inside an array of <code>u32</code>.</p>
+<h3>Implementation</h3>
+<p>All together we can load a BMP image very easily without needing any external libraries:</p>
+<ol>
+<li>Read the file</li>
+<li>Parse both headers</li>
+<li>Fill a buffer with the pixels stored in the file.</li>
+</ol>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // fopen</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="c1"> // malloc</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">image_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">pixels</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="nf">bmp_load</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">file_name</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// open BMP file</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;rb&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// parse file header</span>
+<span class="w">    </span><span class="n">bmp_file_header_t</span><span class="w"> </span><span class="n">file_header</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">file_header</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">file_header</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// parse info header</span>
+<span class="w">    </span><span class="n">bmp_info_header_t</span><span class="w"> </span><span class="n">info_header</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">info_header</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">info_header</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// alloc buffer for pixels</span>
+<span class="w">    </span><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">image_t</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">image_t</span><span class="p">));</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info_header</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info_header</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">image_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">image_size</span><span class="p">);</span>
+<span class="w">    </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">image_size</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// fill buffer with pixels from file</span>
+<span class="w">    </span><span class="n">fseek</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">file_header</span><span class="p">.</span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="n">info_header</span><span class="p">.</span><span class="n">image_size</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// convert RGB24 -&gt; RGB888</span>
+<span class="w">    </span><span class="c1">// flip image in Y</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">u32</span><span class="w"> </span><span class="n">pitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 4-byte alignment</span>
+<span class="w">            </span><span class="n">u32</span><span class="w"> </span><span class="n">y_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="mi">-1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"> </span><span class="c1">// flip image in Y</span>
+<span class="w">            </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pitch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="c1">// B</span>
+<span class="w">            </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pitch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="c1">// G</span>
+<span class="w">            </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pitch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span><span class="w"> </span><span class="c1">// R</span>
+<span class="w">            </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w">                       </span><span class="c1">// A (unused)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">image</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">bmp_free</span><span class="p">(</span><span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">);</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Filling the buffer with pixels (lines 30 to 51) is a bit more involved and deserves more explanations.</p>
+<p>The BMP pixels are stored in the <em>RGB24</em> format but a screen usually expects a <em>RGB888</em> format.
+RGB24 is tightly packed into 3 bytes (B,G,R) while RGB888 is stored as 4 bytes with the first byte being ignored (_,B,G,R).</p>
+<p>To convert it we need to allocate a temporary buffer <code>tmp</code> to hold the pixels stored bottom to top, convert it to RGB888 and flip the image at the same time in <code>image-&gt;pixels</code>, the final pixels buffer that will be used directly by our image viewer to be displayed on screen.</p>
+<h2>Image viewer</h2>
+<p>Now that we understand the format, we can write a simple image viewer that is able to open BMP images.
+We chose to use the SDL2 library to open a window in which we can show the image.
+The basic code template for a SDL2 app should be something like this:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;SDL2/SDL.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. init</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SDL_Init</span><span class="p">(</span><span class="n">SDL_INIT_VIDEO</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">SDL_Window</span><span class="o">*</span><span class="w"> </span><span class="n">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDL_CreateWindow</span><span class="p">(</span><span class="s">&quot;Image Viewer&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SDL_WINDOWPOS_UNDEFINED</span><span class="p">,</span><span class="w"> </span><span class="n">SDL_WINDOWPOS_UNDEFINED</span><span class="p">,</span>
+<span class="w">        </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="mi">600</span>
+<span class="w">        </span><span class="n">SDL_WINDOW_SHOWN</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">window</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">SDL_Surface</span><span class="o">*</span><span class="w"> </span><span class="n">window_surface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDL_GetWindowSurface</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// main loop</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">SDL_Event</span><span class="w"> </span><span class="n">event</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// handle events</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">SDL_PollEvent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">event</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SDL_QUIT</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 2. render</span>
+<span class="w">        </span><span class="n">u32</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDL_MapRGBA</span><span class="p">(</span><span class="n">window_surface</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+<span class="w">        </span><span class="n">SDL_FillRect</span><span class="p">(</span><span class="n">window_surface</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="p">);</span>
+<span class="w">        </span><span class="n">SDL_UpdateWindowSurface</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// sleep</span>
+<span class="w">        </span><span class="n">SDL_Delay</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 3. cleanup</span>
+<span class="w">    </span><span class="n">SDL_DestroyWindow</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+<span class="w">    </span><span class="n">SDL_Quit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>An SDL app can be compiled using <code>gcc -lSDL2 app.c -o app</code>.</p>
+<p>To transform this app into an image viewer we must do three things:</p>
+<ol>
+<li>Load the image</li>
+<li>Create a "SDL surface" which contains the image</li>
+<li>Blit the surface to the window</li>
+</ol>
+<p>For the first two steps we load the image and create a SDL surface for it during init:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// 1. init</span>
+
+<span class="c1">// load image</span>
+<span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bmp_load</span><span class="p">(</span><span class="n">file_name</span><span class="p">);</span>
+
+<span class="c1">// copy image to SDL surface</span>
+<span class="n">SDL_Surface</span><span class="o">*</span><span class="w"> </span><span class="n">image_surface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDL_CreateRGBSurfaceWithFormatFrom</span><span class="p">(</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">SDL_PIXELFORMAT_RGB888</span>
+<span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+
+<p>We must also make sure to free it after use:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// 3. cleanup</span>
+<span class="n">SDL_FreeSurface</span><span class="p">(</span><span class="n">image_surface</span><span class="p">);</span>
+<span class="n">bmp_free</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Once the image has been copied to the surface properly, we can blit it to the window's surface:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// 2. render</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDL_MapRGBA</span><span class="p">(</span><span class="n">window_surface</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+<span class="n">SDL_FillRect</span><span class="p">(</span><span class="n">window_surface</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="p">);</span>
+<span class="hll"><span class="n">SDL_BlitSurface</span><span class="p">(</span><span class="n">image_surface</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">window_surface</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span class="n">SDL_UpdateWindowSurface</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+
+<p>That's it! We now have an image viewer that can read BMP images!
+Notice that due to the simplicity of the BMP format we need very few lines of code to implement a basic image viewer.</p>
+<p>In this article we have omitted proper errors handling to keep the code short, please see the full source code available on <a href="https://github.com/kevenv/image_viewer">GitHub</a> for more details.</p>
+<h2>References</h2>
+<ul>
+<li>BMP specification:<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-storage">https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-storage</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types">https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader">https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader</a></li>
+<li><a href="https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85)">https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85)</a></li>
+</ul>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/BMP_file_format">https://en.wikipedia.org/wiki/BMP_file_format</a></li>
+<li><a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml">https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml</a></li>
+<li><a href="https://netpbm.sourceforge.net/doc/ppm.html">https://netpbm.sourceforge.net/doc/ppm.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Netpbm">https://en.wikipedia.org/wiki/Netpbm</a></li>
+</ul>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>

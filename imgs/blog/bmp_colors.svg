@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="188.28238mm"
+   height="21.139603mm"
+   viewBox="0 0 188.28238 21.139603"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient26">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:0.80000001;"
+         offset="0"
+         id="stop23" />
+      <stop
+         style="stop-color:#ffff00;stop-opacity:0.69999999;"
+         offset="0.14342369"
+         id="stop24" />
+      <stop
+         style="stop-color:#00ff00;stop-opacity:0.69999999;"
+         offset="0.33193004"
+         id="stop27" />
+      <stop
+         style="stop-color:#00ffff;stop-opacity:0.69999999;"
+         offset="0.5"
+         id="stop28" />
+      <stop
+         style="stop-color:#0000ff;stop-opacity:0.69999999;"
+         offset="0.68359536"
+         id="stop29" />
+      <stop
+         style="stop-color:#ff00ff;stop-opacity:0.69999999;"
+         offset="0.84578657"
+         id="stop25" />
+      <stop
+         style="stop-color:#ff0000;stop-opacity:0.80000001;"
+         offset="1"
+         id="stop26" />
+    </linearGradient>
+    <linearGradient
+       id="swatch12">
+      <stop
+         style="stop-color:#bcffff;stop-opacity:1;"
+         offset="0"
+         id="stop12" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient26"
+       id="linearGradient23"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.7621261,0,0,0.14671124,-98.593654,192.52564)"
+       x1="61.740078"
+       y1="150.86848"
+       x2="168.67494"
+       y2="150.86848" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-10.495586,-204.08994)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.290195;stroke-dasharray:none"
+       id="rect29"
+       width="187.99219"
+       height="20.8494"
+       x="10.640683"
+       y="204.23505" />
+    <rect
+       style="fill:url(#linearGradient23);fill-opacity:1;stroke:#ffffff;stroke-width:0.254226;stroke-dasharray:none"
+       id="rect3-1"
+       width="187.99219"
+       height="20.849398"
+       x="10.640683"
+       y="204.23505" />
+  </g>
+</svg>

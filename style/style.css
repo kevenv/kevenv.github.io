@@ -42,6 +42,10 @@ ul {
     padding-left: 16px;
 }
 
+li {
+    word-wrap: break-word;
+}
+
 article {
     margin: 0;
     margin-bottom: 32px;
@@ -74,6 +78,7 @@ a:hover {
     margin: 2px;
 }
 
+/* CMD HIGHIGHT */
 p code, li code {
     background-color: AliceBlue;
     border: 1px solid black;
@@ -135,10 +140,18 @@ p code, li code {
     }
 }
 
+/* CODE */
+.codehilite {
+    width:100%;
+    height: auto;
+    overflow: auto;
+}
+
 .linenos {
     padding-left: 5px;
     padding-right: 5px;
 }
+
 .code {
     padding-left: 10px;
 }

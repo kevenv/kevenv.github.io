@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120mm"
+   height="117.99999mm"
+   viewBox="0 0 120 117.99999"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="swatch3">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-5.9604646e-8,-177.00001)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.496244;stroke-dasharray:none;stroke-opacity:1"
+       id="rect11"
+       width="119.50376"
+       height="117.50375"
+       x="0.24812207"
+       y="177.24812" />
+    <circle
+       style="display:inline;opacity:1;fill:#00ff00;fill-opacity:1;stroke-width:0.267472;stroke-dasharray:none"
+       id="path1-7"
+       cx="42.5"
+       cy="252.49998"
+       r="37.5" />
+    <circle
+       style="display:inline;opacity:1;fill:#0000ff;fill-opacity:1;stroke-width:0.267472;stroke-dasharray:none"
+       id="path1-6"
+       cx="77.5"
+       cy="252.49998"
+       r="37.5" />
+    <circle
+       style="display:inline;opacity:1;fill:#ff0000;fill-opacity:1;stroke-width:0.267472;stroke-dasharray:none"
+       id="path1"
+       cx="60"
+       cy="220"
+       r="37.5" />
+    <text
+       xml:space="preserve"
+       style="font-size:22.5778px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.266999;stroke-dasharray:none;stroke-opacity:1"
+       x="52.943455"
+       y="208.45914"
+       id="text6"><tspan
+         id="tspan6"
+         style="font-size:22.5778px;stroke-width:0.267"
+         x="52.943455"
+         y="208.45914">R</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22.5778px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.266999;stroke-dasharray:none;stroke-opacity:1"
+       x="18.756254"
+       y="271.47983"
+       id="text6-7"><tspan
+         id="tspan6-8"
+         style="font-size:22.5778px;stroke-width:0.267"
+         x="18.756254"
+         y="271.47983">G</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22.5778px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.266999;stroke-dasharray:none;stroke-opacity:1"
+       x="86.410133"
+       y="271.25403"
+       id="text6-7-3"><tspan
+         id="tspan6-8-6"
+         style="font-size:22.5778px;stroke-width:0.267"
+         x="86.410133"
+         y="271.25403">B</tspan></text>
+    <path
+       d="m 79.974447,251.60531 a 37.5,37.5 0 0 0 -37.474199,-36.60551 37.5,37.5 0 0 0 -19.932116,5.86889 37.5,37.5 0 0 0 37.431823,36.63135 37.5,37.5 0 0 0 19.974492,-5.89473 z"
+       style="display:inline;opacity:1;fill:#ffff00;fill-opacity:1;stroke:#ffff00;stroke-width:0.3;stroke-dasharray:none;stroke-opacity:1"
+       id="path7" />
+    <path
+       d="m 97.441597,220.74208 a 37.5,37.5 0 0 0 -19.941418,-5.74228 37.5,37.5 0 0 0 -37.431824,36.63187 37.5,37.5 0 0 0 19.9316,5.86837 37.5,37.5 0 0 0 37.441642,-36.75796 z"
+       style="display:inline;opacity:1;fill:#ff00ff;fill-opacity:1;stroke:#ff00ff;stroke-width:0.3;stroke-dasharray:none;stroke-opacity:1"
+       id="path8" />
+    <path
+       d="m 60.02631,219.36232 a 37.5,37.5 0 0 0 -20.026168,33.13751 37.5,37.5 0 0 0 19.999813,33.1215 37.5,37.5 0 0 0 19.999813,-33.1215 37.5,37.5 0 0 0 -19.973458,-33.13751 z"
+       style="display:inline;opacity:1;fill:#00ffff;fill-opacity:1;stroke:#00ffff;stroke-width:0.3;stroke-dasharray:none;stroke-opacity:1"
+       id="path11" />
+    <path
+       d="m 79.974447,251.61875 a 37.5,37.5 0 0 0 -19.884058,-32.21974 37.5,37.5 0 0 0 -20.016349,32.25333 37.5,37.5 0 0 0 19.925915,5.8477 37.5,37.5 0 0 0 19.974492,-5.88129 z"
+       style="display:inline;opacity:1;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       id="path10" />
+  </g>
+</svg>
