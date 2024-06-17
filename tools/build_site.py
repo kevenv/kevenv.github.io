@@ -45,6 +45,7 @@ if __name__ == '__main__':
             ('blog/sort_algos','../','Sorting algorithms'),
             ('blog/why_linux','../','Why Linux'),
             ('blog/priority_queue','../','Priority Queue'),
+            ('blog/zip_format','../','ZIP Format'),
             # ('blog/hello','../','Hello'),
             # ('blog/heat_equation','../','Heat Equation'),
     ]
