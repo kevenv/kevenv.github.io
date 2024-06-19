@@ -34,31 +34,31 @@ When we take a picture with a camera, it collects the light <em>intensity</em> a
 We call that collection of light an <em>image</em>.
 The image captured on the sensor is essentially a miniaturized version of the 3D scene seen from the point of view of the camera, it projects the 3D scene onto the camera sensor (2D).</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_camera.svg" alt="Camera Imaging"/>
+    <img src="../imgs/blog/bmp_camera.svg" alt="Camera Imaging">
 </p>
 
 <p>The camera sensor does not have infinite resolution, in fact the sensor is actually a grid of tiny sensors capturing light at different positions. This divides the image into a 2D grid of <em>pixels</em>, where each pixel represents the color at a specific position.</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels"/>
+    <img src="../imgs/blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels">
 </p>
 
 <p>Due to how the human visual system works, it turns out that we can encode any color using three number: R (Red), G (Green) and B (Blue). Those three numbers are often referred to as <em>color channels</em> and they form the <em>RGB</em> color space.
 This is easier to understand when thinking about mixing lights of different colors:</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model"/>
+    <img src="../imgs/blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model">
 </p>
 
 <p>For example by mixing a red light with green one we obtain a yellow light.
 We can get white by merging all the lights together and we get black when all the lights are closed.
 By mixing all three fundamental light colors we can make all the possible colors:</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_colors.svg" alt="Colors Spectrum"/>
+    <img src="../imgs/blog/bmp_colors.svg" alt="Colors Spectrum">
 </p>
 
 <p>To be able to recreate any color using the R,G,B triplet we need to be able to 
 change the intensity of each color channel, resulting in different shades of a given color:</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_r_grad.svg" alt="R channel values"/>
+    <img src="../imgs/blog/bmp_r_grad.svg" alt="R channel values">
 </p>
 
 <p>In nature there is a whole continuous spectrum of colors but computers can only manipulate discrete numbers, therefore we need to assign a number to each color intensity.
@@ -69,7 +69,7 @@ All three channels together allows us to define a total of 2^24 = 16 777 216 col
 <p>To store an image we need to know the value of each pixel and the dimensions of the image (width x height).</p>
 <p>Say we have a 3x2 image of 6 pixels:</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_simple.svg" alt="A simple BMP image"/>
+    <img src="../imgs/blog/bmp_simple.svg" alt="A simple BMP image">
 </p>
 
 <p>The simplest way to store this image in a file would probably be something like this:</p>
@@ -134,7 +134,7 @@ It should be obvious that the ASCII format is a lot more wasteful, a single pixe
 While it does support various encoding and compression methods we will not go over those since in practice BMP is mostly used for uncompressed 24-bpp images.</p>
 <p>The structure of the BMP file for the simplest case is as follow:</p>
 <p align="center">
-    <img src="../imgs/blog/bmp_format.svg" alt="Structure of BMP file"/>
+    <img src="../imgs/blog/bmp_format.svg" alt="Structure of BMP file">
 </p>
 
 <p>It consists of a <em>file header</em> followed by an <em>info header</em>.
@@ -349,7 +349,7 @@ RGB24 is tightly packed into 3 bytes (B,G,R) while RGB888 is stored as 4 bytes w
 <h2>Image viewer</h2>
 <p>Now that we understand the format, we can write a simple image viewer that is able to open BMP images.
 We chose to use the SDL2 library to open a window in which we can show the image.
-The basic code template for a SDL2 app should be something like this:</p>
+The basic code template for a typical SDL2 app should be something like this:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>

@@ -12,32 +12,32 @@ We call that collection of light an _image_.
 The image captured on the sensor is essentially a miniaturized version of the 3D scene seen from the point of view of the camera, it projects the 3D scene onto the camera sensor (2D).
 
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_camera.svg" alt="Camera Imaging"/>
+    <img src="{{rootImages}}blog/bmp_camera.svg" alt="Camera Imaging">
 </p>
 
 The camera sensor does not have infinite resolution, in fact the sensor is actually a grid of tiny sensors capturing light at different positions. This divides the image into a 2D grid of _pixels_, where each pixel represents the color at a specific position.
 
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels"/>
+    <img src="{{rootImages}}blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels">
 </p>
 
 Due to how the human visual system works, it turns out that we can encode any color using three number: R (Red), G (Green) and B (Blue). Those three numbers are often referred to as _color channels_ and they form the _RGB_ color space.
 This is easier to understand when thinking about mixing lights of different colors:
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model"/>
+    <img src="{{rootImages}}blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model">
 </p>
 
 For example by mixing a red light with green one we obtain a yellow light.
 We can get white by merging all the lights together and we get black when all the lights are closed.
 By mixing all three fundamental light colors we can make all the possible colors:
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_colors.svg" alt="Colors Spectrum"/>
+    <img src="{{rootImages}}blog/bmp_colors.svg" alt="Colors Spectrum">
 </p>
 
 To be able to recreate any color using the R,G,B triplet we need to be able to 
 change the intensity of each color channel, resulting in different shades of a given color:
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_r_grad.svg" alt="R channel values"/>
+    <img src="{{rootImages}}blog/bmp_r_grad.svg" alt="R channel values">
 </p>
 
 In nature there is a whole continuous spectrum of colors but computers can only manipulate discrete numbers, therefore we need to assign a number to each color intensity.
@@ -50,7 +50,7 @@ To store an image we need to know the value of each pixel and the dimensions of 
 
 Say we have a 3x2 image of 6 pixels:
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_simple.svg" alt="A simple BMP image"/>
+    <img src="{{rootImages}}blog/bmp_simple.svg" alt="A simple BMP image">
 </p>
 
 The simplest way to store this image in a file would probably be something like this:
@@ -107,7 +107,7 @@ While it does support various encoding and compression methods we will not go ov
 
 The structure of the BMP file for the simplest case is as follow:
 <p align="center">
-    <img src="{{rootImages}}blog/bmp_format.svg" alt="Structure of BMP file"/>
+    <img src="{{rootImages}}blog/bmp_format.svg" alt="Structure of BMP file">
 </p>
 
 It consists of a _file header_ followed by an _info header_.
@@ -255,7 +255,7 @@ To convert it we need to allocate a temporary buffer `tmp` to hold the pixels st
 ## Image viewer
 Now that we understand the format, we can write a simple image viewer that is able to open BMP images.
 We chose to use the SDL2 library to open a window in which we can show the image.
-The basic code template for a SDL2 app should be something like this:
+The basic code template for a typical SDL2 app should be something like this:
 ```C
 #include <SDL2/SDL.h>
 
