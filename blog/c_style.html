@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - C Style</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>C Style</h1>
+<ul>
+<li>use spaces (1 tab = 4 spaces)</li>
+<li>snake_case everything</li>
+<li>comments: <code>// comment</code> or <code>/* comment */</code></li>
+</ul>
+<h2>Names</h2>
+<ul>
+<li>filename : <code>my_file.h</code></li>
+<li>define/macro: <code>MY_CONSTANT</code></li>
+<li>function: <code>my_function()</code></li>
+<li>var/const var: <code>my_var</code></li>
+<li>global: <code>g_global_var</code></li>
+<li>ptr: <code>int* my_pointer</code> (pointer as part of type)</li>
+</ul>
+<h2>Struct/Union</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">my_struct_t</span><span class="w"> </span><span class="n">my_struct_t</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">my_struct_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">some_var</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">some_fct</span><span class="p">(</span><span class="n">my_struct_t</span><span class="w"> </span><span class="n">my_struct</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">my_struct_t</span><span class="w"> </span><span class="n">my_struct2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">my_struct2</span><span class="p">.</span><span class="n">some_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Enum</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">my_enum_t</span><span class="w"> </span><span class="n">my_enum_t</span><span class="p">;</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">my_enum_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">MY_ENUM_CASE_1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">MY_ENUM_CASE_2</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">some_fct</span><span class="p">(</span><span class="n">my_enum_t</span><span class="w"> </span><span class="n">my_enum</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">my_enum_t</span><span class="w"> </span><span class="n">my_enum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MY_ENUM_CASE_1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Typedef</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="n">u64</span><span class="w"> </span><span class="n">physical_address_t</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Forward declaration</h2>
+<ul>
+<li>faster compile</li>
+<li>less dependencies</li>
+<li>avoid circular dependencies</li>
+<li>defines interface</li>
+</ul>
+<p><code>typedef struct my_struct_t my_struct_t</code>
+instead of
+<code>struct my_struct_t</code></p>
+<h2>Braces</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">fct</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">do_something</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">do_thing</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>always use {}</li>
+<li>space between if and ()</li>
+</ul>
+<h2>Switch</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="k">case</span><span class="w"> </span><span class="no">case_1</span><span class="p">:</span>
+<span class="w">    </span><span class="n">do_stuff</span><span class="p">();</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="k">case</span><span class="w"> </span><span class="no">case_2</span><span class="p">:</span>
+<span class="w">    </span><span class="n">do_other_stuff</span><span class="p">();</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="k">default</span><span class="o">:</span>
+<span class="w">    </span><span class="n">do_some_stuff</span><span class="p">();</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Const</h2>
+<ul>
+<li>use for function args</li>
+<li>do not use within functions scope</li>
+<li>use in other cases <strong>only if</strong> strictly necessary, add a comment</li>
+</ul>
+<h2>Headers</h2>
+<ul>
+<li>includes in alphabetical order</li>
+<li>list what is used in each header : <code>#include &lt;stddef.h&gt; // NULL</code></li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2024, Keven Villeneuve.</span>
+<span class="cm"> *</span>
+<span class="cm"> * SPDX-License-Identifier: MIT License</span>
+<span class="cm"> */</span>
+
+<span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;my_file.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio&gt;</span><span class="c1"> // std first</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;some_other.h&quot;</span>
+
+<span class="p">[...]</span>
+
+<span class="c1">// one empty line at end</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Default int type</h2>
+<ul>
+<li>use <code>u32</code> by default &amp; counters</li>
+<li>use unsigned by default<ul>
+<li>overflow is well defined</li>
+<li>easy to understand</li>
+<li>&lt; 0 invalid/impossible -&gt; remove branching</li>
+<li>better compiler warnings</li>
+<li>tell intents</li>
+</ul>
+</li>
+<li>use 32-bit by default<ul>
+<li><code>u64</code> is native but 2x more space -&gt; more cache miss</li>
+</ul>
+</li>
+<li>never use <code>size_t</code> or <code>uint_fast32_t</code><ul>
+<li>size depends on arch</li>
+<li>long to type</li>
+<li>name is weird : size or idx?</li>
+<li>no one seems to agree on when to use</li>
+</ul>
+</li>
+<li>use signed only if needed</li>
+<li>use <code>u64</code> only if need more space</li>
+<li>use specific size if needed</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdbool.h&gt;</span><span class="c1"> // bool</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stddef.h&gt;</span><span class="c1"> // NULL</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="c1"> // uint_t</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">u8</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">u16</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">u32</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">u64</span><span class="p">;</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">i8</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">int16_t</span><span class="w"> </span><span class="n">i16</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">i32</span><span class="p">;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">i64</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>References</h3>
+<p>This is very controversial, no one seems to agree...</p>
+<ul>
+<li><a href="https://www.reddit.com/r/cpp/comments/3fli94/should_i_use_signed_or_unsigned_ints/">https://www.reddit.com/r/cpp/comments/3fli94/should_i_use_signed_or_unsigned_ints/</a></li>
+<li><a href="https://www.learncpp.com/cpp-tutorial/unsigned-integers-and-why-to-avoid-them/">https://www.learncpp.com/cpp-tutorial/unsigned-integers-and-why-to-avoid-them/</a></li>
+<li><a href="https://www.quora.com/Should-I-prefer-unsigned-int-or-size_t-instead-of-int-for-loops-in-C">https://www.quora.com/Should-I-prefer-unsigned-int-or-size_t-instead-of-int-for-loops-in-C</a></li>
+<li><a href="https://softwareengineering.stackexchange.com/questions/411128/is-using-64-bit-integers-long-long-faster-than-less-bits-ones">https://softwareengineering.stackexchange.com/questions/411128/is-using-64-bit-integers-long-long-faster-than-less-bits-ones</a></li>
+<li><a href="https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/">https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/</a></li>
+<li><a href="https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/">https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/</a></li>
+</ul>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>
+                Keven Villeneuve &copy; 2023
+            </p>
+        </footer>
+    </body>
+</html>
