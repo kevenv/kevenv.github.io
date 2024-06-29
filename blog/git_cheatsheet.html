@@ -80,6 +80,7 @@
 <li><code>--cached</code> : diff the added files</li>
 <li><code>-b</code> : ignore endlines</li>
 <li><code>-w</code> : ignore whitespaces</li>
+<li><code>-c core.fileMode=false</code> : ignore file permissions</li>
 </ul>
 </li>
 </ul>
@@ -113,8 +114,15 @@
 <ul>
 <li><code>git reset</code> hard, soft?
 revert
-checkout
-clean</li>
+checkout</li>
+<li><code>git clean</code><ul>
+<li><code>-n</code> : dry run</li>
+<li><code>-x</code> : ignore <code>.gitignore</code></li>
+<li><code>-d</code> : recursive</li>
+<li><code>-f</code> : force</li>
+<li><code>-X</code> : only ignored files</li>
+</ul>
+</li>
 </ul>
 <h2>Submodules</h2>
 <ul>

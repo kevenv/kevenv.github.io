@@ -42,6 +42,7 @@
     - `--cached` : diff the added files
     - `-b` : ignore endlines
     - `-w` : ignore whitespaces
+    - `-c core.fileMode=false` : ignore file permissions
 
 ## Stash & Patch
 - `git stash` : stash current changes
@@ -68,7 +69,12 @@
 - `git reset` hard, soft?
 revert
 checkout
-clean
+- `git clean`
+    - `-n` : dry run
+    - `-x` : ignore `.gitignore`
+    - `-d` : recursive
+    - `-f` : force
+    - `-X` : only ignored files
 
 ## Submodules
 - `git clone --recursive` : clone with submodules
