@@ -71,7 +71,7 @@ output.txt: input1.txt input2.txt
 ```
 
 ## Other
-- `.PHONY clean all` : make sure that the target always rebuilds
+- `.PHONY: clean all` : make sure that the target always rebuilds
 - `.DEFAULT_GOAL := all` : change the default target
 - `$(SRC:.c=.o)` : generate list of .o from list of .c
 - `$(addprefix $(BUILD_DIR), $(SRC:.c=.o))`

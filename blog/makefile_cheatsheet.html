@@ -116,7 +116,7 @@
 
 <h2>Other</h2>
 <ul>
-<li><code>.PHONY clean all</code> : make sure that the target always rebuilds</li>
+<li><code>.PHONY: clean all</code> : make sure that the target always rebuilds</li>
 <li><code>.DEFAULT_GOAL := all</code> : change the default target</li>
 <li><code>$(SRC:.c=.o)</code> : generate list of .o from list of .c</li>
 <li><code>$(addprefix $(BUILD_DIR), $(SRC:.c=.o))</code></li>

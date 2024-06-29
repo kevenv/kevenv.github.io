@@ -43,6 +43,7 @@
     - `-b` : ignore endlines
     - `-w` : ignore whitespaces
     - `-c core.fileMode=false` : ignore file permissions
+    - `--name-only` : only list files
 
 ## Stash & Patch
 - `git stash` : stash current changes
