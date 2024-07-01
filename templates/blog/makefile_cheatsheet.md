@@ -34,6 +34,8 @@ clean:
 .PHONY clean all
 ```
 
+**Note: each build cmd runs in a separate shell!**
+
 ## Variable
 - `VAR := VALUE` : set variable, expands immediately (at the time of assignment)
 - `VAR = VALUE` : set variable, expands lazily (at the time of use)

@@ -42,8 +42,8 @@
     - `--cached` : diff the added files
     - `-b` : ignore endlines
     - `-w` : ignore whitespaces
-    - `-c core.fileMode=false` : ignore file permissions
     - `--name-only` : only list files
+- `git -c core.fileMode=false diff` : diff two files, ignore file permissions
 
 ## Stash & Patch
 - `git stash` : stash current changes
@@ -51,6 +51,7 @@
     - `pop` : pop stash
     - `apply stash@{0}` : apply stash
     - `show -p stash@{0}` : show stash changes
+- `git show -p stash@{0} > [patch file].patch` : create patch from stash
 - `git diff > [patch file].patch` : create patch from unstaged changes
 - `git diff --cached > [patch file].patch` : create patch from staged changes
 - `git apply [patch file].patch` : apply patch file

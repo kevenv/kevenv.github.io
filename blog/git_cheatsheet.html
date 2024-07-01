@@ -80,10 +80,10 @@
 <li><code>--cached</code> : diff the added files</li>
 <li><code>-b</code> : ignore endlines</li>
 <li><code>-w</code> : ignore whitespaces</li>
-<li><code>-c core.fileMode=false</code> : ignore file permissions</li>
 <li><code>--name-only</code> : only list files</li>
 </ul>
 </li>
+<li><code>git -c core.fileMode=false diff</code> : diff two files, ignore file permissions</li>
 </ul>
 <h2>Stash &amp; Patch</h2>
 <ul>
@@ -94,6 +94,7 @@
 <li><code>show -p stash@{0}</code> : show stash changes</li>
 </ul>
 </li>
+<li><code>git show -p stash@{0} &gt; [patch file].patch</code> : create patch from stash</li>
 <li><code>git diff &gt; [patch file].patch</code> : create patch from unstaged changes</li>
 <li><code>git diff --cached &gt; [patch file].patch</code> : create patch from staged changes</li>
 <li><code>git apply [patch file].patch</code> : apply patch file</li>
