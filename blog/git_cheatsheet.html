@@ -61,7 +61,7 @@
 <li><code>git branch</code> : list branches</li>
 <li><code>git checkout [branch]</code> : switch branch</li>
 <li><code>git checkout -b [branch]</code> : create new branch</li>
-<li><code>git checkout [commit hash]</code> : switch branch to specific commit</li>
+<li><code>git checkout [commit]</code> : switch branch to specific commit</li>
 <li><code>git fetch</code> : fetch changes</li>
 <li><code>git pull</code> : fetch + merge changes</li>
 <li><code>git push</code> : push changes<ul>
@@ -87,9 +87,11 @@
 </ul>
 <h2>Stash &amp; Patch</h2>
 <ul>
-<li><code>git stash</code> : stash current changes<ul>
+<li><code>git stash</code><ul>
+<li><code>save "[message]"</code> : stash current changes</li>
 <li><code>list</code> : show stash</li>
 <li><code>pop</code> : pop stash</li>
+<li><code>drop</code> : drop stash</li>
 <li><code>apply stash@{0}</code> : apply stash</li>
 <li><code>show -p stash@{0}</code> : show stash changes</li>
 </ul>
@@ -110,14 +112,17 @@
 <ul>
 <li><code>git rebase [src branch]</code> : rebase current branch from another branch</li>
 <li><code>git merge [branch]</code> : merge branch into current branch</li>
-<li><code>git cherry-pick [commit hash]</code> : pull specific commit</li>
+<li><code>git cherry-pick [commit]</code> : pull specific commit</li>
 </ul>
 <h2>Revert</h2>
 <ul>
-<li><code>git reset</code> hard, soft?
-revert
-checkout</li>
-<li><code>git clean</code><ul>
+<li><code>git reset --soft [commit]</code> : unstage commit</li>
+<li><code>git reset --hard [commit]</code> : undo commit</li>
+<li><code>git checkout [file]</code> : revert local change to a file</li>
+<li><code>git reset --hard HEAD</code> : revert all local changes</li>
+<li><code>git reset --soft HEAD~1</code> : undo local commit, not pushed yet</li>
+<li><code>git revert [commit]</code> : create revert commit</li>
+<li><code>git clean -xdf</code><ul>
 <li><code>-n</code> : dry run</li>
 <li><code>-x</code> : ignore <code>.gitignore</code></li>
 <li><code>-d</code> : recursive</li>

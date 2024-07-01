@@ -27,7 +27,7 @@
 - `git branch` : list branches
 - `git checkout [branch]` : switch branch
 - `git checkout -b [branch]` : create new branch
-- `git checkout [commit hash]` : switch branch to specific commit
+- `git checkout [commit]` : switch branch to specific commit
 - `git fetch` : fetch changes
 - `git pull` : fetch + merge changes
 - `git push` : push changes
@@ -46,9 +46,11 @@
 - `git -c core.fileMode=false diff` : diff two files, ignore file permissions
 
 ## Stash & Patch
-- `git stash` : stash current changes
+- `git stash`
+    - `save "[message]"` : stash current changes
     - `list` : show stash
     - `pop` : pop stash
+    - `drop` : drop stash
     - `apply stash@{0}` : apply stash
     - `show -p stash@{0}` : show stash changes
 - `git show -p stash@{0} > [patch file].patch` : create patch from stash
@@ -65,13 +67,16 @@
 ## Merge
 - `git rebase [src branch]` : rebase current branch from another branch
 - `git merge [branch]` : merge branch into current branch
-- `git cherry-pick [commit hash]` : pull specific commit
+- `git cherry-pick [commit]` : pull specific commit
 
 ## Revert
-- `git reset` hard, soft?
-revert
-checkout
-- `git clean`
+- `git reset --soft [commit]` : unstage commit
+- `git reset --hard [commit]` : undo commit
+- `git checkout [file]` : revert local change to a file
+- `git reset --hard HEAD` : revert all local changes
+- `git reset --soft HEAD~1` : undo local commit, not pushed yet
+- `git revert [commit]` : create revert commit
+- `git clean -xdf`
     - `-n` : dry run
     - `-x` : ignore `.gitignore`
     - `-d` : recursive
