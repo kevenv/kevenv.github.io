@@ -75,6 +75,7 @@
 - `unzip` : ?
 - `hexdump` : dump file as hexa
 - `find . -name [file] | entr [cmd]` : run a cmd whenever a file changes
+- `nmap -Pn -p- -v [ip]` : find open ports
 
 ## Disk
 - `lsblk` : list disk
