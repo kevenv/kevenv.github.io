@@ -36,19 +36,16 @@ if __name__ == '__main__':
             ('publications/ddm_compression','../','DDM Compression'),
         ('blog','','Blog'),
             ('blog/linux_cheatsheet','../','Linux Cheatsheet'),
-            ('blog/git_cheatsheet','../','Git Cheatsheet'),
             ('blog/bash_cheatsheet','../','Bash Cheatsheet'),
+            ('blog/git_cheatsheet','../','Git Cheatsheet'),
             ('blog/makefile_cheatsheet','../','Makefile Cheatsheet'),
             ('blog/c_style','../','C Style'),
-            # ('blog/phys_mec_cheatsheet','../','Physics Cheathsheet'),
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
-            ('blog/bmp_format','../','BMP Image Format'),
             ('blog/sort_algos','../','Sorting algorithms'),
             ('blog/why_linux','../','Why Linux'),
             ('blog/priority_queue','../','Priority Queue'),
+            ('blog/bmp_format','../','BMP Image Format'),
             # ('blog/zip_format','../','ZIP Format'),
-            # ('blog/hello','../','Hello'),
-            # ('blog/heat_equation','../','Heat Equation'),
     ]
     for page in pages:
         print(page)
