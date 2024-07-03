@@ -56,7 +56,7 @@ if __name__ == '__main__':
         root_images = root + IMAGES_PATH + '/'
         root_docs = root + DOCS_PATH + '/'
         
-        if 'blog/' in p:
+        if ('blog/' in p) or ('projects/' in p):
             page_md = renderer.render_path('{}/{}.md'.format(TEMPLATES_PATH,p), {
                 'root': root, 'rootImages': root_images, 'rootDocs': root_docs
             })
