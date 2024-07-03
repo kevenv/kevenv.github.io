@@ -7,7 +7,7 @@ After our deep dive into the image format, we will show how to implement a simpl
 
 ## Image
 What is an image?
-When we take a picture with a camera, it collects the light _intensity_ and _color_ of what is in front ot it for a fraction of a second, freezing a moment in time onto its sensor.
+When we take a picture with a camera, it collects the light _intensity_ and _color_ of what is in front of it for a fraction of a second, freezing a moment in time onto its sensor.
 We call that collection of light an _image_.
 The image captured on the sensor is essentially a miniaturized version of the 3D scene seen from the point of view of the camera, it projects the 3D scene onto the camera sensor (2D).
 
