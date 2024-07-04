@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Fedora Setup</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Fedora Setup</h1>
+<h2>Install Fedora</h2>
+<ul>
+<li>install using ISO<ul>
+<li>enable third-party repos</li>
+</ul>
+</li>
+<li>dnf update all</li>
+<li>reboot</li>
+</ul>
+<h2>Install NV drivers</h2>
+<ul>
+<li>nv driver</li>
+<li>cuda driver</li>
+<li>wayland</li>
+</ul>
+<h2>Install Wayland</h2>
+<ul>
+<li>switch wayland/xorg : via login screen</li>
+<li>know which app is using Xwayland : <code>xlsclients</code></li>
+</ul>
+<h3>Chrome</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>chrome://flags/
+&quot;Preferred Ozone platform&quot; = auto
+</code></pre></div></td></tr></table></div>
+
+<h3>Electron apps</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>source ~/.bash_profile
+    export ELECTRON_OZONE_PLATFORM_HINT=auto
+        auto
+        wayland
+        x11
+
+cp /usr/share/applications/code.desktop ~/.local/share/applications/code
+    Exec=/usr/share/code/code --new-window %F
+    --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland
+</code></pre></div></td></tr></table></div>
+
+<h3>SDL apps</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>export SDL_VIDEODRIVER=wayland
+</code></pre></div></td></tr></table></div>
+
+<h2>Remove useless apps</h2>
+<p>Remove using "Gnome Software":</p>
+<ul>
+<li>calendar</li>
+<li>weather</li>
+<li>online account</li>
+<li>thunderbird</li>
+</ul>
+<h2>Install Gnome Extensions</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
+flatpak install flathub com.mattjakeman.ExtensionManager`
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>Arc Menu</li>
+<li>Dash to Panel</li>
+<li>system-monitor-next</li>
+<li>freon</li>
+</ul>
+<h2>Configure</h2>
+<p>config gnome + exts</p>
+<h2>Install apps</h2>
+<ul>
+<li>veracrypt</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>build from source: https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>keepassXC</li>
+<li>FreeFileSync</li>
+<li>gnome tweaks</li>
+<li>dconf editor</li>
+<li>screenshot tool</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>gnome-screenshot
+cmd: gnome-screenshot -i -a
+https://ubuntuhandbook.org/index.php/2022/04/get-back-gnome-screenshot-ubuntu-2204/
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>
+<p>htop</p>
+</li>
+<li>
+<p>chrome</p>
+</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf install fedora-workstation-repositories
+sudo dnf config-manager --set-enabled google-chrome
+sudo dnf install google-chrome-stable
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>sublime text</li>
+<li>sublime merge</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo rpm -v --import https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+sudo sudo dnf install sublime-text
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>vscode</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+echo -e &quot;[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc&quot; | sudo tee /etc/yum.repos.d/vscode.repo &gt; /dev/null
+dnf check-update
+sudo dnf install code
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>insync</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo rpm --import https://d2t3ff60b2tol4.cloudfront.net/repomd.xml.key
+nano /etc/yum.repos.d/insync.repo
+    [insync]
+    name=insync repo
+    baseurl=http://yum.insync.io/fedora/$releasever/
+    gpgcheck=1
+    gpgkey=https://d2t3ff60b2tol4.cloudfront.net/repomd.xml.key
+    enabled=1
+    metadata_expire=120m
+sudo yum install insync
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>discord</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf clean all
+sudo dnf install discord
+
+nano ~/.config/discord/settings.json
+    &quot;SKIP_HOST_UPDATE&quot;: true
+</code></pre></div></td></tr></table></div>
+
+<h2>Install extra apps</h2>
+<ul>
+<li>fsearch</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>dnf copr enable cboxdoerfer/fsearch
+dnf install fsearch
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>imhex</li>
+<li>inkscape</li>
+<li>pinta</li>
+<li>remmina</li>
+<li>virtual machine manager</li>
+</ul>
+<h2>RPM Fusion repos</h2>
+<ul>
+<li><code>rpmfusion-nonfree-nvidia-driver</code></li>
+<li><code>rpmfusion-nonfree-updates</code> (discord)</li>
+</ul>
+<h2>COPR</h2>
+<p>Fedora Copr = AUR</p>
+        <hr>
+        <footer>
+            <p>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </p>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

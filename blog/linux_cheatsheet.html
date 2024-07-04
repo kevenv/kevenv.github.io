@@ -192,20 +192,41 @@
 </ul>
 </li>
 </ul>
+<h2>Bash profile</h2>
+<ul>
+<li><code>~/.bashrc</code><ul>
+<li>executed every new shell</li>
+</ul>
+</li>
+<li><code>~/.bash_profile</code><ul>
+<li>executed once per login</li>
+<li>inherit <code>~/.bashrc</code></li>
+</ul>
+</li>
+</ul>
 <h2>Fedora</h2>
 <h3>DNF</h3>
 <ul>
 <li><code>dnf search [package]</code> : search for package in repos</li>
 <li><code>dnf info [package]</code> : get info about package</li>
-<li><code>dnf install [package]</code> : install package</li>
+<li><code>dnf install [package]</code> : install package<ul>
+<li><code>-v</code> : verbose</li>
+</ul>
+</li>
 <li><code>dnf remove [package]</code> : remove package</li>
 <li><code>dnf list installed</code> : list installed packages</li>
 <li><code>dnf list available</code> : list all availables packages</li>
-<li><code>dnf upgrade</code> : upgrade/update all packages</li>
+<li><code>dnf list installed *pattern*</code>: list packages with pattern</li>
+<li><code>dnf upgrade</code> : upgrade/update all packages<ul>
+<li><code>--exclude=kernel*,*nvidia*</code> : exclude some packages</li>
+</ul>
+</li>
 <li><code>dnf autoremove</code> : remove unused packages</li>
 <li><code>dnf clean all</code> : clear cached packages</li>
 <li><code>dnf history</code> : show dnf history</li>
 <li><code>dnf repolist all</code> : list packages repos</li>
+<li><code>ls -l /etc/yum.repos.d/</code> : list packages repos (files)</li>
+<li><code>dnf repository-packages [repo] list --installed</code> : list all packages installed from specific repo</li>
 <li><code>dnf provides [file]</code> : find package that provides a file</li>
 <li><code>dnf repoquery -l [package]</code> : list files in package</li>
 <li><code>dnf repoquery --requires [package]</code>: list dependencies of package</li>

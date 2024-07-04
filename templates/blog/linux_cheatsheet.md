@@ -136,20 +136,32 @@
 - `/sys` : sysfs, devices/bus/drivers/kernel
     - `/sys/bus/pci/devices`
 
+## Bash profile
+- `~/.bashrc`
+    - executed every new shell
+- `~/.bash_profile`
+    - executed once per login
+    - inherit `~/.bashrc`
+
 ## Fedora
 
 ### DNF
 - `dnf search [package]` : search for package in repos
 - `dnf info [package]` : get info about package
 - `dnf install [package]` : install package
+    - `-v` : verbose
 - `dnf remove [package]` : remove package
 - `dnf list installed` : list installed packages
 - `dnf list available` : list all availables packages
+- `dnf list installed *pattern*`: list packages with pattern
 - `dnf upgrade` : upgrade/update all packages
+    - `--exclude=kernel*,*nvidia*` : exclude some packages
 - `dnf autoremove` : remove unused packages
 - `dnf clean all` : clear cached packages
 - `dnf history` : show dnf history
 - `dnf repolist all` : list packages repos
+- `ls -l /etc/yum.repos.d/` : list packages repos (files)
+- `dnf repository-packages [repo] list --installed` : list all packages installed from specific repo
 - `dnf provides [file]` : find package that provides a file
 - `dnf repoquery -l [package]` : list files in package
 - `dnf repoquery --requires [package]`: list dependencies of package
