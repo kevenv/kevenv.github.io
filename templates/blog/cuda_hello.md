@@ -10,13 +10,13 @@ Welcome to this tutorial on CUDA! Before we get started we should setup our deve
 
     In my case, I am using Fedora so I need to download and install:
 
-    `Linux / x86_64 / Fedora / 39 / rpm (local)`
+    `Linux / x86_64 / Fedora / 39 / rpm (network)`
 
 2. Reboot your system to make sure that everything is setup and initialized properly.
 
 3. Add the toolkit to your system `PATH`:
 
-    `export PATH=/usr/local/cuda-12.5/bin${PATH:+:${PATH}}`
+    `export PATH=/usr/local/cuda-12.4/bin${PATH:+:${PATH}}`
 
 ## Validation
 Once the CUDA toolkit is installed, it is good to verify that everything works as expected. The best way to do that is to build and run the [cuda-samples](https://github.com/NVIDIA/cuda-samples):

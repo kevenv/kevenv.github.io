@@ -33,12 +33,8 @@
 <li>dnf update all</li>
 <li>reboot</li>
 </ul>
-<h2>Install NV drivers</h2>
-<ul>
-<li>nv driver</li>
-<li>cuda driver</li>
-<li>wayland</li>
-</ul>
+<h2>Install Nvidia drivers</h2>
+<p>See <a href="../blog/fedora_nvidia.html">Fedora + Nvidia</a></p>
 <h2>Install Wayland</h2>
 <ul>
 <li>switch wayland/xorg : via login screen</li>
@@ -82,6 +78,10 @@ cp /usr/share/applications/code.desktop ~/.local/share/applications/code
 <li>online account</li>
 <li>thunderbird</li>
 </ul>
+<p>Cleanup:</p>
+<ul>
+<li><code>dnf autoremove</code></li>
+</ul>
 <h2>Install Gnome Extensions</h2>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo`
@@ -96,6 +96,9 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 </ul>
 <h2>Configure</h2>
 <p>config gnome + exts</p>
+<ul>
+<li>gnome remote desktop : <code>settings/sharing/remote desktop</code></li>
+</ul>
 <h3>Keyboard shortcuts</h3>
 <ul>
 <li>switch applications = disabled</li>
@@ -103,6 +106,12 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 <li>take a screenshot interactively = disabled</li>
 <li>switch to next input source = alt+a</li>
 <li>switch to prev input src = shift+alt+a</li>
+</ul>
+<h3>SSH</h3>
+<ul>
+<li><code>systemctl enable sshd.service</code></li>
+<li><code>systemctl start sshd.service</code></li>
+<li><code>/etc/ssh/sshd_config</code></li>
 </ul>
 <h2>Install apps</h2>
 <ul>
@@ -127,12 +136,15 @@ https://ubuntuhandbook.org/index.php/2022/04/get-back-gnome-screenshot-ubuntu-22
 </code></pre></div></td></tr></table></div>
 
 <ul>
-<li>
-<p>htop</p>
-</li>
-<li>
-<p>chrome</p>
-</li>
+<li>dnf5</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf install dnf5
+sudo ln -s /usr/bin/dnf5 /usr/local/bin/dnf
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>chrome</li>
 </ul>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
@@ -209,8 +221,16 @@ nano ~/.config/discord/settings.json
 <li>fsearch</li>
 </ul>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>dnf copr enable cboxdoerfer/fsearch
-dnf install fsearch
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf copr enable cboxdoerfer/fsearch
+sudo dnf install fsearch
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>strace</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf copr enable xfgusta/strace-with-colors
+sudo dnf install strace-with-colors
 </code></pre></div></td></tr></table></div>
 
 <ul>
@@ -225,13 +245,17 @@ dnf install fsearch
 <li>gtkterm</li>
 <li>clion</li>
 </ul>
-<h2>RPM Fusion repos</h2>
+<h2>RPM Fusion</h2>
 <ul>
 <li><code>rpmfusion-nonfree-nvidia-driver</code></li>
 <li><code>rpmfusion-nonfree-updates</code> (discord)</li>
 </ul>
 <h2>COPR</h2>
-<p>Fedora Copr = AUR</p>
+<p>Fedora COPR = AUR</p>
+<ul>
+<li><code>sudo dnf copr enable [repo]/[package]</code></li>
+<li><code>sudo dnf install [package]</code></li>
+</ul>
         <hr>
         <footer>
             <p>

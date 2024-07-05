@@ -24,29 +24,6 @@
         </header>
         <hr>
 <h1>Linux Cheatsheet</h1>
-<h2>Paths</h2>
-<ul>
-<li><code>.</code> : current directory</li>
-<li><code>..</code> : parent directory</li>
-<li><code>~</code> : home directory</li>
-<li><code>../relative/path</code> : relative path</li>
-<li><code>/absolute/path</code> : absolute path</li>
-</ul>
-<h2>Pipes</h2>
-<ul>
-<li><code>A | B</code> : run A and transfer its output to B</li>
-<li><code>A &amp; B</code> : run A then B</li>
-<li><code>A &amp;&amp; B</code> : run A then B only if A succeeds</li>
-<li><code>| grep [some string]</code> : filter out stdout</li>
-</ul>
-<h2>Redirect</h2>
-<ul>
-<li><code>&gt;</code> : stdout</li>
-<li><code>&lt;</code> : stdin</li>
-<li><code>&amp;&gt;</code> : stdout + stderr</li>
-<li><code>1&gt;</code> : stdout</li>
-<li><code>2&gt;</code> : stderr</li>
-</ul>
 <h2>Basic</h2>
 <ul>
 <li><code>cd [directory]</code> : change directory</li>
@@ -73,6 +50,7 @@
 <li><code>touch [file]</code> : create empty file, mark file as newly edited</li>
 <li><code>source [file]</code> : execute a <code>.sh</code> file within the current shell</li>
 <li><code>cat [file]</code> : print file to the screen</li>
+<li><code>tree</code> : print directory hierarchy</li>
 <li><code>tail -n [num of lines] [file]</code> : show last N lines of a file</li>
 <li><code>file [file]</code> : get file type</li>
 <li><code>stat [file]</code> : get file info</li>
@@ -118,7 +96,6 @@
 <li><code>unzip</code> : ?</li>
 <li><code>hexdump</code> : dump file as hexa</li>
 <li><code>find . -name [file] | entr [cmd]</code> : run a cmd whenever a file changes</li>
-<li><code>nmap -Pn -p- -v [ip]</code> : find open ports</li>
 </ul>
 <h2>Disk</h2>
 <ul>
@@ -131,6 +108,7 @@
 </ul>
 <h2>Info</h2>
 <ul>
+<li><code>fastfetch</code> : system info</li>
 <li><code>uname -a</code> : show kernel version</li>
 <li><code>lscpu</code> : list CPU info</li>
 <li><code>lspci</code> : list PCI devices (Bus:Device.Function)<ul>
@@ -146,23 +124,26 @@
 <li>-t : tree</li>
 </ul>
 </li>
-<li><code>ifconfig</code> : show network info</li>
 <li><code>nvidia-smi</code> : show GPU info</li>
+<li><code>ifconfig</code> : show network info</li>
+<li><code>iftop</code> : list TCP sockets</li>
+<li><code>netstat -nat</code> : list TCP sockets</li>
 <li><code>df -h</code> : show disk usage</li>
 <li><code>free -h --si</code> : show how much RAM</li>
 <li><code>htop</code> : list process, kill process</li>
 <li><code>sensors</code> : show temperature</li>
 <li><code>watch -t -n 1 "sensors | grep 'Core 0:'"</code> : show CPU temperature</li>
+<li><code>nmap -Pn -p- -v [ip]</code> : find open ports</li>
+<li><code>strace</code> : trace syscalls</li>
 <li><code>cat /proc/[pid]</code> : procfs, running processes</li>
 <li><code>cat /proc/meminfo</code> : memory info</li>
 <li><code>cat /proc/cpuinfo</code> : CPU info (CPUID)</li>
 <li><code>cat /proc/interrupts</code> : interrupts in</li>
 <li><code>cat /proc/ioports</code> : IO ports</li>
 <li><code>cat /proc/iomem</code> : MMIO</li>
+<li><code>cat /proc/driver/nvidia/</code> : GPU info</li>
 <li><code>cat /proc/stat</code> : all process stats</li>
 <li><code>cat /proc/[pid]/stat</code> : process stats</li>
-<li><code>iftop</code> : list TCP sockets</li>
-<li><code>netstat -nat</code> : list TCP sockets</li>
 </ul>
 <h2>Kernel</h2>
 <ul>
@@ -172,6 +153,7 @@
 </li>
 <li><code>insmod [module].ko</code> : install kernel module</li>
 <li><code>rmmod [module]</code> : remove kernel module</li>
+<li><code>modinfo -F [info] [module]</code>: get info about kernel module</li>
 <li><code>dmesg | tail -n 5</code> : show kernel log</li>
 <li><code>ls -l /dev</code> : list device files<ul>
 <li>major, minor</li>
@@ -182,15 +164,28 @@
 <li><code>rmnod [device]</code></li>
 <li><code>head -c 1 [file]</code> : output the first byte of a file</li>
 </ul>
-<h2>Filesystem</h2>
-<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">FSH</a></p>
+<h2>Paths</h2>
 <ul>
-<li><code>/proc</code> : procfs, running processes</li>
-<li><code>/dev</code> : udev, devices files</li>
-<li><code>/sys</code> : sysfs, devices/bus/drivers/kernel<ul>
-<li><code>/sys/bus/pci/devices</code></li>
+<li><code>.</code> : current directory</li>
+<li><code>..</code> : parent directory</li>
+<li><code>~</code> : home directory</li>
+<li><code>../relative/path</code> : relative path</li>
+<li><code>/absolute/path</code> : absolute path</li>
 </ul>
-</li>
+<h2>Pipes</h2>
+<ul>
+<li><code>A | B</code> : run A and transfer its output to B</li>
+<li><code>A &amp; B</code> : run A then B</li>
+<li><code>A &amp;&amp; B</code> : run A then B only if A succeeds</li>
+<li><code>| grep [some string]</code> : filter out stdout</li>
+</ul>
+<h2>Redirect</h2>
+<ul>
+<li><code>&gt;</code> : stdout</li>
+<li><code>&lt;</code> : stdin</li>
+<li><code>&amp;&gt;</code> : stdout + stderr</li>
+<li><code>1&gt;</code> : stdout</li>
+<li><code>2&gt;</code> : stderr</li>
 </ul>
 <h2>Bash profile</h2>
 <ul>
@@ -201,6 +196,16 @@
 <li><code>~/.bash_profile</code><ul>
 <li>executed once per login</li>
 <li>inherit <code>~/.bashrc</code></li>
+</ul>
+</li>
+</ul>
+<h2>Filesystem</h2>
+<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">FSH</a></p>
+<ul>
+<li><code>/proc</code> : procfs, running processes</li>
+<li><code>/dev</code> : udev, devices files</li>
+<li><code>/sys</code> : sysfs, devices/bus/drivers/kernel<ul>
+<li><code>/sys/bus/pci/devices</code></li>
 </ul>
 </li>
 </ul>

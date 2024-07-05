@@ -6,10 +6,8 @@
 - dnf update all
 - reboot
 
-## Install NV drivers
-- nv driver
-- cuda driver
-- wayland
+## Install Nvidia drivers
+See [Fedora + Nvidia]({{root}}blog/fedora_nvidia.html)
 
 ## Install Wayland
 - switch wayland/xorg : via login screen
@@ -33,7 +31,7 @@ cp /usr/share/applications/code.desktop ~/.local/share/applications/code
     Exec=/usr/share/code/code --new-window %F
     --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland
 ```
-    
+
 ### SDL apps
 ```
 export SDL_VIDEODRIVER=wayland
@@ -46,6 +44,10 @@ Remove using "Gnome Software":
 - weather
 - online account
 - thunderbird
+
+Cleanup:
+
+- `dnf autoremove`
 
 ## Install Gnome Extensions
 ```
@@ -60,12 +62,19 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 ## Configure
 config gnome + exts
 
+- gnome remote desktop : `settings/sharing/remote desktop`
+
 ### Keyboard shortcuts
 - switch applications = disabled
 - swtich windows = alt+tab
 - take a screenshot interactively = disabled
 - switch to next input source = alt+a
 - switch to prev input src = shift+alt+a
+
+### SSH
+- `systemctl enable sshd.service`
+- `systemctl start sshd.service`
+- `/etc/ssh/sshd_config`
 
 ## Install apps
 - veracrypt
@@ -83,8 +92,11 @@ gnome-screenshot / gnu screenshot
 cmd: gnome-screenshot -i -a
 https://ubuntuhandbook.org/index.php/2022/04/get-back-gnome-screenshot-ubuntu-2204/
 ```
-- htop
-
+- dnf5
+```
+sudo dnf install dnf5
+sudo ln -s /usr/bin/dnf5 /usr/local/bin/dnf
+```
 - chrome
 ```
 sudo dnf install fedora-workstation-repositories
@@ -131,8 +143,13 @@ nano ~/.config/discord/settings.json
 ## Install extra apps
 - fsearch
 ```
-dnf copr enable cboxdoerfer/fsearch
-dnf install fsearch
+sudo dnf copr enable cboxdoerfer/fsearch
+sudo dnf install fsearch
+```
+- strace
+```
+sudo dnf copr enable xfgusta/strace-with-colors
+sudo dnf install strace-with-colors
 ```
 - inkscape
 - pinta
@@ -145,9 +162,12 @@ dnf install fsearch
 - gtkterm
 - clion
 
-## RPM Fusion repos
+## RPM Fusion
 - `rpmfusion-nonfree-nvidia-driver`
 - `rpmfusion-nonfree-updates` (discord)
 
 ## COPR
-Fedora Copr = AUR
+Fedora COPR = AUR
+
+- `sudo dnf copr enable [repo]/[package]`
+- `sudo dnf install [package]`

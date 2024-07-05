@@ -41,6 +41,7 @@ if __name__ == '__main__':
             ('blog/makefile_cheatsheet','../','Makefile Cheatsheet'),
             ('blog/c_style','../','C Style'),
             ('blog/fedora_setup','../','Fedora Setup'),
+            ('blog/fedora_nvidia','../','Fedora + Nvidia'),
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello World!'),
             ('blog/sort_algos','../','Sorting algorithms'),
             ('blog/why_linux','../','Why Linux'),

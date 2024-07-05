@@ -1,25 +1,5 @@
 # Linux Cheatsheet
 
-## Paths
-- `.` : current directory
-- `..` : parent directory
-- `~` : home directory
-- `../relative/path` : relative path
-- `/absolute/path` : absolute path
-
-## Pipes
-- `A | B` : run A and transfer its output to B
-- `A & B` : run A then B
-- `A && B` : run A then B only if A succeeds
-- `| grep [some string]` : filter out stdout
-
-## Redirect
-- `>` : stdout
-- `<` : stdin
-- `&>` : stdout + stderr
-- `1>` : stdout
-- `2>` : stderr
-
 ## Basic
 - `cd [directory]` : change directory
 - `ls [directory]` : list files & directories
@@ -37,6 +17,7 @@
 - `touch [file]` : create empty file, mark file as newly edited
 - `source [file]` : execute a `.sh` file within the current shell
 - `cat [file]` : print file to the screen
+- `tree` : print directory hierarchy
 - `tail -n [num of lines] [file]` : show last N lines of a file
 - `file [file]` : get file type
 - `stat [file]` : get file info
@@ -75,7 +56,6 @@
 - `unzip` : ?
 - `hexdump` : dump file as hexa
 - `find . -name [file] | entr [cmd]` : run a cmd whenever a file changes
-- `nmap -Pn -p- -v [ip]` : find open ports
 
 ## Disk
 - `lsblk` : list disk
@@ -86,6 +66,7 @@
 - `cat /proc/mounts` : mount info
 
 ## Info
+- `fastfetch` : system info
 - `uname -a` : show kernel version
 - `lscpu` : list CPU info
 - `lspci` : list PCI devices (Bus:Device.Function)
@@ -97,29 +78,33 @@
 - `lsusb` : list USB devices
     - -v : verbose
     - -t : tree
-- `ifconfig` : show network info
 - `nvidia-smi` : show GPU info
+- `ifconfig` : show network info
+- `iftop` : list TCP sockets
+- `netstat -nat` : list TCP sockets
 - `df -h` : show disk usage
 - `free -h --si` : show how much RAM
 - `htop` : list process, kill process
 - `sensors` : show temperature
 - `watch -t -n 1 "sensors | grep 'Core 0:'"` : show CPU temperature
+- `nmap -Pn -p- -v [ip]` : find open ports
+- `strace` : trace syscalls
 - `cat /proc/[pid]` : procfs, running processes
 - `cat /proc/meminfo` : memory info
 - `cat /proc/cpuinfo` : CPU info (CPUID)
 - `cat /proc/interrupts` : interrupts in
 - `cat /proc/ioports` : IO ports
 - `cat /proc/iomem` : MMIO
+- `cat /proc/driver/nvidia/` : GPU info
 - `cat /proc/stat` : all process stats
 - `cat /proc/[pid]/stat` : process stats
-- `iftop` : list TCP sockets
-- `netstat -nat` : list TCP sockets
 
 ## Kernel
 - `lsmod` : list kernel modules
     - also `cat /proc/modules`
 - `insmod [module].ko` : install kernel module
 - `rmmod [module]` : remove kernel module
+- `modinfo -F [info] [module]`: get info about kernel module
 - `dmesg | tail -n 5` : show kernel log
 - `ls -l /dev` : list device files
     - major, minor
@@ -128,13 +113,25 @@
 - `rmnod [device]`
 - `head -c 1 [file]` : output the first byte of a file
 
-## Filesystem
-[FSH](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
+## Paths
+- `.` : current directory
+- `..` : parent directory
+- `~` : home directory
+- `../relative/path` : relative path
+- `/absolute/path` : absolute path
 
-- `/proc` : procfs, running processes
-- `/dev` : udev, devices files
-- `/sys` : sysfs, devices/bus/drivers/kernel
-    - `/sys/bus/pci/devices`
+## Pipes
+- `A | B` : run A and transfer its output to B
+- `A & B` : run A then B
+- `A && B` : run A then B only if A succeeds
+- `| grep [some string]` : filter out stdout
+
+## Redirect
+- `>` : stdout
+- `<` : stdin
+- `&>` : stdout + stderr
+- `1>` : stdout
+- `2>` : stderr
 
 ## Bash profile
 - `~/.bashrc`
@@ -142,6 +139,14 @@
 - `~/.bash_profile`
     - executed once per login
     - inherit `~/.bashrc`
+
+## Filesystem
+[FSH](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard)
+
+- `/proc` : procfs, running processes
+- `/dev` : udev, devices files
+- `/sys` : sysfs, devices/bus/drivers/kernel
+    - `/sys/bus/pci/devices`
 
 ## Fedora
 
