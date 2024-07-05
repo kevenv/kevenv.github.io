@@ -60,18 +60,26 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 ## Configure
 config gnome + exts
 
+### Keyboard shortcuts
+- switch applications = disabled
+- swtich windows = alt+tab
+- take a screenshot interactively = disabled
+- switch to next input source = alt+a
+- switch to prev input src = shift+alt+a
+
 ## Install apps
 - veracrypt
 ```
 build from source: https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2
 ```
 - keepassXC
-- FreeFileSync
+- freefilesync
 - gnome tweaks
 - dconf editor
+- vlc
 - screenshot tool
 ```
-gnome-screenshot
+gnome-screenshot / gnu screenshot
 cmd: gnome-screenshot -i -a
 https://ubuntuhandbook.org/index.php/2022/04/get-back-gnome-screenshot-ubuntu-2204/
 ```
@@ -126,11 +134,16 @@ nano ~/.config/discord/settings.json
 dnf copr enable cboxdoerfer/fsearch
 dnf install fsearch
 ```
-- imhex
 - inkscape
 - pinta
 - remmina
 - virtual machine manager
+- imhex
+- wireshark
+- pulseview
+- gtkwave
+- gtkterm
+- clion
 
 ## RPM Fusion repos
 - `rpmfusion-nonfree-nvidia-driver`
