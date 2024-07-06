@@ -30,30 +30,6 @@
                    add                      commit           push
 </code></pre></div></td></tr></table></div>
 
-<h2>Config</h2>
-<ul>
-<li><code>git config --list</code> : show git config</li>
-<li><code>git config --global --edit</code> : edit git config</li>
-</ul>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code># ~/.gitconfig
-
-[user]
-      name = [FIRST NAME] [LAST NAME]
-      email = [EMAIL]
-[log]
-      date = local
-[format]
-      pretty = format:%C(yellow)%h %Cblue%&gt;(12)%ad %Cgreen%&lt;(7)%aN%Cred%d %Creset%s
-</code></pre></div></td></tr></table></div>
-
 <h2>Basic</h2>
 <ul>
 <li><code>git init</code> : init directory as a git repo</li>
@@ -150,6 +126,42 @@
 <li><code>git lfs track "*.[file type]"</code> : add file type to track with LFS</li>
 <li><code>git add .gitattributes</code> : make sure that this is tracked</li>
 </ol>
+<h2>Config</h2>
+<ul>
+<li><code>cat ~/.gitconfig</code> : show git config</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>[user]
+    name = [FIRST NAME] [LAST NAME]
+    email = [EMAIL]
+[credential]
+    helper = store
+[log]
+    date = local
+[format]
+    pretty = format:%C(yellow)%h %Cblue%&gt;(12)%ad %Cgreen%&lt;(7)%aN%Cred%d %Creset%s
+</code></pre></div></td></tr></table></div>
+
+<h2>GitHub password</h2>
+<p>GitHub is no longer accepting account passwords, need to use PAT (Personal Access Token).</p>
+<ul>
+<li>Create a PAT using <a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a></li>
+<li><code>git config --global credential.helper store</code><ul>
+<li>Stores the PAT in <code>~/.git-credentials</code> (plain text).</li>
+</ul>
+</li>
+<li><code>git pull</code><ul>
+<li>Enter the PAT as password, won't be asked ever again.</li>
+</ul>
+</li>
+</ul>
         <hr>
         <footer>
             <p>

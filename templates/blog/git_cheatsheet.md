@@ -6,21 +6,6 @@
                    add                      commit           push
 ```
 
-## Config
-- `git config --list` : show git config
-- `git config --global --edit` : edit git config
-```
-# ~/.gitconfig
-
-[user]
-      name = [FIRST NAME] [LAST NAME]
-      email = [EMAIL]
-[log]
-      date = local
-[format]
-      pretty = format:%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s
-```
-
 ## Basic
 - `git init` : init directory as a git repo
 - `git clone [url]` : clone repo
@@ -98,3 +83,26 @@
 1. `git lfs install` : install LFS, once per user
 2. `git lfs track "*.[file type]"` : add file type to track with LFS
 3. `git add .gitattributes` : make sure that this is tracked
+
+## Config
+- `cat ~/.gitconfig` : show git config
+```
+[user]
+	name = [FIRST NAME] [LAST NAME]
+	email = [EMAIL]
+[credential]
+	helper = store
+[log]
+	date = local
+[format]
+	pretty = format:%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s
+```
+
+## GitHub password
+GitHub is no longer accepting account passwords, need to use PAT (Personal Access Token).
+
+- Create a PAT using [https://github.com/settings/tokens](https://github.com/settings/tokens)
+- `git config --global credential.helper store`
+    - Stores the PAT in `~/.git-credentials` (plain text).
+- `git pull`
+    - Enter the PAT as password, won't be asked ever again.

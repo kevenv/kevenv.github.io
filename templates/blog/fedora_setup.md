@@ -61,7 +61,8 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 
 ## Configure
 config gnome + exts
-
+- gnome tweaks
+- `settings/accessibility/seeing/reduce animations`
 - gnome remote desktop : `settings/sharing/remote desktop`
 
 ### Keyboard shortcuts
@@ -85,6 +86,9 @@ build from source: https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracr
 - freefilesync
 - gnome tweaks
 - dconf editor
+- dnfdragora
+- git ([setup git config]({{root}}blog/git_cheatsheet.html))
+- gcc, g++, clang, cmake, make, gdb, lldb
 - vlc
 - screenshot tool
 ```
@@ -161,6 +165,9 @@ sudo dnf install strace-with-colors
 - gtkwave
 - gtkterm
 - clion
+
+## dnfdragora
+- `dnfdragora --exit`
 
 ## RPM Fusion
 - `rpmfusion-nonfree-nvidia-driver`
