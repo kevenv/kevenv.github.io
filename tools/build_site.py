@@ -27,6 +27,7 @@ if __name__ == '__main__':
     pages = [
         ('index','','Home'),
         ('about','','About'),
+            ('courses','','Courses'),
         ('projects','','Projects'),
             ('projects/chip8','../','Projects Chip8'),
             ('projects/europa','../','Project Europa'),
