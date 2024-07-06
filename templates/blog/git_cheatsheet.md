@@ -98,6 +98,9 @@
 	pretty = format:%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s
 ```
 
+- `git config --global pull.rebase true` : always rebase on pull
+- `git config --global core.autocrlf true` : convert CRLF <-> LF (Windows)
+
 ## GitHub password
 GitHub is no longer accepting account passwords, need to use PAT (Personal Access Token).
 
