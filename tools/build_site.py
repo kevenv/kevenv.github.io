@@ -28,6 +28,7 @@ if __name__ == '__main__':
         ('index','','Home'),
         ('about','','About'),
             ('courses','','Courses'),
+            ('history','','History'),
         ('projects','','Projects'),
             ('projects/chip8','../','Projects Chip8'),
             ('projects/europa','../','Project Europa'),
