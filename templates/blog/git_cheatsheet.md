@@ -25,8 +25,9 @@
 - `git status` : status of local repo
 - `git diff [file a] [file b]` : diff two files
     - `--cached` : diff the added files
-    - `-b` : ignore endlines
     - `-w` : ignore whitespaces
+    - `-b` : ignore whitespaces at eol
+    - `--ignore-cr-at-eol` : ignore endlines
     - `--name-only` : only list files
 - `git -c core.fileMode=false diff` : diff two files, ignore file permissions
 
