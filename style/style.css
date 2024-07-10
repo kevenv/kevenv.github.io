@@ -3,15 +3,16 @@
 * {
     box-sizing: border-box; /* make css easier */
     /* debug */
-    /*border: 2px dotted black;*/
+    /* border: 2px solid red; */
 }
 
 body {
-    max-width: 650px;
-    margin: 1rem auto;
-    padding: 0 10px;
     font-family: "Arial", sans-serif;
     line-height: 1.6;
+
+    margin: 1rem auto;
+    padding: 0 10px;
+    max-width: 650px;
     color: #202122;
     background-color: #F8F9FA;
 }
@@ -29,10 +30,10 @@ h2 {
 }
 
 img {
-    display: block;
     width: auto;
     height: auto;
     max-width: 100%;
+    display: block;
     border: 1px solid black;
 }
 
@@ -78,25 +79,25 @@ a:hover {
 }
 
 .caption {
-    text-align: justify;
-    font-style: italic;
     font-size: 15px;
+    font-style: italic;
+
     margin: 2px;
+    text-align: justify;
 }
 
-/* ------ Cmd highlight ------ */
-
-p code, li code {
+p code, li code { /* Cmd highlight */
+    padding: 0.1rem 0.3rem;
     background-color: AliceBlue;
     border: 1px solid black;
-    padding: 0.1rem 0.3rem;
 }
 
 .bibtex {
+    font-size: 11px;
+
+    padding: 8px;
     background-color: AliceBlue;
     border: 1px solid black;
-    font-size: 11px;
-    padding: 8px;
     white-space: pre-wrap;
 }
 
@@ -124,40 +125,42 @@ p code, li code {
     margin: 4px 0;
 }
 .post-list {
-    list-style: none;
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 .post-list li {
-    align-items: center;
+    margin: 0 0 10px;
+    
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    margin: 0 0 10px;
+    align-items: center;
 }
 
 @media(max-width:650px) {
     .post-list li {
-        align-items: flex-start;
+        margin: 0 0 15px;
+        
         flex-direction: column;
         justify-content: baseline;
-        margin: 0 0 15px;
+        align-items: flex-start;
     }
 }
 
 /* ------ Code ------ */
 
 .codehilite {
-    width:100%;
+    font-size: 14px;
+    width: 100%;
     height: auto;
-    overflow: auto;
+    overflow: auto; /* scrollbars if too big */
 }
 
 .linenos {
     padding-left: 5px;
-    padding-right: 5px;
 }
 
 .code {
-    padding-left: 10px;
+    padding-left: 15px;
 }
