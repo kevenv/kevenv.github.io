@@ -295,10 +295,7 @@
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="p">&gt;</span>
 </code></pre></div></td></tr></table></div>
 
-<h3>Center elements</h3>
-<ul>
-<li>horizontally</li>
-</ul>
+<h3>Center elements horizontally</h3>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -328,28 +325,72 @@
 <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
-<h3>Columns</h3>
-<p>Using "flexbox"</p>
+<h3>Flexbox</h3>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;column&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;column&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;column&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;item&quot;</span><span class="p">&gt;</span>1<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;item&quot;</span><span class="p">&gt;</span>2<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;item&quot;</span><span class="p">&gt;</span>3<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </code></pre></div></td></tr></table></div>
 
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c">/* children of container become columns instead of stack */</span>
-<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
+<ul>
+<li><code>justify-content</code> (x axis)<ul>
+<li>flex-start</li>
+<li>flex-end</li>
+<li>center</li>
+<li>space-between : equal spacing between items</li>
+<li>space-around : equal spacing around items</li>
+<li>space-evenly : items evenly spaced in container</li>
+</ul>
+</li>
+<li><code>align-items</code> (y axis)<ul>
+<li>stretch : resized to fit container</li>
+<li>flex-start</li>
+<li>flex-end</li>
+<li>center</li>
+<li>baseline : align to each item contents</li>
+</ul>
+</li>
+<li><code>flex-direction</code><ul>
+<li>row</li>
+<li>row-reverse</li>
+<li>column</li>
+<li>column-reverse</li>
+</ul>
+</li>
+<li><code>order</code> : specifies the order of a flexible item (-2,-1,0,1,2)</li>
+<li><code>align-self</code> : "align-items" for a single item</li>
+<li><code>flex-wrap</code> : when items doesn't fit into container, used with "align-content"<ul>
+<li>nowrap</li>
+<li>wrap</li>
+<li>wrap-reverse</li>
+</ul>
+</li>
+<li><code>flex-flow</code> : "flex-direction" + "flex-wrap"</li>
+<li><code>align-content</code> : spacing between lines<ul>
+<li>stretch</li>
+<li>flex-start</li>
+<li>flex-end</li>
+<li>center</li>
+<li>space-between</li>
+<li>space-around</li>
+</ul>
+</li>
+<li><code>gap</code> : row-gap column gap</li>
+<li><code>row-gap</code> : spacing between rows</li>
+<li><code>column-gap</code> : spacing between columns</li>
+</ul>
 <h3>Debug tricks</h3>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>

@@ -205,8 +205,7 @@ p {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ```
 
-### Center elements
-- horizontally
+### Center elements horizontally
 ```CSS
 .my-class {
     /* align to the right */
@@ -224,23 +223,56 @@ p {
 }
 ```
 
-### Columns
-Using "flexbox"
-
+### Flexbox
 ```HTML
 <div class="container">
-    <div class="column"></div>
-    <div class="column"></div>
-    <div class="column"></div>
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
 </div>
 ```
 
 ```CSS
-/* children of container become columns instead of stack */
 .container {
-    display: flex
+    display: flex;
 }
 ```
+
+- `justify-content` (x axis)
+	- flex-start
+	- flex-end
+	- center
+	- space-between : equal spacing between items
+	- space-around : equal spacing around items
+	- space-evenly : items evenly spaced in container
+- `align-items` (y axis)
+	- stretch : resized to fit container
+	- flex-start
+	- flex-end
+	- center
+	- baseline : align to each item contents
+- `flex-direction`
+	- row
+	- row-reverse
+	- column
+	- column-reverse
+- `order` : specifies the order of a flexible item (-2,-1,0,1,2)
+- `align-self` : "align-items" for a single item
+- `flex-wrap` : when items doesn't fit into container, used with "align-content"
+	- nowrap
+	- wrap
+	- wrap-reverse
+- `flex-flow` : "flex-direction" + "flex-wrap"
+- `align-content` : spacing between lines
+	- stretch
+	- flex-start
+	- flex-end
+	- center
+	- space-between
+	- space-around
+- `gap` : row-gap column gap
+- `row-gap` : spacing between rows
+- `column-gap` : spacing between columns
 
 ### Debug tricks
 ```CSS

@@ -45,7 +45,9 @@ if __name__ == '__main__':
             ('blog/css_cheatsheet','../','CSS cheatsheet'),
             ('blog/fedora_setup','../','Fedora setup'),
             ('blog/fedora_nvidia','../','Fedora + Nvidia'),
+
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello world!'),
+            
             ('blog/sort_algos','../','Sorting algorithms'),
             ('blog/why_linux','../','Why Linux'),
             ('blog/priority_queue','../','Priority queue'),
