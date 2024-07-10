@@ -1,4 +1,4 @@
-# BMP Image Format
+# BMP image format
 
 In this article we will see how images are stored in files, specifically _BMP_ files.
 The _Bitmap_ or _BMP_ file is one of the simplest image format, it is widely used to store uncompressed images.
@@ -21,13 +21,13 @@ The camera sensor does not have infinite resolution, in fact the sensor is actua
     <img src="{{rootImages}}blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels">
 </p>
 
-Due to how the human visual system works, it turns out that we can encode any color using three number: R (Red), G (Green) and B (Blue). Those three numbers are often referred to as _color channels_ and they form the _RGB_ color space.
+Due to how the human visual system works, it turns out that we can encode any color using three numbers: R (Red), G (Green) and B (Blue). Those three numbers are often referred to as _color channels_ and they form the _RGB color space_.
 This is easier to understand when thinking about mixing lights of different colors:
 <p align="center">
     <img src="{{rootImages}}blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model">
 </p>
 
-For example by mixing a red light with green one we obtain a yellow light.
+For example by mixing a red light with a green one we obtain a yellow light.
 We can get white by merging all the lights together and we get black when all the lights are closed.
 By mixing all three fundamental light colors we can make all the possible colors:
 <p align="center">
@@ -85,7 +85,7 @@ The first line is the file signature (used to recognize the file type):
 - `P6` pixels are encoded as binary numbers
 
 The second line is the width and height.
-The third line is the maximum value of each pixel channel, usually 255 for 8-bit channel.
+The third line is the maximum value of each pixel channel, usually 255 for 8-bit channels.
 Any string starting with `#` is considered a comment.
 The pixels data follow the header and are specified from left to right, top to bottom.
 
@@ -160,7 +160,7 @@ The size of the info header will allow us to determine the type of info header:
 - `BITMAPV4HEADER` : extends info header to support color spaces
 - `BITMAPV5HEADER` : extends v4 header to support ICC color profiles
 
-We will only handle `BITMAPINFOHEADER` as it the most common by far.
+We will only handle `BITMAPINFOHEADER` as it is the most common by far.
 
 Since we assume that the image is 24-bpp uncompressed:
 
@@ -248,13 +248,13 @@ void bmp_free(image_t* image)
 Filling the buffer with pixels (lines 30 to 51) is a bit more involved and deserves more explanations.
 
 The BMP pixels are stored in the _RGB24_ format but a screen usually expects a _RGB888_ format.
-RGB24 is tightly packed into 3 bytes (B,G,R) while RGB888 is stored as 4 bytes with the first byte being ignored (_,B,G,R).
+RGB24 is tightly packed into 3 bytes (B,G,R) while RGB888 is stored as 4 bytes with the last byte being ignored (B,G,R,_).
 
-To convert it we need to allocate a temporary buffer `tmp` to hold the pixels stored bottom to top, convert it to RGB888 and flip the image at the same time in `image->pixels`, the final pixels buffer that will be used directly by our image viewer to be displayed on screen.
+To convert it we need to allocate a temporary buffer `tmp` to hold the pixels stored bottom to top, convert it to RGB888 and flip the image at the same time in `image->pixels`. The `image->pixels` array is the final pixels buffer that will be used directly by our image viewer to be displayed on screen.
 
 ## Image viewer
 Now that we understand the format, we can write a simple image viewer that is able to open BMP images.
-We chose to use the SDL2 library to open a window in which we can show the image.
+We choose to use the SDL2 library to open a window in which we can show the image.
 The basic code template for a typical SDL2 app should be something like this:
 ```C
 #include <SDL2/SDL.h>
@@ -266,7 +266,7 @@ int main(int argc, char* argv[])
         return 1;
     }
     SDL_Window* window = SDL_CreateWindow("Image Viewer",
-        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600
         SDL_WINDOW_SHOWN
     );
