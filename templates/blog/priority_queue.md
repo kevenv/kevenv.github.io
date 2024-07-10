@@ -1,4 +1,4 @@
-# Priority Queue
+# Priority queue
 
 The _priority queue_ is an important data structure where each element are kept in order of priority to be able to rapidly determine the element with the highest priority.
 

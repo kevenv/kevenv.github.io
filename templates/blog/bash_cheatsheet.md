@@ -1,4 +1,4 @@
-# Bash Cheatsheet
+# Bash cheatsheet
 
 ## Useful commands
 - `dirname [file]` : get path of a file

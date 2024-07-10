@@ -1,4 +1,4 @@
-# C Style
+# C style
 
 - use spaces (1 tab = 4 spaces)
 - snake_case everything

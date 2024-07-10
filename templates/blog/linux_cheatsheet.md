@@ -1,4 +1,4 @@
-# Linux Cheatsheet
+# Linux cheatsheet
 
 ## Basic
 - `cd [directory]` : change directory

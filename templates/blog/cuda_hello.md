@@ -1,4 +1,4 @@
-# CUDA Tutorial 1 - Hello World!
+# CUDA Tutorial 1 - Hello world!
 
 Welcome to this tutorial on CUDA! Before we get started we should setup our development environment.
 

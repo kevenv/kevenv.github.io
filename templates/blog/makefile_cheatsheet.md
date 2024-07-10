@@ -1,4 +1,4 @@
-# Makefile Cheatsheet
+# Makefile cheatsheet
 
 ## Usage
 `make` looks for the file named `Makefile` in the CWD.

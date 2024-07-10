@@ -1,4 +1,4 @@
-# Fedora Setup
+# Fedora setup
 
 ## Install Fedora
 - install using ISO
