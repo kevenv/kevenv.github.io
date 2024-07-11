@@ -12,12 +12,13 @@
     - -r : recursive (directory)
     - -f : force
 - `mkdir [directory]` : create directory
-    - p : create parent directories as needed
+    - -p : create parent directories as needed
 - `ln -s [target] [symlink]` : create a symlink
 - `touch [file]` : create empty file, mark file as newly edited
 - `source [file]` : execute a `.sh` file within the current shell
 - `cat [file]` : print file to the screen
 - `tree` : print directory hierarchy
+    - -L [max depth] : max depth
 - `tail -n [num of lines] [file]` : show last N lines of a file
 - `file [file]` : get file type
 - `stat [file]` : get file info
@@ -82,7 +83,13 @@
 - `ifconfig` : show network info
 - `iftop` : list TCP sockets
 - `netstat -nat` : list TCP sockets
-- `df -h` : show disk usage
+- `df -shc * | sort -rh` : show disk usage
+    - -s : summary
+    - -h : human readable
+    - -c : show total
+    - -b : bytes
+    - --apparent size
+    - -d [max depth] : max depth
 - `free -h --si` : show how much RAM
 - `htop` : list process, kill process
 - `sensors` : show temperature

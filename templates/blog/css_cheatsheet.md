@@ -189,9 +189,10 @@ p {
 - rem (root-em)
     - relative to root/html `font-size`
     - good for `font-size`
-- vh
+- vh, vw, vmin, vmax : max(vh,vw)
     - relative to the height of the viewport
     - 1vh = 1% viewport height
+    - good for `font-size`
 - 0 (no units)
 - auto
 

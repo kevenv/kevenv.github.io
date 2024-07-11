@@ -43,14 +43,17 @@
 </ul>
 </li>
 <li><code>mkdir [directory]</code> : create directory<ul>
-<li>p : create parent directories as needed</li>
+<li>-p : create parent directories as needed</li>
 </ul>
 </li>
 <li><code>ln -s [target] [symlink]</code> : create a symlink</li>
 <li><code>touch [file]</code> : create empty file, mark file as newly edited</li>
 <li><code>source [file]</code> : execute a <code>.sh</code> file within the current shell</li>
 <li><code>cat [file]</code> : print file to the screen</li>
-<li><code>tree</code> : print directory hierarchy</li>
+<li><code>tree</code> : print directory hierarchy<ul>
+<li>-L [max depth] : max depth</li>
+</ul>
+</li>
 <li><code>tail -n [num of lines] [file]</code> : show last N lines of a file</li>
 <li><code>file [file]</code> : get file type</li>
 <li><code>stat [file]</code> : get file info</li>
@@ -128,7 +131,15 @@
 <li><code>ifconfig</code> : show network info</li>
 <li><code>iftop</code> : list TCP sockets</li>
 <li><code>netstat -nat</code> : list TCP sockets</li>
-<li><code>df -h</code> : show disk usage</li>
+<li><code>df -shc * | sort -rh</code> : show disk usage<ul>
+<li>-s : summary</li>
+<li>-h : human readable</li>
+<li>-c : show total</li>
+<li>-b : bytes</li>
+<li>--apparent size</li>
+<li>-d [max depth] : max depth</li>
+</ul>
+</li>
 <li><code>free -h --si</code> : show how much RAM</li>
 <li><code>htop</code> : list process, kill process</li>
 <li><code>sensors</code> : show temperature</li>
