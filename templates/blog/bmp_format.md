@@ -275,24 +275,19 @@ int main(int argc, char* argv[])
     }
     SDL_Surface* window_surface = SDL_GetWindowSurface(window);
 
-    // main loop
+    // events loop
     bool running = true;
     SDL_Event event;
-    while (running) {
+    while (running && SDL_WaitEvent(&event)) {
         // handle events
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
-            }
+        if (event.type == SDL_QUIT) {
+            running = false;
         }
 
-        // 2. render
+        // 2. repaint
         u32 color = SDL_MapRGBA(window_surface->format, 0, 0, 0, 255);
         SDL_FillRect(window_surface, NULL, color);
         SDL_UpdateWindowSurface(window);
-
-        // sleep
-        SDL_Delay(30);
     }
 
     // 3. cleanup
@@ -332,7 +327,7 @@ bmp_free(image);
 
 Once the image has been copied to the surface properly, we can blit it to the window's surface:
 ```C hl_lines="4"
-// 2. render
+// 2. repaint
 u32 color = SDL_MapRGBA(window_surface->format, 0, 0, 0, 255);
 SDL_FillRect(window_surface, NULL, color);
 SDL_BlitSurface(image_surface, NULL, window_surface, NULL);
