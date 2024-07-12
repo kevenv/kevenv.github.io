@@ -145,11 +145,12 @@ nano ~/.config/discord/settings.json
 ```
 
 ## Install extra apps
-- fsearch
+- fsearch (file search)
 ```
 sudo dnf copr enable cboxdoerfer/fsearch
 sudo dnf install fsearch
 ```
+- recoll (full text search)
 - strace
 ```
 sudo dnf copr enable xfgusta/strace-with-colors
