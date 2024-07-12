@@ -262,6 +262,24 @@ instead of
 -std=c99
 -O0 -g
 </code></pre></div></td></tr></table></div>
+
+<h2>Utils</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// stringify a C expression</span>
+<span class="cp">#define TO_STR(expr) #expr</span>
+
+<span class="c1">// ceil(a / b)</span>
+<span class="cp">#define DIV_CEIL(a, b) (((a) + (b)-1) / (b))</span>
+
+<span class="c1">// align an address to a power of 2</span>
+<span class="cp">#define ALIGN(p, a)  (((u64)(p) + (a)-1) &amp; ~((a)-1))</span>
+</code></pre></div></td></tr></table></div>
         <hr>
         <footer>
             <div>

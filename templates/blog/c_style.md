@@ -166,3 +166,15 @@ This is very controversial, no one seems to agree...
 -std=c99
 -O0 -g
 ```
+
+## Utils
+```C
+// stringify a C expression
+#define TO_STR(expr) #expr
+
+// ceil(a / b)
+#define DIV_CEIL(a, b) (((a) + (b)-1) / (b))
+
+// align an address to a power of 2
+#define ALIGN(p, a)  (((u64)(p) + (a)-1) & ~((a)-1))
+```
