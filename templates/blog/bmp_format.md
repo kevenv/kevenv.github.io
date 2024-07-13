@@ -141,7 +141,7 @@ struct __attribute__((packed)) bmp_info_header_t {
     u16 bpp; // bits per pixel
 
     u32 compression; // compression method
-    u32 image_size; // size of the image
+    u32 image_size; // size of the image (with padding)
 
     // unused with 24-bpp:
     u32 pixels_per_meter_x;
@@ -173,7 +173,7 @@ Contrary to common intuition, the pixels in BMP are stored from left to right bu
 
 Each pixel takes 3 bytes and is encoded as a R,G,B triplet in the B,G,R order.
 Some padding bytes might be added to each row of the pixels grid to make it 4-byte aligned, meaning that the length of each row must be a multiple of 4 bytes.
-This is done to make it fit inside an array of `u32`.
+This is done to avoid making _unaligned memory accesses_ which could slow down the CPU.
 
 ### Implementation
 All together we can load a BMP image very easily without needing any external libraries:
@@ -214,7 +214,7 @@ image_t* bmp_load(const char* file_name)
     image->h = info_header.height;
     u32 image_size = image->w * image->h * 4;
     image->pixels = (u8*)malloc(image_size);
-    u8* tmp = (u8*)malloc(image_size);
+    u8* tmp = (u8*)malloc(info_header.image_size);
 
     // fill buffer with pixels from file
     fseek(file, file_header.offset, SEEK_SET);
@@ -222,9 +222,9 @@ image_t* bmp_load(const char* file_name)
 
     // convert RGB24 -> RGB888
     // flip image in Y
+    u32 pitch = ((image->w * 3) + (4-1)) & ~((u32)(4-1)); // 4-byte alignment
     for (u32 y = 0; y < image->h; ++y) {
         for (u32 x = 0; x < image->w; ++x) {
-            u32 pitch = ((image->w * 3) + 3) & ~3; // 4-byte alignment
             u32 y_ = image->h-1 - y; // flip image in Y
             image->pixels[(x + y * image->w) * 4 + 0] = tmp[x*3 + y_ * pitch + 0]; // B
             image->pixels[(x + y * image->w) * 4 + 1] = tmp[x*3 + y_ * pitch + 1]; // G
