@@ -69,6 +69,11 @@
     - `-f` : force
     - `-X` : only ignored files
 
+## Tags
+- `git tag` : list tags
+- `git tag [tag name]` : add tag
+- `git push --tags` : push tags
+
 ## Submodules
 - `git clone --recursive` : clone with submodules
 - `git submodule update --init --recursive` : pull submodules after clone
