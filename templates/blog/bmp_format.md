@@ -15,7 +15,7 @@ The image captured on the sensor is essentially a miniaturized version of the 3D
     <img src="{{rootImages}}blog/bmp_camera.svg" alt="Camera Imaging">
 </p>
 
-The camera sensor does not have infinite resolution, in fact the sensor is actually a grid of tiny sensors capturing light at different positions. This divides the image into a 2D grid of _pixels_, where each pixel represents the color at a specific position.
+The camera sensor does not have infinite resolution, in fact the sensor is actually a grid of tiny sensors capturing light at different positions. This divides the image into a 2D grid of _pixels_, where each pixel represents the color and intensity at a specific position.
 
 <p align="center">
     <img src="{{rootImages}}blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels">
@@ -35,7 +35,7 @@ By mixing all three fundamental light colors we can make all the possible colors
 </p>
 
 To be able to recreate any color using the R,G,B triplet we need to be able to 
-change the intensity of each color channel, resulting in different shades of a given color:
+change the _intensity_ of each color channel, resulting in different shades of a given color:
 <p align="center">
     <img src="{{rootImages}}blog/bmp_r_grad.svg" alt="R channel values">
 </p>
@@ -90,16 +90,16 @@ Any string starting with `#` is considered a comment.
 The pixels data follow the header and are specified from left to right, top to bottom.
 
 In the case of the ASCII format, triplets are stored as ASCII characters representing the underlying values and each channel is separated by a whitespace. There is usually one line per pixel.
-For example, a purple pixel (R,G,B = 255,0,255) will be encoded as:
+For example, a pink pixel (R,G,B = 255,128,255) will be encoded as:
 ```
-255 0 255
+255 128 255
 ```
 
 For the binary format, each pixel takes only 3 bytes and is encoded as a R,G,B triplet in this exact order.
 A channel is encoded as a 8-bit unsigned value and takes 1 byte.
 It should be obvious that the ASCII format is a lot more wasteful, a single pixel takes 12 bytes!
 
-Note that the file header is _always_ encoded as ASCII characters even in the binary format.
+Note that the file header is **always** encoded as ASCII characters even in the binary format.
 
 ## BMP
 The BMP format is not much more complicated than PPM.
@@ -166,21 +166,34 @@ Since we assume that the image is 24-bpp uncompressed:
 
 - `compression = 0`
 - `bpp = 24`
-- `image_size = width x height x 3 bytes`
+
+You might have assumed that `image_size = width x height x 3 bytes` but as we will soon see it might be a bit more than that since the image data might contain some padding to make it _4-byte aligned_.
 
 ### Image
-Contrary to common intuition, the pixels in BMP are stored from left to right but starts from the _bottom_ first. This means that we will need to flip the image vertically to show it correctly on screen.
+Contrary to common intuition, the pixels in BMP are stored from left to right but starts from the _bottom_ first. This means that we will need to flip the image vertically to show it correctly on screen. Each pixel takes 3 bytes and is encoded as a R,G,B triplet in the B,G,R order.
 
-Each pixel takes 3 bytes and is encoded as a R,G,B triplet in the B,G,R order.
-Some padding bytes might be added to each row of the pixels grid to make it 4-byte aligned, meaning that the length of each row must be a multiple of 4 bytes.
+Some padding bytes might be added to each row of the pixels grid to make it 4-byte aligned, meaning that the number of bytes of each row (also known as the _pitch_) must be a multiple of 4 bytes.
 This is done to avoid making _unaligned memory accesses_ which could slow down the CPU.
+
+The pitch of the image is usually `width * 3` but we must 
+round it up to the next 4 bytes to ensure 4-byte alignment.
+This can be computed as:
+```C
+pitch = ceil((float)(width * 3) / 4) * 4;
+// equivalent mathematically to
+pitch = (((width * 3) + (4-1)) / 4) * 4;
+// can be further optimized since we assume that we align to a power of two
+pitch = ((width * 3) + (4-1)) & ~((u32)(4-1));
+```
+
+The `image_size` from the info header can then be computed as `pitch * height`.
 
 ### Implementation
 All together we can load a BMP image very easily without needing any external libraries:
 
 1. Read the file
 2. Parse both headers
-3. Fill a buffer with the pixels stored in the file.
+3. Fill a buffer with the pixels stored in the file
 
 ```C
 #include <stdio.h> // fopen
@@ -245,7 +258,7 @@ void bmp_free(image_t* image)
 }
 ```
 
-Filling the buffer with pixels (lines 30 to 51) is a bit more involved and deserves more explanations.
+Filling the buffer with pixels (lines 30 to 50) is a bit more involved and deserves more explanations.
 
 The BMP pixels are stored in the _RGB24_ format but a screen usually expects a _RGB888_ format.
 RGB24 is tightly packed into 3 bytes (B,G,R) while RGB888 is stored as 4 bytes with the last byte being ignored (B,G,R,_).
@@ -301,7 +314,7 @@ An SDL app can be compiled using `gcc -lSDL2 app.c -o app`.
 To transform this app into an image viewer we must do three things:
 
 1. Load the image
-2. Create a "SDL surface" which contains the image
+2. Create a _SDL surface_ which contains the image
 3. Blit the surface to the window
 
 For the first two steps we load the image and create a SDL surface for it during init:
@@ -345,7 +358,8 @@ In this article **we have omitted proper errors handling** to keep the code shor
     - [https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types](https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types)
     - [https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader](https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader)
     - [https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85)](https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85))
-- [https://en.wikipedia.org/wiki/BMP_file_format](https://en.wikipedia.org/wiki/BMP_file_format)
-- [https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml](https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml)
-- [https://netpbm.sourceforge.net/doc/ppm.html](https://netpbm.sourceforge.net/doc/ppm.html)
-- [https://en.wikipedia.org/wiki/Netpbm](https://en.wikipedia.org/wiki/Netpbm)
+    - [https://en.wikipedia.org/wiki/BMP_file_format](https://en.wikipedia.org/wiki/BMP_file_format)
+    - [https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml](https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml)
+- PPM specification:
+    - [https://netpbm.sourceforge.net/doc/ppm.html](https://netpbm.sourceforge.net/doc/ppm.html)
+    - [https://en.wikipedia.org/wiki/Netpbm](https://en.wikipedia.org/wiki/Netpbm)
