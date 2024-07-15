@@ -52,6 +52,7 @@ if __name__ == '__main__':
             ('blog/why_linux','../','Why Linux'),
             ('blog/priority_queue','../','Priority queue'),
             ('blog/bmp_format','../','BMP image format'),
+            ('blog/qoi_format','../','QOI image format'),
             # ('blog/zip_format','../','ZIP format'),
     ]
     for page in pages:

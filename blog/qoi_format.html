@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - QOI image format</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>QOI image format</h1>
+<p>In this article we will show how to implement an image encoder and decoder for the <em>QOI</em> (Quite OK Image) format, a relatively new image format created by the game developer <em>Dominic Szablewski</em> that has generated a lot of interest recently in the computer graphics community due to its simplicity.</p>
+<p>QOI is a very simple lossless image format that is easy to understand and fast to encode, yet compresses images to a comparable size as the much more complex <em>PNG</em> image format.
+Thus it sits between <em>BMP</em> (uncompressed) and <em>PNG</em> (compressed) in term of compression ratio.
+The author claims that QOI is 3-4x faster than PNG to decode and 20-50x faster to encode!</p>
+<p>If you are new to image formats we recommend looking at our <a href="https://kevenv.com/blog/bmp_format.html">previous article on BMP</a> in which we show how to build an image viewer, capable of loading BMP images. We will extend the same image viewer to QOI in this article.</p>
+<h2>Intro to data compression</h2>
+<p>QOI is a good introduction to <em>lossless data compression</em>, meaning that the original image can be recovered exactly without any loss in quality.</p>
+<p>Data can usually be compressed much further by accepting a loss in quality,
+those methods are said to be <em>lossy</em> and are much more complex as they exploit the limits of perception of the human visual (or auditive) system.
+In other words, things that humans cannot see (or hear) are removed from the data.
+This is what the <em>JPEG</em> format does for images.
+As you might have noticed, those methods end up being very specific to the kind of data to compress (image, sound, video...).</p>
+<p>How can we make the files smaller without loosing any information neccessary to be able to recover the original file?
+This is achieved by taking advantage of <em>redundancies</em> in the data.
+We find <em>repetitive patterns</em> and replace them by an equivalent compressed representation.
+Files can only be compressed if they have a lot of redundancy, there is no magic here.
+In practice raw data is usually not encoded the most efficient way and is compressible.</p>
+<p>One of the simplest technique to do lossless data compression is <em>RLE</em> (Run Length Encoding).
+Say we have the following data:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>2 5 5 5 5 5 5 5 3 3
+</code></pre></div></td></tr></table></div>
+
+<p>Each number can fit in a single byte so the whole data takes 10 bytes.
+This is the most straightforward and naive scheme possible but we can encode it more efficiently by noticing the repetition of "5" and "3":</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>(1 x 2) (7 x 5) (2 x 3)
+</code></pre></div></td></tr></table></div>
+
+<p>This encoding scheme is known as <em>RLE</em> and compresses the data to 6 bytes, a 40% decrease in size!
+Notice that the longer the repetition, the more the data can be compressed.</p>
+<p>An image can be compressed that way but since it is rare to have repetitions of pixels with exactly the same value, it is not very effective.
+Images are made of pixels with 3 color channels (R,G,B) so instead of doing RLE on bytes it makes more sense to do it on pixels, groups of 3 bytes:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>[255 128 150] [255 128 150] [255 128 150] = (3 x [255 128 150])
+</code></pre></div></td></tr></table></div>
+
+<h2>Compression algorithm</h2>
+<p>The QOI compression algorithm essentially chooses between 4 techniques to compress each pixel or a group of pixels:</p>
+<ol>
+<li>Run</li>
+<li>Index</li>
+<li>Difference</li>
+<li>Full (uncompressed)</li>
+</ol>
+<p>Those methods were choosen to tradeoff quality with complexity after surely many iterations while testing with all kind of images.</p>
+<h3>1. Run</h3>
+<p>We have already seen the first method in the section above on data compression.
+The specific implementation of RLE used in QOI is a bit different however.
+A run is defined based on the previous pixel decoded.
+It uses 6-bit to store the run-length
+The run-length is stored with a bias of -1 to avoid length of 0
+2^6 = 64 [0-63] -&gt; [1,64], 63,64 are illegal and reserved.
+so the range is 1..62</p>
+<h3>2. Index</h3>
+<p>If a repetition is not detected we can use the next best thing and send an index to a previously seen pixel instead.
+QOI keeps a buffer of 64 pixels that have been previously seen at any time, those are not necessarily the last pixels seen up to that point.
+Each time a new pixel is decoded it is added to this buffer by using a hash function:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">u32</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">r</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">g</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="n">u8</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="p">)(</span><span class="n">hash</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">64</span><span class="p">);</span>
+<span class="n">prev_pixels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>3. Difference</h3>
+<p>Pixels that are physically very close to each other
+usually vary slightly in value but it is rare that they have the exact same value.
+RLE with some margin to find
+instead of sending the pixel value, we can send the difference with the previous pixel.</p>
+<p>green channel : human most sensitive to green, able to distinghish between many more shades of green than red or blue.</p>
+<h3>4. Full</h3>
+<p>The last method is used when we are out of options and none of the previous ones worked or resulted in compression. In that case we just send the raw pixel in the order R,G,B,A (RGB or RGBA).</p>
+<p>One thing to notice is that none of those methods take much advantage of the specific properties of images.
+To keep things simple QOI treats the image as a single 1D stream of pixels and not a 2D grid like PNG does.
+The compression method is thus not able to detect the 2D spatial redundancies that are common in images. This is probably one of the reason why PNG is more efficient.</p>
+<h2>File format</h2>
+<p>Now that we have seen how QOI compresses images, let's analyze the actual file format.
+A QOI file starts with a fixed size <em>header</em> followed by a list of <em>chunks</em> containing the compressed pixels data.</p>
+<p align="center">
+    <img src="../imgs/blog/qoi_format.svg" alt="QOI file format">
+</p>
+
+<h3>Header</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">qoi_header_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">magic</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"> </span><span class="c1">// file signature &quot;qoif&quot;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">width</span><span class="p">;</span><span class="w">     </span><span class="c1">// image width in pixels (BE)</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">height</span><span class="p">;</span><span class="w">    </span><span class="c1">// image height in pixels (BE)</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">channels</span><span class="p">;</span><span class="w">   </span><span class="c1">// 3 = RGB, 4 = RGBA</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">colorspace</span><span class="p">;</span><span class="w"> </span><span class="c1">// qoi_color_space_t</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<p>The header contains only the essential information to decode the image, nothing else.
+The first few bytes of the header are the <em>file signature</em>, also known as the <em>magic number</em> of the file, and is only used to identify the type of file. The signature for QOI is "quoif" in ASCII characters.</p>
+<p>The <code>width</code> and <code>height</code> of the image follows the file signature. Annoyingly they are encoded as <em>big-endian</em>, pressumably to make those values easy to see when looking at the raw binary data. We need to convert them to <em>little-endian</em> by using a routine like this:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">u32</span><span class="w"> </span><span class="nf">big_to_little</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">((</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x000000FF</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="w">           </span><span class="p">((</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x0000FF00</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w">  </span><span class="o">|</span>
+<span class="w">           </span><span class="p">((</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x00FF0000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w">  </span><span class="o">|</span>
+<span class="w">           </span><span class="p">((</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF000000</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">24</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>The number of <em>color channels</em> (3 for RGB and 4 for RGBA) is specified in the <code>channels</code> field.
+Finally <code>colorspace</code> contains the type of <em>color space</em> in which the image is encoded:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="n">qoi_color_space_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">QOI_COLOR_SPACE_SRGB</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// sRGB with linear alpha (most common)</span>
+<span class="w">    </span><span class="n">QOI_COLOR_SPACE_LINEAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="c1">// all channels linear</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Chunks</h3>
+<p>Images are encoded row by row from left to right, top to bottom.
+The compressed pixels data consists of a series of <em>chunks</em> varying in size.
+Each chunk starts with a 8-bit or 2-bit <em>tag</em> identifying the type.
+A chunk can have up to 4 bytes of data bytes following its tag.</p>
+<p align="center">
+    <img src="../imgs/blog/qoi_chunk.svg" alt="QOI chunk format">
+</p>
+
+<p>There are 6 types of chunks corresponding to the different compression methods:</p>
+<p align="center">
+    <img src="../imgs/blog/qoi_tags.svg" alt="QOI tags format">
+</p>
+
+<p>Conveniently, all chunks are byte aligned which allow us to treat it as a single <em>byte stream</em>.
+The stream should end when all the pixels have been decoded but the end of the stream 
+is also marked with the following sequence of 8 bytes:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01
+</code></pre></div></td></tr></table></div>
+
+<h2>Decoder</h2>
+<p>Loading a QOI image necessiates to open the file, parse the header, allocate a buffer for the pixels and decode the chunks.
+After our explanation on the QOI file format and its compression algorithm, you should be able to write an image decoder and we encourage you to do so <strong>before looking at the implementation below</strong> as it is a great learning exercise to validate that you understand the format correctly.</p>
+<p>An implementation for a QOI decoder could look something like:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // fopen</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="c1"> // malloc</span>
+
+<span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="nf">qoi_load</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">file_name</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// open QOI file</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;rb&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// parse header</span>
+<span class="w">    </span><span class="n">qoi_header_t</span><span class="w"> </span><span class="n">header</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">header</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="n">header</span><span class="p">.</span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">big_to_little</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">width</span><span class="p">);</span>
+<span class="w">    </span><span class="n">header</span><span class="p">.</span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">big_to_little</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// alloc buffer for pixels</span>
+<span class="w">    </span><span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">image_t</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">image_t</span><span class="p">));</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">header</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">header</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// read byte stream into temporary buffer</span>
+<span class="w">    </span><span class="n">fseek</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_END</span><span class="p">);</span>
+<span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">file_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ftell</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">bytes_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">header</span><span class="p">);</span>
+<span class="w">    </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">bytes_size</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fseek</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">header</span><span class="p">),</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">bytes_size</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// decode chunks</span>
+<span class="w">    </span><span class="n">qoi_decode_chunks</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">bytes</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">bytes</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">image</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">qoi_free</span><span class="p">(</span><span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">);</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>To avoid making unecessary <code>fread()</code> syscalls, we read the whole byte stream of chunks all at once and store it in a temporary buffer named <code>bytes</code>.</p>
+<p>The code to decode the chunks (the core of the compression algorithm) is as follow:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define QOI_BUFFER_SIZE 64</span>
+
+<span class="c1">// tags</span>
+<span class="cp">#define QOI_OP_RGB   0b11111110</span>
+<span class="cp">#define QOI_OP_RGBA  0b11111111</span>
+<span class="cp">#define QOI_OP_INDEX 0b00000000</span>
+<span class="cp">#define QOI_OP_DIFF  0b01000000</span>
+<span class="cp">#define QOI_OP_LUMA  0b10000000</span>
+<span class="cp">#define QOI_OP_RUN   0b11000000</span>
+
+<span class="cp">#define QOI_MASK_2B  0b11000000</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">qoi_decode_chunks</span><span class="p">(</span><span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">bytes</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// decode chunks as a byte stream</span>
+<span class="w">    </span><span class="n">rgba_t</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">;</span><span class="w"> </span><span class="c1">// last pixel, must be initialized as (0,0,0,255)</span>
+<span class="w">    </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rgba_t</span><span class="w"> </span><span class="n">prev_pixels</span><span class="p">[</span><span class="n">QOI_BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w"> </span><span class="c1">// running array of previously seen pixels, must be zero-initialized</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// index of current pixel</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// index of current byte in stream</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">w</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">u8</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+
+<span class="w">        </span><span class="c1">// 4. Full</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">byte</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QOI_OP_RGB</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">image_set_pixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">byte</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QOI_OP_RGBA</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">image_set_pixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">// 2. Index</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">QOI_MASK_2B</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QOI_OP_INDEX</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b00111111</span><span class="p">;</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prev_pixels</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="w">            </span><span class="n">image_set_pixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">// 3. Difference</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">QOI_MASK_2B</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QOI_OP_DIFF</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">dr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b11</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">dg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b11</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b11</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">r</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">g</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dg</span><span class="p">;</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">b</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">db</span><span class="p">;</span>
+<span class="w">            </span><span class="n">image_set_pixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">QOI_MASK_2B</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QOI_OP_LUMA</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">byte2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">dg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b00111111</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">db_dg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">byte2</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b1111</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">dr_dg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">byte2</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b1111</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">r</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="p">)(</span><span class="n">dr_dg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dg</span><span class="p">);</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">g</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dg</span><span class="p">;</span>
+<span class="w">            </span><span class="n">last_pixel</span><span class="p">.</span><span class="n">b</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="p">)(</span><span class="n">db_dg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dg</span><span class="p">);</span>
+<span class="w">            </span><span class="n">image_set_pixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">// 1. Run</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">QOI_MASK_2B</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QOI_OP_RUN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">run_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">byte</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mb">0b00111111</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">run_length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">image_set_pixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// store last pixel in previous pixels buffer</span>
+<span class="w">        </span><span class="n">prev_pixels</span><span class="p">[</span><span class="n">qoi_hash</span><span class="p">(</span><span class="n">last_pixel</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">QOI_BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last_pixel</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">image_set_pixel</span><span class="p">(</span><span class="n">image_t</span><span class="o">*</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="n">rgba_t</span><span class="w"> </span><span class="n">color</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="n">idx</span><span class="o">*</span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">.</span><span class="n">r</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="n">idx</span><span class="o">*</span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">.</span><span class="n">g</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="n">idx</span><span class="o">*</span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">.</span><span class="n">b</span><span class="p">;</span>
+<span class="w">    </span><span class="n">image</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="n">idx</span><span class="o">*</span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">.</span><span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This is the whole thing! It is pretty amazing to see that compressing images efficiently could be that short and easy to implement.</p>
+<p>Note that for convenience this code uses a <em>union</em> with an <em>anonymous struct</em> to treat RGBA values sometimes as a <code>u32</code> and sometimes as four <code>u8</code> components:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// color value in the ABGR8888 format (R,G,B,A order)</span>
+<span class="k">union</span><span class="w"> </span><span class="nc">rgba_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">u8</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">rgba</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Encoder</h2>
+<p>We have seen how to implement an image decoder but to create a QOI image, we must write an encoder.
+An image encoder is usually much more complex than a decoder and slower to run.
+QOI has been designed with the goal of making a very fast encoder (and decoder).
+It achieves this objective primarily because of its simplicity, sacrificing compression ratio in favor of speed.</p>
+<p>This concludes our article on ...</p>
+<p>In this article <strong>we have omitted proper errors handling</strong> to keep the code short, please see the full source code available on <a href="https://github.com/kevenv/image_viewer">GitHub</a> for more details.</p>
+<h2>References</h2>
+<ul>
+<li><a href="https://qoiformat.org/">https://qoiformat.org/</a></li>
+<li><a href="https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression">https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression</a></li>
+<li><a href="https://en.wikipedia.org/wiki/QOI_(image_format)">https://en.wikipedia.org/wiki/QOI_(image_format)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Run-length_encoding">https://en.wikipedia.org/wiki/Run-length_encoding</a></li>
+</ul>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>
