@@ -233,15 +233,15 @@ image_t* bmp_load(const char* file_name)
     fseek(file, file_header.offset, SEEK_SET);
     fread(tmp, info_header.image_size, 1, file);
 
-    // convert RGB24 -> RGB888
+    // convert RGB24 -> ABGR8888
     // flip image in Y
     u32 pitch = ((image->w * 3) + (4-1)) & ~((u32)(4-1)); // 4-byte alignment
     for (u32 y = 0; y < image->h; ++y) {
         for (u32 x = 0; x < image->w; ++x) {
             u32 y_ = image->h-1 - y; // flip image in Y
-            image->pixels[(x + y * image->w) * 4 + 0] = tmp[x*3 + y_ * pitch + 0]; // B
+            image->pixels[(x + y * image->w) * 4 + 0] = tmp[x*3 + y_ * pitch + 2]; // R
             image->pixels[(x + y * image->w) * 4 + 1] = tmp[x*3 + y_ * pitch + 1]; // G
-            image->pixels[(x + y * image->w) * 4 + 2] = tmp[x*3 + y_ * pitch + 2]; // R
+            image->pixels[(x + y * image->w) * 4 + 2] = tmp[x*3 + y_ * pitch + 0]; // B
             image->pixels[(x + y * image->w) * 4 + 3] = 255;                       // A (unused)
         }
     }
@@ -260,10 +260,10 @@ void bmp_free(image_t* image)
 
 Filling the buffer with pixels (lines 30 to 50) is a bit more involved and deserves more explanations.
 
-The BMP pixels are stored in the _RGB24_ format but a screen usually expects a _RGB888_ format.
-RGB24 is tightly packed into 3 bytes (B,G,R) while RGB888 is stored as 4 bytes with the last byte being ignored (B,G,R,_).
+The BMP pixels are stored in the _RGB24_ format but a screen usually expects a _ABGR8888_ format.
+RGB24 is tightly packed into 3 bytes (B,G,R) while ABGR8888 is stored as 4 bytes (R,G,B,A). The last one is reserved for the _alpha_ channel that can handle transparency but we will not support it in our BMP implementation.
 
-To convert it we need to allocate a temporary buffer `tmp` to hold the pixels stored bottom to top, convert it to RGB888 and flip the image at the same time in `image->pixels`. The `image->pixels` array is the final pixels buffer that will be used directly by our image viewer to be displayed on screen.
+To convert it we need to allocate a temporary buffer `tmp` to hold the pixels stored bottom to top, convert it to ABGR8888 and flip the image at the same time in `image->pixels`. The `image->pixels` array is the final pixels buffer that will be used directly by our image viewer to be displayed on screen.
 
 ## Image viewer
 Now that we understand the format, we can write a simple image viewer that is able to open BMP images.
@@ -327,7 +327,7 @@ image_t* image = bmp_load(file_name);
 // copy image to SDL surface
 SDL_Surface* image_surface = SDL_CreateRGBSurfaceWithFormatFrom(
     image->pixels, image->w, image->h, 
-    32, image->w * 4, SDL_PIXELFORMAT_RGB888
+    32, image->w * 4, SDL_PIXELFORMAT_ABGR8888
 );
 ```
 
