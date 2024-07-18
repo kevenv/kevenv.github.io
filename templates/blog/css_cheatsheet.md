@@ -206,6 +206,14 @@ p {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ```
 
+### Box-sizing
+Include padding and border in box, make CSS much easier.
+```CSS
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+```
+
 ### Center elements horizontally
 ```CSS
 .my-class {

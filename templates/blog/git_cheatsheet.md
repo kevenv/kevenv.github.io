@@ -49,6 +49,7 @@
 - `git remote -v` : list remote
 - `git remote show origin` : info on remote
 - `git remote add [remote name] [remote url]` : add remote
+- `git remote set-url origin [remote url]` : change remote
 
 ## Merge
 - `git rebase [src branch]` : rebase current branch from another branch
