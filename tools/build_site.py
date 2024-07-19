@@ -53,6 +53,7 @@ if __name__ == '__main__':
             ('blog/priority_queue','../','Priority queue'),
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),
+            ('blog/tar_format','../','Tar file format'),
             # ('blog/zip_format','../','ZIP format'),
     ]
     for page in pages:

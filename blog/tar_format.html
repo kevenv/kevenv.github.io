@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Tar file format</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Tar file format</h1>
+<p>since it supports unix file permissions and users
+can also be used as a simple read-only FS</p>
+<p>many variants:
+[/]gnu?
+ustar
+posix = ustar without limits + extra features
+    This archive format will be the default format for future versions of GNU tar.
+    any tar implementation able to read ‘ustar’ archives should be able to read most ‘posix’ archives as well</p>
+<p>ustar archive
+series of fixed-size logical record of 512b
+file = header logical record + data logical records
+end of archive = atleast two 512-octet logical records, zero initialized</p>
+<p>// USTAR or TAR (Unix Standard TAR)
+// - Portable archive without compression
+// - hierarchy of files and folders -&gt; single file</p>
+<p>record or sector or block?</p>
+<p>// - array of 512 bytes sectors
+// - 2 kind of sectors:
+//     - metadata
+//     - data
+// - little endian
+// - file size stored as ASCII octal string
+// - space left in sectors is filled with zeros
+// - end = at least two consecutive zero-filled sectors</p>
+<p>// file and directory
+//   1 metadata sector
+//   N data sectors (N rounded up to 512 bytes)</p>
+<h2>Format</h2>
+<h2>List</h2>
+<h2>Create</h2>
+<h2>Extract</h2>
+<h2>References</h2>
+<p>https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html
+https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06
+https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03</p>
+<p>https://www.gnu.org/software/tar/manual/html_node/index.html
+https://www.gnu.org/software/tar/manual/html_node/Standard.html#Standard
+https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats</p>
+<p>https://wiki.osdev.org/USTAR
+https://wiki.osdev.org/Tar
+https://en.wikipedia.org/wiki/Tar_(computing)</p>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>
