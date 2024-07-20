@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Bitwise operations</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Bitwise operations</h1>
+<h2>Manipulating bits</h2>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Name</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~</td>
+<td>not</td>
+<td>~1010 = 0101</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>and</td>
+<td>1011 &amp; 0011 = 0011</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>or</td>
+<td>1011 <code>|</code> 0011 = 1011</td>
+</tr>
+<tr>
+<td>^</td>
+<td>xor</td>
+<td>1011 ^ 0011 = 1000</td>
+</tr>
+<tr>
+<td>&lt;&lt;</td>
+<td>left shift</td>
+<td>1011 &lt;&lt; 1 = 0110</td>
+</tr>
+<tr>
+<td>&gt;&gt;</td>
+<td>right shift</td>
+<td>1011 &gt;&gt; 1 = 0101</td>
+</tr>
+</tbody>
+</table>
+<h3>Test</h3>
+<p>Test if bit <em>i</em> of <em>value</em> is set to 1.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div></td></tr></table></div>
+
+<p>ex:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>   0 1 1 1  value
+&amp;  0 1 0 0  (1 &lt;&lt; i)
+   -------
+=  0 1 0 0  
+</code></pre></div></td></tr></table></div>
+
+<h3>Get</h3>
+<p>Get bit <em>i</em> of <em>value</em>.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">bit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Set</h3>
+<p>Set bit <em>i</em> of <em>value</em> to 1.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">value</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>ex:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>   0 0 1 1  value
+|  0 1 0 0  (1 &lt;&lt; i)
+   -------
+=  0 1 1 1
+</code></pre></div></td></tr></table></div>
+
+<h3>Clear</h3>
+<p>Set bit <em>i</em> of <em>value</em> to 0.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">value</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>ex:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>~  0 1 0 0   (1 &lt;&lt; i)
+=  1 0 1 1  ~(1 &lt;&lt; i)
+
+   0 1 1 1  value
+&amp;  1 0 1 1  ~(1 &lt;&lt; i)
+   -------
+=  0 0 1 1
+</code></pre></div></td></tr></table></div>
+
+<h3>Toggle</h3>
+<p>Toggle bit <em>i</em> of <em>value</em> (1 &lt;-&gt; 0).</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">value</span><span class="w"> </span><span class="o">=^</span><span class="w"> </span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+
+<p>ex:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>   0 1 1 1  value
+^  0 1 0 0  (1 &lt;&lt; i)
+   -------
+=  0 0 1 1
+
+   0 0 1 1  value
+^  0 1 0 0  (1 &lt;&lt; i)
+   -------
+=  0 1 1 1
+</code></pre></div></td></tr></table></div>
+
+<h3>Change</h3>
+<p>Set bit <em>i</em> of <em>value</em> to <em>n</em> (0 or 1).</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+
+<p>or</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="c1">// set</span>
+<span class="p">}</span><span class="w"> </span>
+<span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">((</span><span class="n">u32</span><span class="p">)</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="c1">// clear</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Bit flag / bit field</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">flags</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">FLAG1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">FLAG2</span><span class="p">;</span><span class="w"> </span><span class="c1">// set flags</span>
+<span class="n">flags</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="n">FLAG3</span><span class="p">;</span><span class="w"> </span><span class="c1">// clear flags</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">FLAG1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// check flag</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Bitmask</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x000F000F</span><span class="p">;</span>
+<span class="n">masked_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">mask</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Binary numbers (Base 2)</h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The syntax in C is <code>0b01010111</code>.</p>
+<h2>Hexadecimal numbers (Base 16)</h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>A</td>
+<td>10</td>
+</tr>
+<tr>
+<td>B</td>
+<td>11</td>
+</tr>
+<tr>
+<td>C</td>
+<td>12</td>
+</tr>
+<tr>
+<td>D</td>
+<td>13</td>
+</tr>
+<tr>
+<td>E</td>
+<td>14</td>
+</tr>
+<tr>
+<td>F</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p>The syntax in C is <code>0xF0FD</code>.</p>
+<h2>Conversions</h2>
+<p>TODO:</p>
+<ul>
+<li>hex &lt;-&gt; bin<ul>
+<li>1 hex = 4 bits (2^4=16)</li>
+</ul>
+</li>
+<li>bin &lt;-&gt; dec<ul>
+<li>convert to hex first</li>
+</ul>
+</li>
+<li>hex &lt;-&gt; dec<ul>
+<li>0-9 : same</li>
+<li>A-F : 10-15</li>
+</ul>
+</li>
+</ul>
+<h2>Negative numbers (2s complement)</h2>
+<ul>
+<li>Negative numbers are also known as <em>signed integers</em>.</li>
+<li>They are usually encoded using <em>Two's complement</em>.<ul>
+<li>MSB = sign bit (0 = positive, 1 = negative)</li>
+<li>only one representation for zero = 0</li>
+<li>range <code>[-n, n/2-1]</code>, where n = number of bits</li>
+<li>addition is the same as unsigned integers</li>
+</ul>
+</li>
+</ul>
+<h3>Example</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>n = 3
+2^3 = 8
+
+unsigned:
+[0,7]
+
+signed:
+[-(8/2),(8/2-1)]
+[-4,3]
+</code></pre></div></td></tr></table></div>
+
+<table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>Unsigned</th>
+<th>Signed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>000</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>001</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>010</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>011</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>100</td>
+<td>4</td>
+<td>-4</td>
+</tr>
+<tr>
+<td>101</td>
+<td>5</td>
+<td>-3</td>
+</tr>
+<tr>
+<td>110</td>
+<td>6</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>111</td>
+<td>7</td>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+<h3>Convert unsigned &lt;-&gt; signed</h3>
+<p>ex:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// signed = ~unsigned + 1</span>
+<span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b010</span>
+<span class="mi">-2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="mb">0b010</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mb">0b001</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b101</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mb">0b001</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b110</span>
+
+<span class="c1">// unsigned = ~(signed - 1) or</span>
+<span class="c1">// unsigned = ~signed + 1</span>
+<span class="mi">-2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b110</span>
+<span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="mi">-2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="mb">0b110</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mb">0b001</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b001</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mb">0b001</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mb">0b010</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Addition (+)</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>      (1)(1)
+    1  0  1  1
++   0  0  1  1
+    ----------
+=   1  1  1  0
+</code></pre></div></td></tr></table></div>
+
+<h2>Substraction (-)</h2>
+<p>Substraction is the same as addition with a negative number (2s complement).</p>
+<p>ex: 2 - 3 = 2 + (-3) = -1</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>           unsigned  signed
+    0 1 0     2         2
++   1 0 1     5        -3
+    -----
+=   1 1 1     7        -1
+</code></pre></div></td></tr></table></div>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

@@ -42,6 +42,7 @@ if __name__ == '__main__':
             ('blog/git_cheatsheet','../','Git cheatsheet'),
             ('blog/makefile_cheatsheet','../','Makefile cheatsheet'),
             ('blog/c_style','../','C style'),
+            ('blog/bit_ops','../','Bitwise operations'),
             ('blog/css_cheatsheet','../','CSS cheatsheet'),
             ('blog/fedora_setup','../','Fedora setup'),
             ('blog/fedora_nvidia','../','Fedora + Nvidia'),
