@@ -24,47 +24,233 @@
         </header>
         <hr>
 <h1>Tar file format</h1>
-<p>since it supports unix file permissions and users
-can also be used as a simple read-only FS</p>
-<p>many variants:
-[/]gnu?
-ustar
-posix = ustar without limits + extra features
-    This archive format will be the default format for future versions of GNU tar.
-    any tar implementation able to read ‘ustar’ archives should be able to read most ‘posix’ archives as well</p>
-<p>ustar archive
-series of fixed-size logical record of 512b
-file = header logical record + data logical records
-end of archive = atleast two 512-octet logical records, zero initialized</p>
-<p>// USTAR or TAR (Unix Standard TAR)
-// - Portable archive without compression
-// - hierarchy of files and folders -&gt; single file</p>
-<p>record or sector or block?</p>
-<p>// - array of 512 bytes sectors
-// - 2 kind of sectors:
-//     - metadata
-//     - data
-// - little endian
-// - file size stored as ASCII octal string
-// - space left in sectors is filled with zeros
-// - end = at least two consecutive zero-filled sectors</p>
-<p>// file and directory
-//   1 metadata sector
-//   N data sectors (N rounded up to 512 bytes)</p>
+<p>On Unix systems, tar (Tape Archive) is a very popular file format to group a hierarchy of files and directories within a single file, otherwise known as an <em>archive</em>.
+When compressed using gzip (tar.gz), it can compete with the infamous ZIP file format.
+This format can also be used as a simple read-only file system, since it supports Unix file permissions.
+In this article we will see how to implement a basic file archiver utility that supports tar files.
+In <a href="../blog/gz_format.html">another article</a> we will see how to compress a tar archive using <code>gzip</code> which uses the same compression method as ZIP.</p>
 <h2>Format</h2>
+<p>A tar archive consists of a series of <em>file entries</em> ending with an <em>end-of-archive</em> entry.
+[diagram]
+Directories are also represented by a file entry.
+The archive is divided into blocks of 512 bytes.</p>
+<p>A file entry starts with a <em>header block</em> describing the file and can contain zero or more <em>data blocks</em> which contains the file's content right after. The size taken by a file in the archive might be bigger than its actual size as the smallest unit of allocation is the block, we must round up to the nearest block size.</p>
+<p>Unused space in blocks is filled with zeros and the end-of-archive entry is simply two or more consecutive zero-filled blocks.</p>
+<p>Note that there are multiple variants of the Tar file format.
+The GNU tar utility <code>tar</code> seems to use the "gnu" format by default (which has a different <code>magic</code> + <code>version</code>) even though the documentation mentions that the default should be "posix". However both "posix" and "gnu" are based of the "ustar" format (Unix Standard Tar).
+To stay out of this mess we will only support the most popular "ustar" format.</p>
+<h3>Header</h3>
+<p>The header fits into a single block.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">))</span><span class="w"> </span><span class="n">tar_file_header_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">name</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"> </span><span class="c1">// absolute file path</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">mode</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"> </span><span class="c1">// file permissions (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">uid</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"> </span><span class="c1">// user ID (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">gid</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"> </span><span class="c1">// group ID (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">size</span><span class="p">[</span><span class="mi">12</span><span class="p">];</span><span class="w"> </span><span class="c1">// file size (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">mtime</span><span class="p">[</span><span class="mi">12</span><span class="p">];</span><span class="w"> </span><span class="c1">// last modified time (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">chksum</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"> </span><span class="c1">// checksum of header (octal)</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">typeflag</span><span class="p">;</span><span class="w"> </span><span class="c1">// type of file</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">linkname</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"> </span><span class="c1">// absolute file path of the linked-to file</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">magic</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span><span class="w"> </span><span class="c1">// tar file signature &quot;ustar&quot;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">version</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"> </span><span class="c1">// tar format version &quot;00&quot;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">uname</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span><span class="w"> </span><span class="c1">// name of user/owner</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">gname</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span><span class="w"> </span><span class="c1">// name of group</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">devmajor</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"> </span><span class="c1">// device major number (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">devminor</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"> </span><span class="c1">// device minor number (octal)</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">prefix</span><span class="p">[</span><span class="mi">155</span><span class="p">];</span><span class="w"> </span><span class="c1">// prefix for file path if name &gt; 100</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<p>To check the validity of a file entry, the header contains the <code>magic</code> and <code>version</code> field. In the case of the "ustar" format:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define TAR_MAGIC      &quot;ustar&quot;</span>
+<span class="cp">#define TAR_VERSION    &quot;00&quot;</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>File size</h3>
+<p>The weirdest and most annoying thing in the tar file format is that the fields containing numbers in the header are stored in <strong>octal (base 8)</strong> encoded as a null terminated ASCII string. We can use the following function to convert:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">u64</span><span class="w"> </span><span class="nf">tar_oct_to_u64</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">octal_str</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">octal_str</span><span class="p">);</span>
+<span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u64</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">u64</span><span class="p">)(</span><span class="n">octal_str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>The <code>size</code> field stores the size of the file in octal, it is set to zero in case of a directory or special files.</p>
+<h3>File path</h3>
+<p>Each string in the header is made of ASCII characters and ends when <code>\0</code> is encountered. Note that they are are <strong>not always null terminated</strong>, as the last character can also be part of the string.</p>
+<p>The absolute file path is contained in the <code>name</code> field.
+If the path is bigger than 100 characters, the <code>prefix</code> must be used and follows the format <code>[prefix]/[name]</code>, for a maximum length of 256 characters (including the <code>/</code>). A prefix must be used if the first character of the <code>prefix</code> field is not <code>\0</code>.</p>
+<h3>File permissions</h3>
+<p>The name of the user and group of a file is stored in the <code>uname</code> and <code>gname</code> fields respectively. <code>uid</code> and <code>gid</code> contain the corresponding Unix user ID and group ID in octal.
+The <a href="https://en.wikipedia.org/wiki/File-system_permissions#POSIX_permissions">Unix file permissions</a> are stored in the <code>mode</code> field in octal.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">//   U: user, G: group, O: other</span>
+<span class="c1">//   R: read, W: write, X: execute</span>
+<span class="cp">#define TAR_MODE_O_X      (1 &lt;&lt; 0)</span>
+<span class="cp">#define TAR_MODE_O_W      (1 &lt;&lt; 1)</span>
+<span class="cp">#define TAR_MODE_O_R      (1 &lt;&lt; 2)</span>
+<span class="cp">#define TAR_MODE_G_X      (1 &lt;&lt; 3)</span>
+<span class="cp">#define TAR_MODE_G_W      (1 &lt;&lt; 4)</span>
+<span class="cp">#define TAR_MODE_G_R      (1 &lt;&lt; 5)</span>
+<span class="cp">#define TAR_MODE_U_X      (1 &lt;&lt; 6)</span>
+<span class="cp">#define TAR_MODE_U_W      (1 &lt;&lt; 7)</span>
+<span class="cp">#define TAR_MODE_U_R      (1 &lt;&lt; 8)</span>
+<span class="cp">#define TAR_MODE_RESERVED (1 &lt;&lt; 9)</span>
+<span class="cp">#define TAR_MODE_GID_X    (1 &lt;&lt; 10)</span>
+<span class="cp">#define TAR_MODE_UID_X    (1 &lt;&lt; 11)</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>File type</h3>
+<p>The <code>typeflag</code> field contains the type of file, i.e. if it is a file, a directory or a special file.
+Our implementation will only support files and directories.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="n">tar_type_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TAR_TYPE_NORMAL0</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_NORMAL</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_HARD_LINK</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;1&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_SYMBOLIC_LINK</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;2&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_CHARACTER_DEVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;3&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_BLOCK_DEVICE</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;4&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_DIRECTORY</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;5&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_FIFO</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;6&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">TAR_TYPE_RESERVED</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;7&#39;</span><span class="p">,</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<p>When the file is a <em>hard link</em> or a <em>symbolic link</em>, the <code>linkname</code> field specifies the absolute path of what it is linked to.
+Note that the linked-to path is limited to 100 characters and does not use the <code>prefix</code>.</p>
+<p>When the file is a <em>device file</em>, the <code>devmajor</code> and <code>devminor</code> fields contain the device number, which is used to associate the device to a device driver in a Unix system. Those fields are in octal.</p>
+<h3>Modified time</h3>
+<p>The date and time of the last time that the file was modified (modified time) is stored in the <code>mtime</code> field as octal. It is simply a <a href="https://en.wikipedia.org/wiki/Unix_time">Unix timestamp</a>, the number of seconds between a particular date and the Unix epoch (January 1st 1970 at UTC).
+It can be decoded using a function like this:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="c1"> // time_t</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">tar_get_mtime</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">mtime_timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tar_oct_to_u64</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">mtime</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">time_t</span><span class="w"> </span><span class="n">timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">time_t</span><span class="p">)</span><span class="n">mtime_timestamp</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">tm</span><span class="o">*</span><span class="w"> </span><span class="n">time_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">localtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timestamp</span><span class="p">);</span>
+<span class="w">    </span><span class="n">strftime</span><span class="p">(</span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%Y-%m-%d %H:%M:%S&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time_info</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h3>Checksum</h3>
+<p>Finally, the <code>chksum</code> field contains the sum of all bytes in the header in octal. It can be used to validate that the file entry is valid.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">u32</span><span class="w"> </span><span class="nf">tar_compute_checksum</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">header</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">148</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">148</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="p">)</span><span class="sc">&#39; &#39;</span><span class="p">;</span><span class="w"> </span><span class="c1">// must count &quot;chksum&quot; as spaces</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">bytes</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
 <h2>List</h2>
+<p>only basic fields</p>
 <h2>Create</h2>
 <h2>Extract</h2>
 <h2>References</h2>
-<p>https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html
-https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06
-https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03</p>
-<p>https://www.gnu.org/software/tar/manual/html_node/index.html
-https://www.gnu.org/software/tar/manual/html_node/Standard.html#Standard
-https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats</p>
-<p>https://wiki.osdev.org/USTAR
-https://wiki.osdev.org/Tar
-https://en.wikipedia.org/wiki/Tar_(computing)</p>
+<ul>
+<li>Specification:<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html">https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html</a></li>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06">https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06</a></li>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03">https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03</a></li>
+</ul>
+</li>
+<li>GNU Tar:<ul>
+<li><a href="https://www.gnu.org/software/tar/manual/html_node/index.html">https://www.gnu.org/software/tar/manual/html_node/index.html</a></li>
+<li><a href="https://www.gnu.org/software/tar/manual/html_node/index.html">https://www.gnu.org/software/tar/manual/html_node/Standard.html#Standard</a></li>
+<li><a href="https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats">https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats</a></li>
+</ul>
+</li>
+<li>Wiki:<ul>
+<li><a href="https://wiki.osdev.org/USTAR">https://wiki.osdev.org/USTAR</a></li>
+<li><a href="https://wiki.osdev.org/Tar">https://wiki.osdev.org/Tar</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Tar_(computing)">https://en.wikipedia.org/wiki/Tar_(computing)</a></li>
+</ul>
+</li>
+</ul>
         <hr>
         <footer>
             <div>
