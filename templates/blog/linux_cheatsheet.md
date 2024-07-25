@@ -53,6 +53,8 @@
 - `reboot` : reboot system
 - `poweroff` : shutdown system
 - `wget` : ?
+- `tar -czvf [output file] [input dir]` : create tar file (`tar.gz`)
+- `tar -xvf [input file] -C [output dir]` : extract tar file
 - `zip` : ?
 - `unzip` : ?
 - `hexdump` : dump file as hexa
