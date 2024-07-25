@@ -236,8 +236,8 @@ image_t* bmp_load(const char* file_name)
     // convert RGB24 -> ABGR8888
     // flip image in Y
     u32 pitch = ((image->w * 3) + (4-1)) & ~((u32)(4-1)); // 4-byte alignment
-    for (u32 y = 0; y < image->h; ++y) {
-        for (u32 x = 0; x < image->w; ++x) {
+    for (u32 y = 0; y < image->h; y++) {
+        for (u32 x = 0; x < image->w; x++) {
             u32 y_ = image->h-1 - y; // flip image in Y
             image->pixels[(x + y * image->w) * 4 + 0] = tmp[x*3 + y_ * pitch + 2]; // R
             image->pixels[(x + y * image->w) * 4 + 1] = tmp[x*3 + y_ * pitch + 1]; // G

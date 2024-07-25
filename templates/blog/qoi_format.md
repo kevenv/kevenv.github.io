@@ -292,7 +292,7 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
     rgba_t prev_pixels[QOI_BUFFER_SIZE] = {0}; // running array of previously seen pixels, must be zero-initialized
     u8 run_length = 0;
     u32 idx = 0; // index of current byte in stream
-    for (u32 i = 0; i < image->w * image->h; ++i) {
+    for (u32 i = 0; i < image->w * image->h; i++) {
         if (run_length > 0) {
             run_length--;
         }
@@ -441,7 +441,7 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
     rgba_t prev_pixels[QOI_BUFFER_SIZE] = {0}; // running array of previously seen pixels, must be zero-initialized
     u32 run_length = 0;
     u32 idx = 0; // index of current byte in stream
-    for (u32 i = 0; i < image->w * image->h; ++i) {
+    for (u32 i = 0; i < image->w * image->h; i++) {
         rgba_t pixel;
         pixel.r = image->pixels[i*4 + 0];
         pixel.g = image->pixels[i*4 + 1];
@@ -517,7 +517,7 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
     }
 
     // end of stream
-    for (u32 i = 0; i < 7; ++i) {
+    for (u32 i = 0; i < 7; i++) {
         bytes[idx++] = 0x00;
     }
     bytes[idx++] = 0x01;

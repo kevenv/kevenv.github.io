@@ -188,6 +188,13 @@ instead of
 <span class="c1">// one empty line at end</span>
 </code></pre></div></td></tr></table></div>
 
+<h2>Increment</h2>
+<p>Always use <code>i++</code> and not <code>++i</code> unless absolutely necessary. Let the compiler optimize.</p>
+<h2>Long int</h2>
+<p>Use <code>LP64</code> data model (u64 = unsigned long int = unsigned long long int).</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%lu&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">u64</span><span class="p">)</span><span class="mi">1234</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+
 <h2>Default int type</h2>
 <ul>
 <li>use <code>u32</code> by default &amp; counters</li>

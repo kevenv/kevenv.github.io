@@ -113,6 +113,15 @@ default:
 // one empty line at end
 ```
 
+## Increment
+Always use `i++` and not `++i` unless absolutely necessary. Let the compiler optimize.
+
+## Long int
+Use `LP64` data model (u64 = unsigned long int = unsigned long long int).
+```C
+printf("%lu", (u64)1234);
+```
+
 ## Default int type
 - use `u32` by default & counters
 - use unsigned by default
