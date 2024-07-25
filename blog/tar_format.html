@@ -80,8 +80,20 @@ To stay out of this mess we will only support the most popular "ustar" format.</
 
 <p>To check the validity of a file entry, the header contains the <code>magic</code> and <code>version</code> field. In the case of the "ustar" format:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define TAR_MAGIC      &quot;ustar&quot;</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define TAR_MAGIC      &quot;ustar&quot;</span>
 <span class="cp">#define TAR_VERSION    &quot;00&quot;</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">tar_is_ustar</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">memcmp</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">magic</span><span class="p">,</span><span class="w"> </span><span class="n">TAR_MAGIC</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">           </span><span class="n">memcmp</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="n">TAR_VERSION</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 
 <h3>File size</h3>
@@ -99,7 +111,7 @@ To stay out of this mess we will only support the most popular "ustar" format.</
 <span class="p">{</span>
 <span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">octal_str</span><span class="p">);</span>
 <span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u64</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u64</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
 <span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">u64</span><span class="p">)(</span><span class="n">octal_str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
@@ -112,6 +124,39 @@ To stay out of this mess we will only support the most popular "ustar" format.</
 <p>Each string in the header is made of ASCII characters and ends when <code>\0</code> is encountered. Note that they are are <strong>not always null terminated</strong>, as the last character can also be part of the string.</p>
 <p>The absolute file path is contained in the <code>name</code> field.
 If the path is bigger than 100 characters, the <code>prefix</code> must be used and follows the format <code>[prefix]/[name]</code>, for a maximum length of 256 characters (including the <code>/</code>). A prefix must be used if the first character of the <code>prefix</code> field is not <code>\0</code>.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">tar_get_file_path</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">file_path</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// no prefix</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">prefix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="w">        </span><span class="n">file_path</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// with prefix</span>
+<span class="w">    </span><span class="n">u64</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strnlen</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="mi">155</span><span class="p">);</span>
+<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">);</span>
+<span class="w">    </span><span class="n">file_path</span><span class="p">[</span><span class="n">length</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;/&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">file_path</span><span class="p">[</span><span class="n">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="w">    </span><span class="n">file_path</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
 <h3>File permissions</h3>
 <p>The name of the user and group of a file is stored in the <code>uname</code> and <code>gname</code> fields respectively. <code>uid</code> and <code>gid</code> contain the corresponding Unix user ID and group ID in octal.
 The <a href="https://en.wikipedia.org/wiki/File-system_permissions#POSIX_permissions">Unix file permissions</a> are stored in the <code>mode</code> field in octal.</p>
@@ -214,7 +259,7 @@ It can be decoded using a function like this:</p>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">header</span><span class="p">;</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">148</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">148</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="p">)</span><span class="sc">&#39; &#39;</span><span class="p">;</span><span class="w"> </span><span class="c1">// must count &quot;chksum&quot; as spaces</span>
 <span class="w">        </span><span class="p">}</span>
@@ -227,9 +272,224 @@ It can be decoded using a function like this:</p>
 </code></pre></div></td></tr></table></div>
 
 <h2>List</h2>
-<p>only basic fields</p>
-<h2>Create</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>tar -tvf [input file]
+-t : list
+-v : verbose, show progress
+-f : specify filename
+</code></pre></div></td></tr></table></div>
+
+<p>Listing the files within a tar archive can be done by reading the tar file block by block from the start of the file.</p>
+<p>The first header block encountered is the root directory.</p>
+<p>When a block is valid (signature is correct).</p>
+<p>For a basic utility we can only parse the file path and size.
+The size must also be parsed as we need to skip the data blocks to get to the next file.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">u64</span><span class="w"> </span><span class="n">n_data_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">TAR_BLOCK_SIZE</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TAR_BLOCK_SIZE</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+
+<p>This means that we need to know if a file entry is an actual file or something else like a directory.</p>
+<p>The other fields can be parsed similarly.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // fopen</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="c1"> // strcmp, strlen, memcpy</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">tar_list</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">file_path</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// open file</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;rb&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ERROR: file &#39;%s&#39; cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// read file block by block</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">block</span><span class="p">[</span><span class="n">TAR_BLOCK_SIZE</span><span class="p">];</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tar_read_block</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="p">)</span><span class="n">block</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// get file metadata</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">file_path</span><span class="p">[</span><span class="mi">256</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">permissions</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">uname</span><span class="p">[</span><span class="mi">32</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">gname</span><span class="p">[</span><span class="mi">32</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">mtime</span><span class="p">[</span><span class="mi">64</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="n">tar_get_file_path</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p">);</span>
+<span class="w">        </span><span class="n">tar_get_permissions</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="n">permissions</span><span class="p">);</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">uname</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">uname</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="w">        </span><span class="n">tar_get_mtime</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="mi">64</span><span class="p">);</span>
+<span class="w">        </span><span class="n">u64</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tar_oct_to_u64</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// print file metadata</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">((</span><span class="n">tar_type_t</span><span class="p">)</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">typeflag</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// file</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">TAR_TYPE_NORMAL0</span><span class="p">:</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">TAR_TYPE_NORMAL</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// skip data blocks</span>
+<span class="w">                </span><span class="n">u64</span><span class="w"> </span><span class="n">n_data_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">TAR_BLOCK_SIZE</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TAR_BLOCK_SIZE</span><span class="p">;</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n_data_blocks</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">fseek</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">n_data_blocks</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TAR_BLOCK_SIZE</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_CUR</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %s %s %s %s (%lu bytes)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">permissions</span><span class="p">,</span><span class="w"> </span><span class="n">uname</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="c1">// link</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">TAR_TYPE_HARD_LINK</span><span class="p">:</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">TAR_TYPE_SYMBOLIC_LINK</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">    </span>
+<span class="w">                </span><span class="kt">char</span><span class="w"> </span><span class="n">link_path</span><span class="p">[</span><span class="mi">100</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">                </span><span class="n">memcpy</span><span class="p">(</span><span class="n">link_path</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="o">-&gt;</span><span class="n">linkname</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %s %s %s %s (%lu bytes) -&gt; %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">permissions</span><span class="p">,</span><span class="w"> </span><span class="n">uname</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">link_path</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="c1">// device</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">TAR_TYPE_CHARACTER_DEVICE</span><span class="p">:</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">TAR_TYPE_BLOCK_DEVICE</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">u64</span><span class="w"> </span><span class="n">devmajor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tar_oct_to_u64</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">devmajor</span><span class="p">);</span>
+<span class="w">                </span><span class="n">u64</span><span class="w"> </span><span class="n">devminor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tar_oct_to_u64</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">devminor</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %s %s %lu.%lu %s %s (%lu bytes)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">permissions</span><span class="p">,</span><span class="w"> </span><span class="n">uname</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">devmajor</span><span class="p">,</span><span class="w"> </span><span class="n">devminor</span><span class="p">,</span><span class="w"> </span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">default</span><span class="o">:</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %s %s %s %s (%lu bytes)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">permissions</span><span class="p">,</span><span class="w"> </span><span class="n">uname</span><span class="p">,</span><span class="w"> </span><span class="n">gname</span><span class="p">,</span><span class="w"> </span><span class="n">mtime</span><span class="p">,</span><span class="w"> </span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// close file</span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">tar_read_block</span><span class="p">(</span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">block</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// read block</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="n">block</span><span class="p">,</span><span class="w"> </span><span class="n">TAR_BLOCK_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tar_file_header_t</span><span class="o">*</span><span class="p">)</span><span class="n">block</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// check if block is valid</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">tar_is_ustar</span><span class="p">(</span><span class="n">header</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tar_compute_checksum</span><span class="p">(</span><span class="n">header</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checksum</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">tar_oct_to_u64</span><span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">chksum</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
 <h2>Extract</h2>
+<p>On Linux, a tar file can be extracted via the command <code>tar -xvf test.tar -C test/</code>.</p>
+<ul>
+<li>-x : extract</li>
+<li>-v : verbose (show progress)</li>
+<li>-f : specify input file</li>
+<li>-C : specify output directory</li>
+</ul>
+<p>Extraction is very similar to listing the files but we must create the files and directories as needed.</p>
+<p>The <code>mtime</code> must also be restored, this can be accomplished via the <code>utime</code> syscall:
+set mtime</p>
+<p>set permissions
+set owner, group</p>
+<h2>Create</h2>
+<p>Creating archives is a little more complicated than extracting them.
+The command to create a tar archive is <code>tar --format=ustar -cvf test/ test.tar</code>.</p>
+<ul>
+<li>-c : create</li>
+<li>-v : verbose (show progress)</li>
+<li>-f : specify output directory</li>
+<li>--format=ustar : specify the "ustar" format since the default is "gnu"</li>
+</ul>
 <h2>References</h2>
 <ul>
 <li>Specification:<ul>
