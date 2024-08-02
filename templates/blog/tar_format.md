@@ -161,7 +161,7 @@ u32 tar_compute_checksum(tar_file_header_t* header)
     u32 checksum = 0;
     u8* bytes = (u8*)header;
     for (u32 i = 0; i < sizeof(tar_file_header_t); i++) {
-        if (i >= 148 && i < 148+8) {
+        if (i >= 148 && i < 148 + 8) {
             checksum += (u8)' '; // must count "chksum" as spaces
         }
         else {
@@ -217,10 +217,10 @@ bool tar_list(const char* file_path)
         tar_file_header_t* header = (tar_file_header_t*)block;
 
         // get file metadata
-        char file_path[256+1] = {0};
+        char file_path[256 + 1] = {0};
         char permissions[16] = {0};
-        char uname[32+1] = {0};
-        char gname[32+1] = {0};
+        char uname[32 + 1] = {0};
+        char gname[32 + 1] = {0};
         char mtime[64] = {0};
         tar_get_file_path(header, file_path);
         tar_get_permissions(header, permissions);
@@ -231,36 +231,36 @@ bool tar_list(const char* file_path)
 
         // print file metadata
         switch ((tar_type_t)header->typeflag) {
-            // file
-            case TAR_TYPE_NORMAL0:
-            case TAR_TYPE_NORMAL: {
-                // skip data blocks
-                u64 n_data_blocks = (size + TAR_BLOCK_SIZE-1) / TAR_BLOCK_SIZE;
-                if (n_data_blocks >= 1) {
-                    fseek(file, n_data_blocks * TAR_BLOCK_SIZE, SEEK_CUR);
-                }
-                printf("%s %s %s %s %s (%lu bytes)\n", permissions, uname, gname, mtime, file_path, size);
-                break;
+        // file
+        case TAR_TYPE_NORMAL0:
+        case TAR_TYPE_NORMAL: {
+            // skip data blocks
+            u64 n_data_blocks = (size + TAR_BLOCK_SIZE-1) / TAR_BLOCK_SIZE;
+            if (n_data_blocks >= 1) {
+                fseek(file, n_data_blocks * TAR_BLOCK_SIZE, SEEK_CUR);
             }
-            // link
-            case TAR_TYPE_HARD_LINK:
-            case TAR_TYPE_SYMBOLIC_LINK: {    
-                char link_path[100+1] = {0};
-                memcpy(link_path, header->linkname, 100);
-                printf("%s %s %s %s %s (%lu bytes) -> %s\n", permissions, uname, gname, mtime, file_path, size, link_path);
-                break;
-            }
-            // device
-            case TAR_TYPE_CHARACTER_DEVICE:
-            case TAR_TYPE_BLOCK_DEVICE: {
-                u64 devmajor = tar_oct_to_u64(header->devmajor);
-                u64 devminor = tar_oct_to_u64(header->devminor);
-                printf("%s %s %s %lu.%lu %s %s (%lu bytes)\n", permissions, uname, gname, devmajor, devminor, mtime, file_path, size);
-                break;
-            }
-            default:
-                printf("%s %s %s %s %s (%lu bytes)\n", permissions, uname, gname, mtime, file_path, size);
-                break;
+            printf("%s %s %s %s %s (%lu bytes)\n", permissions, uname, gname, mtime, file_path, size);
+            break;
+        }
+        // link
+        case TAR_TYPE_HARD_LINK:
+        case TAR_TYPE_SYMBOLIC_LINK: {    
+            char link_path[100 + 1] = {0};
+            memcpy(link_path, header->linkname, 100);
+            printf("%s %s %s %s %s (%lu bytes) -> %s\n", permissions, uname, gname, mtime, file_path, size, link_path);
+            break;
+        }
+        // device
+        case TAR_TYPE_CHARACTER_DEVICE:
+        case TAR_TYPE_BLOCK_DEVICE: {
+            u64 devmajor = tar_oct_to_u64(header->devmajor);
+            u64 devminor = tar_oct_to_u64(header->devminor);
+            printf("%s %s %s %lu.%lu %s %s (%lu bytes)\n", permissions, uname, gname, devmajor, devminor, mtime, file_path, size);
+            break;
+        }
+        default:
+            printf("%s %s %s %s %s (%lu bytes)\n", permissions, uname, gname, mtime, file_path, size);
+            break;
         }
     }
     
@@ -313,6 +313,8 @@ The command to create a tar archive is `tar --format=ustar -cvf test/ test.tar`.
 - -v : verbose (show progress)
 - -f : specify output directory
 - --format=ustar : specify the "ustar" format since the default is "gnu"
+
+In this article **we have omitted proper errors handling** to keep the code short, please see the full source code available on [GitHub](https://github.com/kevenv/file_archiver) for more details.
 
 ## References
 - Specification:
