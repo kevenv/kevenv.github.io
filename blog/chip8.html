@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>Kevenv - Chip8 emulator</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <h1>~/kevenv</h1>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Chip8 emulator</h1>
+<p>intro</p>
+<p>One day I got really intrigued about emulators so I read a lot about it and implemented the Chip8. It is usually the first emulator someone would implement due to it's simplicity. I implemented it all from scratch based on the specs I found on the internet. It was one of the most interesting and fun programming project I did!</p>
+<p>have you ever wanted to know
+how game emulator works?
+what magic is neede to run console games on a desktop computer?</p>
+<p>I believe that writing a Chip8 emulator is one of the best project to quickly understand how computers work.
+I originally wrote one 10 years ago when I was still in high school?
+it really opened my eyes and expanded my understanding 
+yet relatively few people know about it.</p>
+<p>It can be done in a weekend.
+written in very few lines of code</p>
+<p>In this article I will show you how to implement one in C using the SDL library for graphics.</p>
+<h2>Emulation</h2>
+<p>emulator
+    interpreter</p>
+<p>simulate the behavior of a real CPU
+allow us to run programs made for one CPU on another CPU
+state: cpu,ram,rom..
+I/O: kbd,display</p>
+<h2>Computers</h2>
+<p>At the core of computers is the CPU.
+cpu
+    fetch,decode,exec
+    instruction, opcode, asm
+    formats
+        big/little
+        fixed size
+    ISA
+    regs
+    clock,speed/freq
+    synchronous
+    manip bits,binary numbers,letters=ascii
+    chips,transistors,bool algebra
+stored program = ROM -&gt; RAM
+    newman arch
+    stack
+can comm with ext world via IO
+    cpu ins
+    io ports
+    mmio</p>
+<h2>Chip8</h2>
+<p>chip8 = VM ~soc
+emulation impl as real HW for fun, might simplify code
+RAM, mmap
+!MMIO -&gt; IO ports</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU</strong></td>
+<td>~500 Hz</td>
+</tr>
+<tr>
+<td><strong>RAM</strong></td>
+<td>4 KB</td>
+</tr>
+<tr>
+<td><strong>ROM</strong></td>
+<td>3.5 KB</td>
+</tr>
+<tr>
+<td><strong>Timers</strong></td>
+<td>2 x timer (8-bit), 60 Hz</td>
+</tr>
+<tr>
+<td><strong>Display</strong></td>
+<td>64 x 32 monochrome (1-bpp), 8 x 15 sprites</td>
+</tr>
+<tr>
+<td><strong>Keypad</strong></td>
+<td>16 keys</td>
+</tr>
+<tr>
+<td><strong>Speaker</strong></td>
+<td>Buzzer (1-bit)</td>
+</tr>
+</tbody>
+</table>
+<p>The memory map:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>    [0 - 511] : Font
+    [512 - 4095] : Program (ROM)
+</code></pre></div></td></tr></table></div>
+
+<p>Notice that devices are not memory mapped, they can only be accessed via specific CPU instructions.</p>
+<p>The Chip8 does not have any OS and can only run a single program at a time.</p>
+<p>Programs never access the lower 512 bytes of RAM.</p>
+<p>SDL hello
+file structure</p>
+<h2>ROM</h2>
+<p>User programs are stored in ROM chips (Read Only Memory) and loaded into RAM when the Chip8 resets.</p>
+<p>As defined by the memory map above, programs are loaded into RAM at <code>0x200</code> and so the CPU will start fetching instructions from this address at reset.</p>
+<p>load rom
+    mmap</p>
+<p>mmap
+    [0-511] : font
+        lower 512 bytes of memory (0x000-0x1FF), 
+        and it is common to store font data there.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>    most programs written for the original system
+    begin at memory location 512 (0x200) and 
+    do not access any of the memory below the
+    location 512 (0x200).
+
+[512-4095] : rom
+</code></pre></div></td></tr></table></div>
+
+<p>rom load
+    @ 0x200</p>
+<p>Where can find ROMs?
+Which one is good to start implementing a Chip8 emulator?
+    test-char
+    pong
+    blinky</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // fopen</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="c1"> // malloc</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">rom_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">bytes</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">rom_load</span><span class="p">(</span><span class="n">rom_t</span><span class="o">*</span><span class="w"> </span><span class="n">rom</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">file_path</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;rb&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// get file_size</span>
+<span class="w">    </span><span class="n">fseek</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_END</span><span class="p">);</span>
+<span class="w">    </span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">ftell</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fseek</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// read ROM</span>
+<span class="w">    </span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">rom_free</span><span class="p">(</span><span class="n">rom_t</span><span class="o">*</span><span class="w"> </span><span class="n">rom</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">bytes</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>chip8:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="c1"> // memcpy</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">chip8_load_rom</span><span class="p">(</span><span class="n">chip8_t</span><span class="o">*</span><span class="w"> </span><span class="n">chip8</span><span class="p">,</span><span class="w"> </span><span class="n">rom_t</span><span class="o">*</span><span class="w"> </span><span class="n">rom</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">RAM</span><span class="p">[</span><span class="n">PC</span><span class="p">],</span><span class="w"> </span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">rom</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>init:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// load ROM</span>
+<span class="w">    </span><span class="n">rom_t</span><span class="w"> </span><span class="n">rom</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rom_load</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rom</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// init chip8</span>
+<span class="w">    </span><span class="n">chip8_t</span><span class="w"> </span><span class="n">chip8</span><span class="p">;</span>
+<span class="w">    </span><span class="n">chip8_load_rom</span><span class="p">(</span><span class="o">&amp;</span><span class="n">chip8</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rom</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// cleanup</span>
+<span class="w">    </span><span class="n">rom_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rom</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>CPU</h2>
+<h2>Keypad</h2>
+<p>User inputs can be done via the <em>keypad</em>, consisting of 16 keys indexed from 0 to F.
+The keys are laid out in the following way:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>| 1 2 3 C |
+| 4 5 6 D |
+| 7 8 9 E |
+| A 0 B F |
+</code></pre></div></td></tr></table></div>
+
+<p>Games will often use the 2,4,6,8 keys as arrow keys:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>|   2   |
+| 4   6 |
+|   8   |
+</code></pre></div></td></tr></table></div>
+
+<p>The keypad is only accessible via the following CPU instructions:</p>
+<ul>
+<li><code>LD Vx, K</code> (FX0A) : wait for any key press</li>
+<li><code>SKP Vx</code> (EX9E) : skip next instruction if key is pressed</li>
+<li><code>SKNP Vx</code> (EXA1) : skip next instruction if key is not pressed</li>
+</ul>
+<p>In our implementation each device external to the Chip8 SoC such as the keypad has its own struct.
+Chip8 can refer to it via pointers.
+this is done to map the real hw</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="c1"> // memset</span>
+
+<span class="cp">#define N_KEYS 16</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">keypad_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">N_KEYS</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">keypad_reset</span><span class="p">(</span><span class="n">keypad_t</span><span class="o">*</span><span class="w"> </span><span class="n">keypad</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">N_KEYS</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">bool</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">keypad_pressed</span><span class="p">(</span><span class="n">keypad_t</span><span class="o">*</span><span class="w"> </span><span class="n">keypad</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">key</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="n">key</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">keypad_any_pressed</span><span class="p">(</span><span class="n">keypad_t</span><span class="o">*</span><span class="w"> </span><span class="n">keypad</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N_KEYS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="o">*</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>impl</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="nf">chip8_tick</span><span class="p">(</span><span class="n">chip8_t</span><span class="o">*</span><span class="w"> </span><span class="n">chip8</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// execute</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">op1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mh">0xE</span><span class="p">:</span>
+<span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">op2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="mh">0x9E</span><span class="p">:</span><span class="w"> </span><span class="c1">// EX9E</span>
+<span class="w">                    </span><span class="n">PC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keypad_pressed</span><span class="p">(</span><span class="n">chip8</span><span class="o">-&gt;</span><span class="n">keypad</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="p">[</span><span class="n">x</span><span class="p">])</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">PC</span><span class="o">+</span><span class="mi">2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">PC</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="mh">0xA1</span><span class="p">:</span><span class="w"> </span><span class="c1">// EXA1</span>
+<span class="w">                    </span><span class="n">PC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">keypad_pressed</span><span class="p">(</span><span class="n">chip8</span><span class="o">-&gt;</span><span class="n">keypad</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="p">[</span><span class="n">x</span><span class="p">])</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">PC</span><span class="o">+</span><span class="mi">2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">PC</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mh">0xF</span><span class="p">:</span>
+<span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">op2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="mh">0x0A</span><span class="p">:</span><span class="w"> </span><span class="c1">// FX0A</span>
+<span class="w">                    </span><span class="n">u8</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">keypad_any_pressed</span><span class="p">(</span><span class="n">chip8</span><span class="o">-&gt;</span><span class="n">keypad</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">key</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">V</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="w">                        </span><span class="n">PC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PC</span><span class="o">+</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="c1">// skip next instruction</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">PC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PC</span><span class="mi">-2</span><span class="p">;</span><span class="w"> </span><span class="c1">// wait until pressed</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>stuff</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">chip8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="n">keypad_t</span><span class="o">*</span><span class="w"> </span><span class="n">keypad</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">};</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Init: vhook to SDL</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// init chip8</span>
+<span class="w">    </span><span class="n">chip8_t</span><span class="w"> </span><span class="n">chip8</span><span class="p">;</span>
+<span class="w">    </span><span class="n">keypad_t</span><span class="w"> </span><span class="n">keypad</span><span class="p">;</span>
+<span class="w">    </span><span class="n">chip8</span><span class="p">.</span><span class="n">keypad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">keypad</span><span class="p">;</span>
+<span class="w">    </span><span class="n">keypad_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">keypad</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// tick emulator</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// ...</span>
+
+<span class="w">        </span><span class="c1">// handle events</span>
+<span class="w">        </span><span class="n">SDL_Event</span><span class="w"> </span><span class="n">event</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">SDL_PollEvent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">event</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SDL_QUIT</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// update</span>
+<span class="w">        </span><span class="n">update_keypad</span><span class="p">(</span><span class="o">&amp;</span><span class="n">keypad</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>update like:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">update_keypad</span><span class="p">(</span><span class="n">keypad_t</span><span class="o">*</span><span class="w"> </span><span class="n">keypad</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="o">*</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDL_GetKeyboardState</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_X</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_1</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_2</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_3</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_Q</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_W</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_E</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_A</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_S</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_D</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_Z</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_C</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_4</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_R</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_F</span><span class="p">];</span>
+<span class="w">    </span><span class="n">keypad</span><span class="o">-&gt;</span><span class="n">keys</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keys</span><span class="p">[</span><span class="n">SDL_SCANCODE_V</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Display</h2>
+<h2>Timers</h2>
+<p>Two <em>timers</em> are available in the Chip8:</p>
+<ul>
+<li><strong>Delay timer (DT)</strong>, used for scheduling events.</li>
+<li><strong>Sound timer (ST)</strong>, used for producing sounds.</li>
+</ul>
+<p>Both timers consist of a 8-bit register used as counter.
+The counter is automatically decremented at 60Hz until it reaches zero.</p>
+<p>The only difference between the timers is that when <code>ST</code> is greater than zero, a sound is emitted through the speaker.</p>
+<p>Timers are controlled via three CPU instructions:</p>
+<ul>
+<li><code>LD Vx, DT</code> (FX07) : get DT</li>
+<li><code>LD DT, Vx</code> (FX15) : set DT</li>
+<li><code>LD ST, Vx</code> (FX18) : set ST</li>
+</ul>
+<p>In our implementation the timers are part of the Chip8 SoC:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define DT    chip8-&gt;DT</span>
+<span class="cp">#define ST    chip8-&gt;ST</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">chip8_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// Timers</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">DT</span><span class="p">;</span><span class="w"> </span><span class="c1">// delay timer, 60Hz</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">ST</span><span class="p">;</span><span class="w"> </span><span class="c1">// sound timer, 60Hz</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">chip8_reset</span><span class="p">(</span><span class="n">chip8_t</span><span class="o">*</span><span class="w"> </span><span class="n">chip8</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="n">DT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">chip8_timers_tick</span><span class="p">(</span><span class="n">chip8_t</span><span class="o">*</span><span class="w"> </span><span class="n">chip8</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">DT</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">DT</span><span class="o">--</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ST</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">ST</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">chip8_tick</span><span class="p">(</span><span class="n">chip8_t</span><span class="o">*</span><span class="w"> </span><span class="n">chip8</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// execute</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">op1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="mh">0xF</span><span class="p">:</span>
+<span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">op2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="mh">0x07</span><span class="p">:</span><span class="w"> </span><span class="c1">// FX07</span>
+<span class="w">                    </span><span class="n">V</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DT</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="mh">0x15</span><span class="p">:</span><span class="w"> </span><span class="c1">// FX15</span>
+<span class="w">                    </span><span class="n">DT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">V</span><span class="p">[</span><span class="n">x</span><span class="p">];</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="mh">0x18</span><span class="p">:</span><span class="w"> </span><span class="c1">// FX18</span>
+<span class="w">                    </span><span class="n">ST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">V</span><span class="p">[</span><span class="n">x</span><span class="p">];</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>To increment the timers are the right rate:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#define CPU_FREQ_HZ   500</span>
+<span class="cp">#define TIMER_FREQ_HZ 60</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// tick emulator</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">cycles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// tick @ 60Hz</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cycles</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CPU_FREQ_HZ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TIMER_FREQ_HZ</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">cycles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// ...</span>
+<span class="w">            </span><span class="n">chip8_timers_tick</span><span class="p">(</span><span class="o">&amp;</span><span class="n">chip8</span><span class="p">);</span>
+<span class="w">            </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">SDL_Delay</span><span class="p">((</span><span class="n">u32</span><span class="p">)(</span><span class="mf">1.0f</span><span class="o">/</span><span class="n">CPU_FREQ_HZ</span><span class="o">*</span><span class="mi">1000</span><span class="p">));</span>
+<span class="w">        </span><span class="n">cycles</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<h2>Speaker</h2>
+<p>For sound effects, the Chip8 includes a <em>speaker</em> that can only do one tone, a single "beep" sound (1-bit audio). The speaker is ON whenever <code>ST</code> is greater than zero, otherwise it is OFF.</p>
+<p>We use a simple finite state machine (FSM) to keep the speaker implementation decoupled from the SDL support code.</p>
+<p>TODO: impl w FSM + SDL Mixer</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// RESET -&gt; START -&gt; PLAYING -&gt; STOP -&gt; RESET</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">speaker_state_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">SPEAKER_RESET</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SPEAKER_START</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SPEAKER_PLAYING</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SPEAKER_STOP</span>
+<span class="p">};</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">speaker_t</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">speaker_state_t</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">speaker_reset</span><span class="p">(</span><span class="n">speaker_t</span><span class="o">*</span><span class="w"> </span><span class="n">speaker</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">speaker</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPEAKER_RESET</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">speaker_tick</span><span class="p">(</span><span class="n">speaker_t</span><span class="o">*</span><span class="w"> </span><span class="n">speaker</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">ST</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">speaker</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SPEAKER_RESET</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ST</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">speaker</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPEAKER_START</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">speaker</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SPEAKER_PLAYING</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ST</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">speaker</span><span class="o">-&gt;</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPEAKER_STOP</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>Init it:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// init chip8</span>
+<span class="w">    </span><span class="n">speaker_t</span><span class="w"> </span><span class="n">speaker</span><span class="p">;</span>
+<span class="w">    </span><span class="n">speaker_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">speaker</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>And tick it:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span><span class="c1">// tick emulator</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">cycles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// tick @ 60Hz</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cycles</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CPU_FREQ_HZ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">TIMER_FREQ_HZ</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">cycles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// ...</span>
+<span class="w">            </span><span class="n">chip8_timers_tick</span><span class="p">(</span><span class="o">&amp;</span><span class="n">chip8</span><span class="p">);</span>
+<span class="w">            </span><span class="n">speaker_tick</span><span class="p">(</span><span class="o">&amp;</span><span class="n">speaker</span><span class="p">,</span><span class="w"> </span><span class="n">chip8</span><span class="p">.</span><span class="n">ST</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">speaker</span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SPEAKER_START</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">speaker</span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPEAKER_PLAYING</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">speaker</span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SPEAKER_STOP</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">speaker</span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPEAKER_RESET</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">SDL_Delay</span><span class="p">((</span><span class="n">u32</span><span class="p">)(</span><span class="mf">1.0f</span><span class="o">/</span><span class="n">CPU_FREQ_HZ</span><span class="o">*</span><span class="mi">1000</span><span class="p">));</span>
+<span class="w">        </span><span class="n">cycles</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+<p>conclusion</p>
+<h2>References</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/CHIP-8">https://en.wikipedia.org/wiki/CHIP-8</a></li>
+<li><a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">http://devernay.free.fr/hacks/chip8/C8TECH10.HTM</a></li>
+<li><a href="https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Technical-Reference">https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Technical-Reference</a></li>
+<li><a href="https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908">https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908</a></li>
+<li><a href="https://chip-8.github.io/">https://chip-8.github.io/</a></li>
+</ul>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

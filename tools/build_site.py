@@ -30,7 +30,6 @@ if __name__ == '__main__':
             ('courses','','Courses'),
             ('history','','History'),
         ('projects','','Projects'),
-            ('projects/chip8','../','Projects Chip8'),
             ('projects/europa','../','Project Europa'),
         ('publications','','Publications'),
             ('publications/master_thesis','../','Master\'s thesis'),
@@ -56,6 +55,7 @@ if __name__ == '__main__':
             ('blog/qoi_format','../','QOI image format'),
             ('blog/tar_format','../','Tar file format'),
             # ('blog/zip_format','../','ZIP format'),
+            ('blog/chip8','../','Chip8 emulator'),
     ]
     for page in pages:
         print(page)
