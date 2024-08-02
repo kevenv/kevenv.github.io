@@ -214,7 +214,7 @@ struct keypad_t {
 
 void keypad_reset(keypad_t* keypad)
 {
-    memset(keypad->keys, false, N_KEYS*sizeof(bool));
+    memset(keypad->keys, false, N_KEYS * sizeof(bool));
 }
 
 bool keypad_pressed(keypad_t* keypad, u8 key)
@@ -242,30 +242,30 @@ bool chip8_tick(chip8_t* chip8)
 
     // execute
     switch (op1) {
-        case 0xE:
-            switch (op2) {
-                case 0x9E: // EX9E
-                    PC = keypad_pressed(chip8->keypad, V[x]) ? PC+2 : PC;
-                    break;
-                case 0xA1: // EXA1
-                    PC = !keypad_pressed(chip8->keypad, V[x]) ? PC+2 : PC;
-                    break;
+    case 0xE:
+        switch (op2) {
+        case 0x9E: // EX9E
+            PC = keypad_pressed(chip8->keypad, V[x]) ? PC + 2 : PC;
+            break;
+        case 0xA1: // EXA1
+            PC = !keypad_pressed(chip8->keypad, V[x]) ? PC + 2 : PC;
+            break;
+        }
+        break;
+    case 0xF:
+        switch (op2) {
+        case 0x0A: // FX0A
+            u8 key;
+            if (keypad_any_pressed(chip8->keypad, &key)) {
+                V[x] = key;
+                PC = PC + 2; // skip next instruction
+            }
+            else {
+                PC = PC - 2; // wait until pressed
             }
             break;
-        case 0xF:
-            switch (op2) {
-                case 0x0A: // FX0A
-                    u8 key;
-                    if (keypad_any_pressed(chip8->keypad, &key)) {
-                        V[x] = key;
-                        PC = PC+2; // skip next instruction
-                    }
-                    else {
-                        PC = PC-2; // wait until pressed
-                    }
-                    break;
-            }
-            break;
+        }
+        break;
     }
 
     // ...
@@ -397,19 +397,19 @@ bool chip8_tick(chip8_t* chip8)
 
     // execute
     switch (op1) {
-        case 0xF:
-            switch (op2) {
-                case 0x07: // FX07
-                    V[x] = DT;
-                    break;
-                case 0x15: // FX15
-                    DT = V[x];
-                    break;
-                case 0x18: // FX18
-                    ST = V[x];
-                    break;
-            }
+    case 0xF:
+        switch (op2) {
+        case 0x07: // FX07
+            V[x] = DT;
             break;
+        case 0x15: // FX15
+            DT = V[x];
+            break;
+        case 0x18: // FX18
+            ST = V[x];
+            break;
+        }
+        break;
     }
 
     // ...
@@ -438,7 +438,7 @@ int main(int argc, char* argv[])
             // ...
         }
 
-        SDL_Delay((u32)(1.0f/CPU_FREQ_HZ*1000));
+        SDL_Delay((u32)(1.0f / CPU_FREQ_HZ * 1000));
         cycles++;
     }
 
@@ -476,7 +476,7 @@ void speaker_tick(speaker_t* speaker, u8 ST)
     if (speaker->state == SPEAKER_RESET && ST > 0) {
         speaker->state = SPEAKER_START;
     }
-    else if(speaker->state == SPEAKER_PLAYING && ST == 0) {
+    else if (speaker->state == SPEAKER_PLAYING && ST == 0) {
         speaker->state = SPEAKER_STOP;
     }
 }

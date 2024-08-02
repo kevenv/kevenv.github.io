@@ -88,7 +88,7 @@ build from source: https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracr
 - dconf editor
 - dnfdragora
 - git ([setup git config]({{root}}blog/git_cheatsheet.html))
-- gcc, g++, clang, cmake, make, gdb, lldb
+- gcc, g++, clang, clang-format, cmake, make, gdb, lldb
 - vlc
 - screenshot tool
 ```
@@ -142,6 +142,10 @@ sudo dnf install discord
 
 nano ~/.config/discord/settings.json
     "SKIP_HOST_UPDATE": true
+```
+- `~/.bashrc`
+```bash
+alias format-code=~/projects/tools/format_code.sh
 ```
 
 ## Install extra apps

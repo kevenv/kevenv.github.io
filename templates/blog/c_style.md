@@ -73,15 +73,15 @@ int fct()
 ## Switch
 ```C
 switch (type) {
-    case case_1:
-        do_stuff();
-        break;
-    case case_2:
-        do_other_stuff();
-        break;
-    default:
-        do_some_stuff();
-        break;
+case case_1:
+    do_stuff();
+    break;
+case case_2:
+    do_other_stuff();
+    break;
+default:
+    do_some_stuff();
+    break;
 }
 ```
 
