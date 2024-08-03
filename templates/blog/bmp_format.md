@@ -181,9 +181,9 @@ This can be computed as:
 ```C
 pitch = ceil((float)(width * 3) / 4) * 4;
 // equivalent mathematically to
-pitch = (((width * 3) + (4-1)) / 4) * 4;
+pitch = (((width * 3) + (4 - 1)) / 4) * 4;
 // can be further optimized since we assume that we align to a power of two
-pitch = ((width * 3) + (4-1)) & ~((u32)(4-1));
+pitch = ((width * 3) + (4 - 1)) & ~((u32)(4 - 1));
 ```
 
 The `image_size` from the info header can then be computed as `pitch * height`.
@@ -235,14 +235,14 @@ image_t* bmp_load(const char* file_name)
 
     // convert RGB24 -> ABGR8888
     // flip image in Y
-    u32 pitch = ((image->w * 3) + (4-1)) & ~((u32)(4-1)); // 4-byte alignment
+    u32 pitch = ((image->w * 3) + (4 - 1)) & ~((u32)(4 - 1)); // 4-byte alignment
     for (u32 y = 0; y < image->h; y++) {
         for (u32 x = 0; x < image->w; x++) {
-            u32 y_ = image->h-1 - y; // flip image in Y
-            image->pixels[(x + y * image->w) * 4 + 0] = tmp[x*3 + y_ * pitch + 2]; // R
-            image->pixels[(x + y * image->w) * 4 + 1] = tmp[x*3 + y_ * pitch + 1]; // G
-            image->pixels[(x + y * image->w) * 4 + 2] = tmp[x*3 + y_ * pitch + 0]; // B
-            image->pixels[(x + y * image->w) * 4 + 3] = 255;                       // A (unused)
+            u32 y_ = image->h - 1 - y; // flip image in Y
+            image->pixels[(x + y * image->w) * 4 + 0] = tmp[x * 3 + y_ * pitch + 2]; // R
+            image->pixels[(x + y * image->w) * 4 + 1] = tmp[x * 3 + y_ * pitch + 1]; // G
+            image->pixels[(x + y * image->w) * 4 + 2] = tmp[x * 3 + y_ * pitch + 0]; // B
+            image->pixels[(x + y * image->w) * 4 + 3] = 255; // A (unused)
         }
     }
     free(tmp);
@@ -278,11 +278,11 @@ int main(int argc, char* argv[])
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         return 1;
     }
-    SDL_Window* window = SDL_CreateWindow("Image Viewer",
+    SDL_Window* window = SDL_CreateWindow(
+        "Image Viewer",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600
-        SDL_WINDOW_SHOWN
-    );
+        SDL_WINDOW_SHOWN);
     if (!window) {
         return 1;
     }

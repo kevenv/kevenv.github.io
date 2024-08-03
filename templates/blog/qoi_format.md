@@ -151,9 +151,9 @@ A QOI file starts with a fixed size _header_ followed by a list of _chunks_ cont
 ```C
 struct __attribute__((packed)) qoi_header_t {
     char magic[4]; // file signature "qoif"
-    u32 width;     // image width in pixels (BE)
-    u32 height;    // image height in pixels (BE)
-    u8 channels;   // 3 = RGB, 4 = RGBA
+    u32 width; // image width in pixels (BE)
+    u32 height; // image height in pixels (BE)
+    u8 channels; // 3 = RGB, 4 = RGBA
     u8 colorspace; // qoi_color_space_t
 };
 ```
@@ -176,8 +176,8 @@ The number of _color channels_ (3 for RGB and 4 for RGBA) is specified in the `c
 Finally `colorspace` contains the type of _color space_ in which the image is encoded:
 ```C
 enum qoi_color_space_t {
-    QOI_COLOR_SPACE_SRGB   = 0, // sRGB with linear alpha (most common)
-    QOI_COLOR_SPACE_LINEAR = 1  // all channels linear
+    QOI_COLOR_SPACE_SRGB = 0, // sRGB with linear alpha (most common)
+    QOI_COLOR_SPACE_LINEAR = 1, // all channels linear
 };
 ```
 
@@ -279,7 +279,7 @@ The code to decode the chunks (the core of the compression algorithm) is as foll
 #define QOI_OP_LUMA  0b10000000
 #define QOI_OP_RUN   0b11000000
 
-#define QOI_MASK_2B  0b11000000
+#define QOI_MASK_2B 0b11000000
 
 void qoi_decode_chunks(image_t* image, u8* bytes)
 {
@@ -345,10 +345,10 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
         }
 
         // store pixel
-        image->pixels[i*4 + 0] = last_pixel.r;
-        image->pixels[i*4 + 1] = last_pixel.g;
-        image->pixels[i*4 + 2] = last_pixel.b;
-        image->pixels[i*4 + 3] = last_pixel.a;
+        image->pixels[i * 4 + 0] = last_pixel.r;
+        image->pixels[i * 4 + 1] = last_pixel.g;
+        image->pixels[i * 4 + 2] = last_pixel.b;
+        image->pixels[i * 4 + 3] = last_pixel.a;
     }
 }
 ```
@@ -443,10 +443,10 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
     u32 idx = 0; // index of current byte in stream
     for (u32 i = 0; i < image->w * image->h; i++) {
         rgba_t pixel;
-        pixel.r = image->pixels[i*4 + 0];
-        pixel.g = image->pixels[i*4 + 1];
-        pixel.b = image->pixels[i*4 + 2];
-        pixel.a = image->pixels[i*4 + 3];
+        pixel.r = image->pixels[i * 4 + 0];
+        pixel.g = image->pixels[i * 4 + 1];
+        pixel.b = image->pixels[i * 4 + 2];
+        pixel.a = image->pixels[i * 4 + 3];
 
         if (pixel.rgba == last_pixel.rgba) {
             run_length++;
@@ -481,15 +481,15 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
                 if (
                     (dr >= -2 && dr <= 1) && 
                     (dg >= -2 && dg <= 1) && 
-                    (db >= -2 && db <= 1)
-                ) {
+                    (db >= -2 && db <= 1)) {
+                    
                     bytes[idx++] = QOI_OP_DIFF | ((u8)(dr + 2) << 4) | ((u8)(dg + 2) << 2) | ((u8)(db + 2) << 0);
                 }
                 else if (
-                    (dg    >= -32 && dg    <= 31) && 
-                    (dr_dg >= -8  && dr_dg <= 7 ) && 
-                    (db_dg >= -8  && db_dg <= 7 )
-                ) {
+                    (dg >= -32 && dg <= 31) &&
+                    (dr_dg >= -8 && dr_dg <= 7 ) &&
+                    (db_dg >= -8 && db_dg <= 7 )) {
+                    
                     bytes[idx++] = QOI_OP_LUMA | (u8)(dg + 32);
                     bytes[idx++] = ((u8)(dr_dg + 8) << 4) | ((u8)(db_dg + 8) << 0);
                 }
@@ -522,7 +522,7 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
     }
     bytes[idx++] = 0x01;
 
-    *bytes_size = idx-1;
+    *bytes_size = idx - 1;
 }
 ```
 Notice that the code for the encoder is not much more complicated than the decoder.

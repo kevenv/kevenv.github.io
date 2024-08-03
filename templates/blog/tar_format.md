@@ -191,7 +191,7 @@ For a basic utility we can only parse the file path and size.
 The size must also be parsed as we need to skip the data blocks to get to the next file.
 
 ```C
-u64 n_data_blocks = (size + TAR_BLOCK_SIZE-1) / TAR_BLOCK_SIZE;
+u64 n_data_blocks = (size + TAR_BLOCK_SIZE - 1) / TAR_BLOCK_SIZE;
 ```
 
 This means that we need to know if a file entry is an actual file or something else like a directory.
@@ -235,7 +235,7 @@ bool tar_list(const char* file_path)
         case TAR_TYPE_NORMAL0:
         case TAR_TYPE_NORMAL: {
             // skip data blocks
-            u64 n_data_blocks = (size + TAR_BLOCK_SIZE-1) / TAR_BLOCK_SIZE;
+            u64 n_data_blocks = (size + TAR_BLOCK_SIZE - 1) / TAR_BLOCK_SIZE;
             if (n_data_blocks >= 1) {
                 fseek(file, n_data_blocks * TAR_BLOCK_SIZE, SEEK_CUR);
             }
