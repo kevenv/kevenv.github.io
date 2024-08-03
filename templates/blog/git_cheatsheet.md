@@ -111,7 +111,7 @@
 ## GitHub password
 GitHub is no longer accepting account passwords, need to use PAT (Personal Access Token).
 
-- Create a PAT using [https://github.com/settings/tokens](https://github.com/settings/tokens)
+- Create a PAT using <https://github.com/settings/tokens>
 - `git config --global credential.helper store`
     - Stores the PAT in `~/.git-credentials` (plain text).
 - `git pull`

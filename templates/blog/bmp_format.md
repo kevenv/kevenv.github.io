@@ -354,12 +354,12 @@ In this article **we have omitted proper errors handling** to keep the code shor
 
 ## References
 - BMP specification:
-    - [https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-storage](https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-storage)
-    - [https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types](https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types)
-    - [https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader](https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader)
-    - [https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85)](https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85))
-    - [https://en.wikipedia.org/wiki/BMP_file_format](https://en.wikipedia.org/wiki/BMP_file_format)
-    - [https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml](https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml)
+    - <https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-storage>
+    - <https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-header-types>
+    - <https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader>
+    - <https://learn.microsoft.com/en-us/previous-versions/dd183376(v=vs.85)>
+    - <https://en.wikipedia.org/wiki/BMP_file_format>
+    - <https://www.loc.gov/preservation/digital/formats/fdd/fdd000189.shtml>
 - PPM specification:
-    - [https://netpbm.sourceforge.net/doc/ppm.html](https://netpbm.sourceforge.net/doc/ppm.html)
-    - [https://en.wikipedia.org/wiki/Netpbm](https://en.wikipedia.org/wiki/Netpbm)
+    - <https://netpbm.sourceforge.net/doc/ppm.html>
+    - <https://en.wikipedia.org/wiki/Netpbm>

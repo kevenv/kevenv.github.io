@@ -533,7 +533,7 @@ QOI can be used in place of PNG for faster compression and decompression at the 
 In this article **we have omitted proper errors handling** to keep the code short, please see the full source code available on [GitHub](https://github.com/kevenv/image_viewer) for more details.
 
 ## References
-- [https://qoiformat.org/](https://qoiformat.org/)
-- [https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression](https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression)
-- [https://en.wikipedia.org/wiki/QOI_(image_format)](https://en.wikipedia.org/wiki/QOI_(image_format))
-- [https://en.wikipedia.org/wiki/Run-length_encoding](https://en.wikipedia.org/wiki/Run-length_encoding)
+- <https://qoiformat.org/>
+- <https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression>
+- <https://en.wikipedia.org/wiki/QOI_(image_format)>
+- <https://en.wikipedia.org/wiki/Run-length_encoding>

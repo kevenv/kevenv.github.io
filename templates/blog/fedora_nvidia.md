@@ -14,9 +14,9 @@ sudo dnf install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-
 sudo dnf config-manager --enable fedora-cisco-openh264
 ```
 
-- [https://rpmfusion.org/Configuration](https://rpmfusion.org/Configuration)
-- [https://rpmfusion.org/Howto/NVIDIA](https://rpmfusion.org/Howto/NVIDIA)
-- [https://rpmfusion.org/Howto/CUDA](https://rpmfusion.org/Howto/CUDA)
+- <https://rpmfusion.org/Configuration>
+- <https://rpmfusion.org/Howto/NVIDIA>
+- <https://rpmfusion.org/Howto/CUDA>
 
 ### Repos
 ```
@@ -63,8 +63,8 @@ sources:
 
 ## CUDA toolkit
 - only from NV repo (NVIDIA official repo)
-- view online: [https://developer.download.nvidia.com/compute/cuda/repos/fedora39/x86_64/](https://developer.download.nvidia.com/compute/cuda/repos/fedora39/x86_64/)
-    
+- view online: <https://developer.download.nvidia.com/compute/cuda/repos/fedora39/x86_64/>
+
 ```
 sudo dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora39/x86_64/cuda-fedora39.repo
 sudo dnf clean all

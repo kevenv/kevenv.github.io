@@ -160,12 +160,12 @@ typedef int64_t i64;
 ### References
 This is very controversial, no one seems to agree...
 
-- [https://www.reddit.com/r/cpp/comments/3fli94/should_i_use_signed_or_unsigned_ints/](https://www.reddit.com/r/cpp/comments/3fli94/should_i_use_signed_or_unsigned_ints/)
-- [https://www.learncpp.com/cpp-tutorial/unsigned-integers-and-why-to-avoid-them/](https://www.learncpp.com/cpp-tutorial/unsigned-integers-and-why-to-avoid-them/)
-- [https://www.quora.com/Should-I-prefer-unsigned-int-or-size_t-instead-of-int-for-loops-in-C](https://www.quora.com/Should-I-prefer-unsigned-int-or-size_t-instead-of-int-for-loops-in-C)
-- [https://softwareengineering.stackexchange.com/questions/411128/is-using-64-bit-integers-long-long-faster-than-less-bits-ones](https://softwareengineering.stackexchange.com/questions/411128/is-using-64-bit-integers-long-long-faster-than-less-bits-ones)
-- [https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/](https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/)
-- [https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/](https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/)
+- <https://www.reddit.com/r/cpp/comments/3fli94/should_i_use_signed_or_unsigned_ints/>
+- <https://www.learncpp.com/cpp-tutorial/unsigned-integers-and-why-to-avoid-them/>
+- <https://www.quora.com/Should-I-prefer-unsigned-int-or-size_t-instead-of-int-for-loops-in-C>
+- <https://softwareengineering.stackexchange.com/questions/411128/is-using-64-bit-integers-long-long-faster-than-less-bits-ones>
+- <https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/>
+- <https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/>
 
 ## GCC flags
 ```

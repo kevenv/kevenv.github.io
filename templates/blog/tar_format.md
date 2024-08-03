@@ -318,14 +318,14 @@ In this article **we have omitted proper errors handling** to keep the code shor
 
 ## References
 - Specification:
-    - [https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html)
-    - [https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06)
-    - [https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03)
+    - <https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/tar.h.html>
+    - <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_13_06>
+    - <https://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html#tag_20_92_18_03>
 - GNU Tar:
-    - [https://www.gnu.org/software/tar/manual/html_node/index.html](https://www.gnu.org/software/tar/manual/html_node/index.html)
-    - [https://www.gnu.org/software/tar/manual/html_node/Standard.html#Standard](https://www.gnu.org/software/tar/manual/html_node/index.html)
-    - [https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats](https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats)
+    - <https://www.gnu.org/software/tar/manual/html_node/index.html>
+    - <https://www.gnu.org/software/tar/manual/html_node/Standard.html#Standard>
+    - <https://www.gnu.org/software/tar/manual/html_node/Formats.html#Formats>
 - Wiki:
-    - [https://wiki.osdev.org/USTAR](https://wiki.osdev.org/USTAR)
-    - [https://wiki.osdev.org/Tar](https://wiki.osdev.org/Tar)
-    - [https://en.wikipedia.org/wiki/Tar_(computing)](https://en.wikipedia.org/wiki/Tar_(computing))
+    - <https://wiki.osdev.org/USTAR>
+    - <https://wiki.osdev.org/Tar>
+    - <https://en.wikipedia.org/wiki/Tar_(computing)>
