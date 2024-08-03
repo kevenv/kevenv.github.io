@@ -24,244 +24,133 @@
         <hr>
         <h1>Projects</h1>
 
-        <h2>Computer graphics &lt;3</h2>
+        <ul>
+            <li>
+                <strong>file_archiver</strong> : file archiver to learn about file compression (tar, ZIP). 
+                [ <a href="https://github.com/kevenv/file_archiver">GitHub</a> ]
+                <span class="tag">C</span>
+            </li>
+            <li>
+                <strong>image_viewer</strong> : simple image encoder/decoder (PPM, BMP, QOI). 
+                [ <a href="https://github.com/kevenv/image_viewer">GitHub</a> ]
+                <span class="tag">C</span> <span class="tag">SDL</span>
+            </li>
+            <li>
+                <strong>gameboy</strong> : GameBoy emulator with integrated debugger. 
+                [ <a href="https://github.com/kevenv/gameboy">GitHub</a> ]
+                <span class="tag">C++</span> <span class="tag">SDL</span>
+            </li>
+            <li>
+                <strong>hi5os</strong> : drivers (SD card, FAT32, LCD, ...) for the RISC-V hifive1 microcontroller. 
+                [ <a href="https://github.com/kevenv/hi5os">GitHub</a> ]
+                <span class="tag">C</span>
+            </li>
+            <li>
+                <strong>tinyv</strong> : small RISC-V emulator that passes some of the official test suite. 
+                [ <a href="projects/tinyv.html">More</a> ]
+                <span class="tag">C</span>
+            </li>
+            <li>
+                <strong>frozen</strong> : hobby OS for desktop PC (x86-64). 
+                [ <a href="https://github.com/kevenv/frozen">GitHub</a> ]
+                <span class="tag">C</span>
+            </li>
+            <li>
+                <strong>tinynn</strong> : inference and training lib to learn how neural networks work. 
+                [ <a href="https://github.com/kevenv/tinynn">GitHub</a> ]
+                <span class="tag">C</span>
+            </li>
+    
+            <li>
+                <strong>flicker</strong> : offline ray tracer for unbiased physically based rendering. 
+                [ <a href="projects/flicker.html">More</a> ]
+                <span class="tag">C++</span>
+            </li>
+            <li>
+                <strong>AlmostTetris</strong> : fun "Tetris" clone with gameplay recorder. 
+                [ <a href="https://github.com/kevenv/almost_tetris">GitHub</a> ]
+                <span class="tag">C++</span> <span class="tag">SDL</span>
+            </li>
+    
+            <li>
+                <strong>europa</strong> : clone of "Age of Empires" a RTS game from scratch. 
+                [ <a href="projects/europa.html">More</a> ]
+                <span class="tag">C++</span> <span class="tag">SDL</span>
+            </li>
+            <li>
+                <strong>chip8</strong> : emulator for the Chip8 to learn how emulators work. 
+                [ <a href="https://github.com/kevenv/chip8">GitHub</a> ]
+                <span class="tag">C</span> <span class="tag">SDL</span>
+            </li>
+            <li>
+                <strong>ShinyPanda</strong> : 2D puzzle-platformer video game with custom engine. 
+                [ <a href="https://github.com/kevenv/shinypanda">GitHub</a> ]
+                <span class="tag">C++</span> <span class="tag">SFML</span>
+            </li>
+            <li>
+                <strong>orbitsim</strong> : real-time n-body simulator able to simulate the solar system. 
+                [ <a href="https://github.com/kevenv/orbitsim_cs">GitHub</a> ]
+                <span class="tag">C#</span> <span class="tag">.NET</span>
+            </li>
+        </ul>
 
-        <article>
-            <h3 id="pbr"><a href="projects.html#pbr">Physically based renderer</a></h3>
-            <ul>
-                <li>Volumetric Path Tracing</li>
-                <li>Progressive Photon Mapping</li>
-                <li>Volumetric VPLs</li>
-                <li>Volumetric Lightcuts</li>
-                <li>MIS</li>
-                <li>Area light IS</li>
-                <li>Mesh light IS</li>
-                <li>Diffuse BRDF</li>
-                <li>Phong BRDF</li>
-            </ul>
-            <img src="imgs/projects/pbr-cover.jpg">
-            <p><i class='bx bx-code-alt bx-sm'></i> C++</p>
-            <p class="link-button">
-                <a href="https://github.com/kevenv/nori"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-        </article>
-
-        <article>
-            <h3 id="raytracer"><a href="projects.html#raytracer">Ray tracer</a></h3>
-            <ul>
-                <li>Phong shader</li>
-                <li>Glass shader</li>
-                <li>Mirror shader</li>
-                <li>Dielectric shader</li>
-                <li>Anti-Aliasing</li>
-                <li>Environment mapping</li>
-            </ul>
-            <img src="imgs/projects/raytracer-cover.jpg">
-            <p><i class='bx bx-code-alt bx-sm'></i> Java</p>
-        </article>
-
-        <article>
-            <h3 id="subdivs"><a href="projects.html#subdivs">Catmull-Clark subdivisions</a></h3>
-            <p>
-                Catmull-Clark subdivisions surfaces with Phong shading.<br>
-                Implementation of <a href="https://people.eecs.berkeley.edu/~sequin/CS284/PAPERS/CatmullClark_SDSurf.pdf">Catmull1978</a> paper.
-            </p>
-            <img src="imgs/projects/subdivs-cover.jpg">
-            <p class="link-button">
-                <a href="https://streamable.com/s/3hnk0/yiumat"><i class='bx bx-movie-play bx-sm'></i>Video</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> Java, OpenGL</p>
-        </article>
-
-        <article>
-            <h3 id="smap"><a href="projects.html#smap">Shadow mapping</a></h3>
-            <p>
-                Shadow mapping with Phong shading.<br>
-                Implementation of <a href="https://cseweb.ucsd.edu/~ravir/274/15/papers/p270-williams.pdf">Williams1978</a> paper.
-            </p>
-            <img src="imgs/projects/shadowmap-cover.jpg">
-            <p><i class='bx bx-code-alt bx-sm'></i> Java, OpenGL</p>
-        </article>
-
-        <article>
-            <h3 id="clothsim"><a href="projects.html#clothsim">3D cloth simulator</a></h3>
-            <p>
-                Implementation of <a href="https://physbam.stanford.edu/~fedkiw/papers/stanford2002-01.pdf">Bridson2002</a> paper.
-            </p>
-            <img src="imgs/projects/cloth-sim-cover.jpg">
-            <p class="link-button">
-                <a href="https://streamable.com/s/sfjf8/ssmxop"><i class='bx bx-movie-play bx-sm'></i>Video</a>
-                <a href="https://github.com/kevenv/3d-cloth-sim"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C++, Irrlicht</p>
-        </article>
-
-        <article>
-            <h3 id="collisions"><a href="projects.html#collisions">2D collisions solver</a></h3>
-            <p>
-                2D collisions solver using the Gauss-Seidel method.<br>
-                Inspired by <a href="https://graphics.pixar.com/pbm2001/">PBM2001</a>.
-            </p>
-            <img src="imgs/projects/collisions-solver-cover.jpg">
-            <p class="link-button">
-                <a href="https://streamable.com/enxbh"><i class='bx bx-movie-play bx-sm'></i>Video</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> Java, Java2D</p>
-        </article>
-
-        <article>
-            <h3 id="fluidsim"><a href="projects.html#fluidsim">Fluids solver</a></h3>
-            <p>
-                Implementation of <a href="https://www.dgp.toronto.edu/people/stam/reality/Research/pdf/ns.pdf">Stam1999</a> paper.
-            </p>
-            <img src="imgs/projects/fluids-sim-cover.jpg">
-            <p><i class='bx bx-code-alt bx-sm'></i> Java, Java2D</p>
-        </article>
-
-        <article>
-            <h3 id="orbitsim"><a href="projects.html#orbitsim">Real-time solar system simulator</a></h3>
-            <p>Simulate our solar system and asteroids collisions in real-time.</p>
-            <img src="imgs/projects/orbit-sim-cover.jpg">
-            <p class="link-button">
-                <a href="https://github.com/kevenv/orbitsim"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C#, WindowsForms</p>
-        </article>
-
-        <article>
-            <h3 id="prt"><a href="projects.html#prt">Precomputed Radiance Transfert (PRT)</a></h3>
-            <p>
-                Implementation of <a href="https://sites.fas.harvard.edu/~cs278/papers/prt.pdf">Sloan2002</a> paper.
-            </p>
-            <img src="imgs/projects/prt-cover.jpg">
-            <p class="link-button">
-                <a href="https://github.com/kevenv/prt"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> Javascript, Three.js, WebGL</p>
-        </article>
-
-        <h2>Video Games</h2>
-
-        <article>
-            <h3 id="europa"><a href="projects/europa.html">Real-time strategy game engine (Europa)</a></h3>
-            <p>A project that was wayyyyy too ambitious.</p>
-            <a href="projects/europa.html"><img src="imgs/projects/europa-cover.jpg"></a>
-            <p class="link-button">
-                <a href="https://github.com/Nicolas82588/europa"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C++, SDL, OpenGL</p>
-        </article>
-
-        <article>
-            <h3 id="shinypanda"><a href="projects.html#shinypanda">2D puzzle platformer (ShinyPanda)</a></h3>
-            <p>An original 2D Puzzle Platformer, another example of a project way too ambitious...</p>
-            <img src="imgs/projects/shinypanda-cover.jpg">
-            <p class="link-button">
-                <a href="https://github.com/kevenv/shinypanda"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C++, SFML</p>
-        </article>
-
-        <article>
-            <h3 id="almosttetris"><a href="projects.html#almosttetris">Tetris clone (Almost Tetris)</a></h3>
-            <p>Cute Tetris clone with gameplay recorder.</p>
-            <img src="imgs/projects/almosttetris-cover.jpg">
-            <p class="link-button">
-                <a href="https://github.com/kevenv/AlmostTetris"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C#, WindowsForms</p>
-        </article>
-
-        <h2>Low-level</h2>
-
-        <article>
-            <h3 id="tinyv"><a href="projects.html#tinyv">RISC-V emulator (tinyv)</a></h3>
-            <p>A small RISC-V emulator.</p>
-            <ul> <!-- TODO: move this to its own page? -->
-                <li>RV64I,M,Zicsr.</li>
-                <li>Machine/User/Supervisor privilege levels.</li>
-                <li>Exceptions.</li>
-                <li>Basic C runtime.</li>
-                <li>Console I/O.</li>
-                <li>Passes some of the official tests suite.</li>
-            </ul>
-            <img src="imgs/projects/tinyv-cover.jpg">
-            <p><i class='bx bx-code-alt bx-sm'></i> C</p>
-        </article>
-
-        <article>
-            <h3 id="gbemu"><a href="projects.html#gbemu">GameBoy emulator (AlmostGB)</a></h3>
-            <p>My attempt to write a GameBoy emulator.</p>
-            <img src="imgs/projects/almostgb-cover.jpg">
-            <p class="link-button">
-                <a href="https://github.com/kevenv/AlmostGB"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C++</p>
-        </article>
-
-        <article>
-            <h3 id="chip8"><a href="blog/chip8.html">Chip8 emulator</a></h3>
-            <p>The "hello world" of emulator development.</p>
-            <a href="blog/chip8.html"><img src="imgs/projects/chip8-cover.jpg"></a>
-            <p class="link-button">
-                <a href="https://github.com/kevenv/chip8"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> C, SDL</p>
-        </article>
-
-        <article>
-            <h3 id="vehiculus"><a href="projects#vehiculus">Electric vehicles prototyping platform (Vehiculus)</a></h3>
-            <p>Electric vehicles prototyping platform. Interfaced MATLAB/Simulink with a <a href="https://www.emus.ca/">real-life electric motorcycle</a> as my undergrad thesis project.</p>
-            <img src="imgs/projects/vehiculus-cover.jpg">
-            <p><i class='bx bx-code-alt bx-sm'></i> C, RTOS, MATLAB, Simulink</p>
-        </article>
+        <h2>School</h2>
+        <ul>
+            <li>
+                <strong>shadowmap</strong> : implementation of <a href="https://cseweb.ucsd.edu/~ravir/274/15/papers/p270-williams.pdf">shadow mapping</a>. 
+                <span class="tag">Java</span> <span class="tag">OpenGL</span>
+            </li>
+            <li>
+                <strong>subdivs</strong> : implementation of <a href="https://people.eecs.berkeley.edu/~sequin/CS284/PAPERS/CatmullClark_SDSurf.pdf">Catmull-Clark</a> subdivisions surfaces. 
+                <span class="tag">Java</span> <span class="tag">OpenGL</span>
+            </li>
+            <li>
+                <strong>3d-cloth-sim</strong> : 3D cloth simulator based on <a href="https://physbam.stanford.edu/~fedkiw/papers/stanford2002-01.pdf">Bridson2002</a>. 
+                [ <a href="https://github.com/kevenv/3d-cloth-sim">GitHub</a> ]
+                <span class="tag">C++</span> <span class="tag">Irrlicht</span>
+            </li>
+            <li>
+                <strong>fluids</strong> : 2D fluids solver based on <a href="https://www.dgp.toronto.edu/people/stam/reality/Research/pdf/ns.pdf">Stam1999</a>. 
+                <span class="tag">Java</span> <span class="tag">Java2D</span>
+            </li>
+            <li>
+                <strong>2d-collisions</strong> : 2D collisions solver inspired by <a href="https://graphics.pixar.com/pbm2001/">PBM2001</a>. 
+                <span class="tag">Java</span> <span class="tag">Java2D</span>
+            </li>
+            <li>
+                <strong>prt</strong> : implementation of Precomputed Radiance Transfert (PRT). 
+                [ <a href="https://github.com/kevenv/prt">GitHub</a> ]
+                <span class="tag">JS</span> <span class="tag">WebGL</span>
+            </li>
+            <li>
+                <strong>vehiculus</strong> : software platform to control an electric motorcycle via MATLAB/Simulink. 
+                <span class="tag">C</span>
+                <span class="tag">RTOS</span>
+            </li>
+        </ul>
 
         <h2>Hackathons</h2>
 
-        <article>
-            <h3 id="neon"><a href="projects#neon">Myo gesture controlled video game (Neon)</a></h3>
-            <p>
-                Endless runner video game using the Myo hand gesture control armband as a game controller.<br>
-                Winner "Most Retro Hack" - McHacks 2018.
-            </p>
-            <img src="imgs/projects/neon-cover.jpg">
-            <p class="link-button">
-                <a href="https://www.youtube.com/watch?v=gK75UnXug3s&feature=youtu.be"><i class='bx bx-movie-play bx-sm'></i>Video</a>
-                <a href="https://devpost.com/software/neon-s2grn1"><i class='bx bx-news bx-sm'></i>Devpost</a>
-                <a href="https://github.com/kevenv/mchacks2018"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> Javascript, Three.js, WebGL</p>
-        </article>
-
-        <article>
-            <h3 id="wavesim"><a href="projects.html#wavesim">Waves simulator</a></h3>
-            <p>
-                Waves simulator in Three.js by solving the wave equation using numerical integration.<br>
-                Won 2<sup>nd</sup> place at McGill's Physics Hackathon 2017.
-            </p>
-            <img src="imgs/projects/waves-sim-cover.jpg">
-            <p class="link-button">
-                <a href="https://devpost.com/software/simwave"><i class='bx bx-news bx-sm'></i>Devpost</a>
-                <a href="https://github.com/kevenv/physhackathon2017"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> Javascript, Three.js, WebGL</p>
-        </article>
-
-        <article>
-            <h3 id="parkhere"><a href="projects.html#parkhere">Parking rental app (ParkHere)</a></h3>
-            <p>
-                Parking rental Android app (and a failed startup).<br>
-                Won 2<sup>nd</sup> place at Startup Weekend Montreal 2014.
-            </p>
-            <img src="imgs/projects/parkhere-cover.jpg">
-            <p class="link-button">
-                <a href="https://www.lesaffaires.com/blogues/julien-brault/snownitification-remporte-la-palme-a-startup-weekend-montreal/566137"><i class='bx bx-news bx-sm'></i>Journal les affaires</a>
-                <a href="https://www.journaldemontreal.com/2014/02/12/startup-weekend-montreal-fait-emerger-deux-projets-interessants--parkhere-et-snowtification"><i class='bx bx-news bx-sm'></i>Journal de Montreal</a>
-                <a href="https://www.hec.ca/en/news/2014/2014_Startup_weekend.html"><i class='bx bx-news bx-sm'></i>HEC Montreal</a>
-                <a href="https://github.com/kevenv/parkhere"><i class='bx bxl-github bx-sm'></i>Code</a>
-            </p>
-            <p><i class='bx bx-code-alt bx-sm'></i> Java, Android</p>
-        </article>
+        <ul>
+            <li>
+                <strong>neon</strong> : endless runner video game controlled by hand gestures. 
+                <a href="" title="Won 'Most Retro Hack' at McHacks 2018">
+                <i class='bx bxs-star' ></i></a> [ <a href="projects/neon.html">More</a> ]
+                <span class="tag">JS</span> <span class="tag">WebGL</span>
+            </li>
+            <li>
+                <strong>wavesim</strong> : waves simulator using numerical integration. 
+                <a href="" title="Won 2nd place at McGill's Physics Hackathon 2017">
+                <i class='bx bxs-star' ></i></a> [ <a href="projects/wavesim.html">More</a> ]
+                <span class="tag">JS</span> <span class="tag">WebGL</span>
+            </li>
+            <li>
+                <strong>parkhere</strong> : parking rental Android app (and a failed startup).
+                <a href="" title="Won 2nd place at Startup Weekend Montreal 2014">
+                <i class='bx bxs-star' ></i></a> [ <a href="projects/parkhere.html">More</a> ]
+                <span class="tag">Java</span> <span class="tag">Android</span>
+            </li>
+        </ul>
 
         <hr>
         <footer>

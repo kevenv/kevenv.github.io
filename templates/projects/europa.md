@@ -38,4 +38,7 @@ Here's the first entity we've sent through the internet!
 
 ![Europa first entity]({{rootImages}}projects/europa/europa-first-entity.png)
 
-Code available on [GitHub](https://github.com/Nicolas82588/europa)
+<p class="link-button">
+    <a href="https://github.com/Nicolas82588/europa"><i class='bx bxl-github bx-sm'></i>Code</a>
+</p>
+<span class="tag">C++</span> <span class="tag">SDL</span>

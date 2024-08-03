@@ -134,6 +134,16 @@ p code, li code { /* Cmd highlight */
     white-space: pre-wrap;
 }
 
+.tag {
+    font-size: 0.9em;
+    font-weight: 400;
+
+    padding: 0.05em 0.5em;
+    background-color: #D2DCE8;
+    border-radius: 8px;
+    border: 1px solid grey;
+}
+
 /* ------ Projects grid ------ */
 
 .projects-grid {
