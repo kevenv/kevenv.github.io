@@ -32,10 +32,14 @@ No need to say that this project was a failure, but we've managed to implement s
 
 I wrote the renderer, UI system and resources manager while my friend worked on the networking system and collisions handling. Our engine was able to handle quite a bit of entities...
 
-![]({{rootImages}}projects/europa/europa-macdonald.png)
+<p align="center">
+    <img src="{{rootImages}}projects/europa/europa-macdonald.png" alt="">
+</p>
 
 Here's the first entity we've sent through the internet!
 
-![]({{rootImages}}projects/europa/europa-first-entity.png)
+<p align="center">
+    <img src="{{rootImages}}projects/europa/europa-first-entity.png" alt="">
+</p>
 
 Code available on [GitHub](https://github.com/Nicolas82588/europa)

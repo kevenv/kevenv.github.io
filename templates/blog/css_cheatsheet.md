@@ -116,7 +116,7 @@ long comment -->
 
 ```HTML
 <head>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 ```
 
