@@ -12,7 +12,7 @@ body {
 
     margin: 1rem auto;
     padding: 0 10px;
-    max-width: 650px;
+    max-width: 750px;
     color: #202122;
     background-color: #F8F9FA;
 }
@@ -138,7 +138,7 @@ p code, li code { /* Cmd highlight */
     align-items: center;
 }
 
-@media(max-width:650px) {
+@media(max-width:750px) {
     .post-list li {
         margin: 0 0 15px;
         
