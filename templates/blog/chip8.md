@@ -58,7 +58,7 @@ RAM, mmap
 !MMIO -> IO ports
 
 |   |   |
-| - | - |
+|---|---|
 | **CPU** | ~500 Hz |
 | **RAM** | 4 KB |
 | **ROM** | 3.5 KB |
@@ -523,7 +523,7 @@ int main(int argc, char* argv[])
             // ...
         }
 
-        SDL_Delay((u32)(1.0f/CPU_FREQ_HZ*1000));
+        SDL_Delay((u32)(1.0f / CPU_FREQ_HZ * 1000));
         cycles++;
     }
 
