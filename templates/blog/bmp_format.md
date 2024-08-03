@@ -11,34 +11,24 @@ When we take a picture with a camera, it collects the light _intensity_ and _col
 We call that collection of light an _image_.
 The image captured on the sensor is essentially a miniaturized version of the 3D scene seen from the point of view of the camera, it projects the 3D scene onto the camera sensor (2D).
 
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_camera.svg" alt="Camera Imaging">
-</p>
+![Camera Imaging]({{rootImages}}blog/bmp_camera.svg)
 
 The camera sensor does not have infinite resolution, in fact the sensor is actually a grid of tiny sensors capturing light at different positions. This divides the image into a 2D grid of _pixels_, where each pixel represents the color and intensity at a specific position.
 
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels">
-</p>
+<img src="{{rootImages}}blog/bmp_pixels.svg" style="height: 150px;" alt="Image Pixels">
 
 Due to how the human visual system works, it turns out that we can encode any color using three numbers: R (Red), G (Green) and B (Blue). Those three numbers are often referred to as _color channels_ and they form the _RGB color space_.
 This is easier to understand when thinking about mixing lights of different colors:
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model">
-</p>
+<img src="{{rootImages}}blog/bmp_rgb.svg" style="height: 150px;" alt="RGB color model">
 
 For example by mixing a red light with a green one we obtain a yellow light.
 We can get white by merging all the lights together and we get black when all the lights are closed.
 By mixing all three fundamental light colors we can make all the possible colors:
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_colors.svg" alt="Colors Spectrum">
-</p>
+![Colors Spectrum]({{rootImages}}blog/bmp_colors.svg)
 
 To be able to recreate any color using the R,G,B triplet we need to be able to 
 change the _intensity_ of each color channel, resulting in different shades of a given color:
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_r_grad.svg" alt="R channel values">
-</p>
+![R channel values]({{rootImages}}blog/bmp_r_grad.svg)
 
 In nature there is a whole continuous spectrum of colors but computers can only manipulate discrete numbers, therefore we need to assign a number to each color intensity.
 The most common color resolution or _color depth_ is 24-bpp (bits per pixel), that is each color channel is encoded using 8-bit and fits in a single byte.
@@ -49,9 +39,7 @@ All three channels together allows us to define a total of 2^24 = 16 777 216 col
 To store an image we need to know the value of each pixel and the dimensions of the image (width x height).
 
 Say we have a 3x2 image of 6 pixels:
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_simple.svg" alt="A simple BMP image">
-</p>
+![A simple BMP image]({{rootImages}}blog/bmp_simple.svg)
 
 The simplest way to store this image in a file would probably be something like this:
 ```
@@ -106,9 +94,7 @@ The BMP format is not much more complicated than PPM.
 While it does support various encoding and compression methods we will not go over those since in practice BMP is mostly used for uncompressed 24-bpp images.
 
 The structure of the BMP file for the simplest case is as follow:
-<p align="center">
-    <img src="{{rootImages}}blog/bmp_format.svg" alt="Structure of BMP file">
-</p>
+![Structure of BMP file]({{rootImages}}blog/bmp_format.svg)
 
 It consists of a _file header_ followed by an _info header_.
 The pixels of the image are usually stored right after.

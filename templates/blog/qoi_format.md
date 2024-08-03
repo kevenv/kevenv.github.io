@@ -143,9 +143,7 @@ The compression method is thus not able to detect the 2D spatial redundancies th
 Now that we have seen how QOI compresses images, let's analyze the actual file format.
 A QOI file starts with a fixed size _header_ followed by a list of _chunks_ containing the compressed pixels data.
 
-<p align="center">
-    <img src="{{rootImages}}blog/qoi_format.svg" alt="QOI file format">
-</p>
+![QOI file format]({{rootImages}}blog/qoi_format.svg)
 
 ### Header
 ```C
@@ -187,15 +185,11 @@ The compressed pixels data consists of a series of _chunks_ varying in size.
 Each chunk starts with a 8-bit or 2-bit _tag_ identifying the type.
 A chunk can have up to 4 bytes of data bytes following its tag.
 
-<p align="center">
-    <img src="{{rootImages}}blog/qoi_chunk.svg" alt="QOI chunk format">
-</p>
+![QOI chunk format]({{rootImages}}blog/qoi_chunk.svg)
 
 There are 6 types of chunks corresponding to the different compression methods:
 
-<p align="center">
-    <img src="{{rootImages}}blog/qoi_tags.svg" alt="QOI tags format">
-</p>
+![QOI tags format]({{rootImages}}blog/qoi_tags.svg)
 
 Conveniently, all chunks are byte aligned which allow us to treat it as a single _byte stream_.
 The stream should end when all the pixels have been decoded but the end of the stream 

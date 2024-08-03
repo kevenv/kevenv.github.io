@@ -133,10 +133,7 @@ The compression method is thus not able to detect the 2D spatial redundancies th
 <h2>File format</h2>
 <p>Now that we have seen how QOI compresses images, let's analyze the actual file format.
 A QOI file starts with a fixed size <em>header</em> followed by a list of <em>chunks</em> containing the compressed pixels data.</p>
-<p align="center">
-    <img src="../imgs/blog/qoi_format.svg" alt="QOI file format">
-</p>
-
+<p><img alt="QOI file format" src="../imgs/blog/qoi_format.svg" /></p>
 <h3>Header</h3>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
@@ -187,15 +184,9 @@ Finally <code>colorspace</code> contains the type of <em>color space</em> in whi
 The compressed pixels data consists of a series of <em>chunks</em> varying in size.
 Each chunk starts with a 8-bit or 2-bit <em>tag</em> identifying the type.
 A chunk can have up to 4 bytes of data bytes following its tag.</p>
-<p align="center">
-    <img src="../imgs/blog/qoi_chunk.svg" alt="QOI chunk format">
-</p>
-
+<p><img alt="QOI chunk format" src="../imgs/blog/qoi_chunk.svg" /></p>
 <p>There are 6 types of chunks corresponding to the different compression methods:</p>
-<p align="center">
-    <img src="../imgs/blog/qoi_tags.svg" alt="QOI tags format">
-</p>
-
+<p><img alt="QOI tags format" src="../imgs/blog/qoi_tags.svg" /></p>
 <p>Conveniently, all chunks are byte aligned which allow us to treat it as a single <em>byte stream</em>.
 The stream should end when all the pixels have been decoded but the end of the stream 
 is also marked with the following sequence of 8 bytes:</p>
