@@ -29,6 +29,13 @@ h2 {
     border-bottom: 1px solid black;
 }
 
+.logo {
+    margin: 0.5em 0;
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
 img {
     display: block;
     border: 1px solid black;
@@ -55,7 +62,7 @@ td, th {
 }
 
 thead {
-    font-style: bold;
+    font-weight: bold;
 }
 
 i.bx {
@@ -179,7 +186,8 @@ p code, li code { /* Cmd highlight */
 .codehilite {
     width: 100%;
     height: auto;
-    overflow: auto; /* scrollbars if too big */
+    /* show scrollbars if too big */
+    overflow: auto;
 }
 
 .codehilitetable, .linenos, .code {
