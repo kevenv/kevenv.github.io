@@ -359,7 +359,7 @@ union rgba_t {
 };
 ```
 
-To manipulate bits we make use of a many _bitwise operations_, if you are unfamiliar with them or need a refresher, we invite you to read [our article]({{root}}blog/bit_ops.html) on the subject.
+To manipulate bits we make use of a many _bitwise operations_, if you are unfamiliar with them or need a refresher, we invite you to read [our article]({{root}}notes/bit_ops.html) on the subject.
 
 ## Encoder
 We have seen how to implement an image decoder but to create a QOI image, we must write an encoder.

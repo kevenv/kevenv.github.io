@@ -42,26 +42,27 @@ if __name__ == '__main__':
             ('publications/volume_product_sampling','../','Volume product sampling'),
             ('publications/ddm_compression','../','DDM compression'),
         ('blog','','Blog'),
-            ('blog/linux_cheatsheet','../','Linux cheatsheet'),
-            ('blog/bash_cheatsheet','../','Bash cheatsheet'),
-            ('blog/git_cheatsheet','../','Git cheatsheet'),
-            ('blog/makefile_cheatsheet','../','Makefile cheatsheet'),
-            ('blog/c_style','../','C style'),
-            ('blog/bit_ops','../','Bitwise operations'),
-            ('blog/css_cheatsheet','../','CSS cheatsheet'),
-            ('blog/fedora_setup','../','Fedora setup'),
-            ('blog/fedora_nvidia','../','Fedora + Nvidia'),
-
             ('blog/cuda_hello','../','CUDA Tutorial 1 - Hello world!'),
-            
-            ('blog/sort_algos','../','Sorting algorithms'),
-            ('blog/why_linux','../','Why Linux'),
-            ('blog/priority_queue','../','Priority queue'),
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),
             ('blog/tar_format','../','Tar file format'),
             # ('blog/zip_format','../','ZIP format'),
             ('blog/chip8','../','Chip8 emulator'),
+        ('notes','','Notes'),
+            ('notes/linux_cheatsheet','../','Linux cheatsheet'),
+            ('notes/bash_cheatsheet','../','Bash cheatsheet'),
+            ('notes/git_cheatsheet','../','Git cheatsheet'),
+            ('notes/makefile_cheatsheet','../','Makefile cheatsheet'),
+            ('notes/c_style','../','C style'),
+            ('notes/bit_ops','../','Bitwise operations'),
+            ('notes/css_cheatsheet','../','CSS cheatsheet'),
+            ('notes/fedora_setup','../','Fedora setup'),
+            ('notes/fedora_nvidia','../','Fedora + Nvidia'),
+
+            ('notes/sort_algos','../','Sorting algorithms'),
+            ('notes/priority_queue','../','Priority queue'),
+            ('notes/why_linux','../','Why Linux'),
+            ('notes/nnet_backprop','../','Backprop'),
     ]
     for page in pages:
         print(page)
@@ -71,8 +72,9 @@ if __name__ == '__main__':
         title = page[2]
         root_images = root + IMAGES_PATH + '/'
         root_docs = root + DOCS_PATH + '/'
-        
-        if ('blog/' in p) or ('projects/' in p):
+
+        markdown_dirs = ['blog/', 'projects/', 'notes/']
+        if any(s in p for s in markdown_dirs):
             page_md = renderer.render_path('{}/{}.md'.format(TEMPLATES_PATH,p), {
                 'root': root, 'rootImages': root_images, 'rootDocs': root_docs
             })
@@ -88,7 +90,8 @@ if __name__ == '__main__':
                 'root': root, 'rootImages': root_images, 'rootDocs': root_docs
             })
         # TODO: hacky way to avoid indenting <pre>
-        if (not 'publications/' in p) and (not 'blog/' in p):
+        pre_dirs = ['blog/', 'publications/', 'notes/']
+        if all(s not in p for s in pre_dirs):
             page_html = textwrap.indent(page_html, 8 * ' ')
         page_html = renderer.render_path('{}/layout.mustache'.format(TEMPLATES_PATH), {
             'body': page_html, 'title': title, 'head': head,

@@ -117,7 +117,7 @@ void pqueue_push(pqueue* q, element e)
 }
 ```
 
-This is very similar to "insertion sort", see [this article]({{root}}blog/sort_algos.html) for more info about sorting algorithms.
+This is very similar to "insertion sort", see [this article]({{root}}notes/sort_algos.html) for more info about sorting algorithms.
 
 Finally `pop()` simply pops the last element of the array as it is the highest:
 ```C

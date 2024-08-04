@@ -7,7 +7,7 @@
 - reboot
 
 ## Install Nvidia drivers
-See [Fedora + Nvidia]({{root}}blog/fedora_nvidia.html)
+See [Fedora + Nvidia]({{root}}notes/fedora_nvidia.html)
 
 ## Install Wayland
 - switch wayland/xorg : via login screen
@@ -87,7 +87,7 @@ build from source: https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracr
 - gnome tweaks
 - dconf editor
 - dnfdragora
-- git ([setup git config]({{root}}blog/git_cheatsheet.html))
+- git ([setup git config]({{root}}notes/git_cheatsheet.html))
 - gcc, g++, clang, clang-format, cmake, make, gdb, lldb
 - vlc
 - screenshot tool
