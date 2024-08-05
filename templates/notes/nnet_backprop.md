@@ -190,6 +190,7 @@ backprop -> iterative improve weights to min loss (train nnet):
 
 - gradient points in direction of increasing value
 - to min L, take step in direction opposite to gradient
+- known as "gradient descent", optimization problem
 
 ## micrograd vs pytorch
 - similar API

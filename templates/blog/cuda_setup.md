@@ -1,4 +1,4 @@
-# CUDA Tutorial 1 - Hello world!
+# CUDA Tutorial 1 - Setup
 
 Welcome to this tutorial on CUDA! Before we get started we should setup our development environment.
 
@@ -70,8 +70,8 @@ After running our program with `./hello` we should see "hello world!" printed on
 When developping CUDA programs, a bunch of tools can be useful:
 
 - Find the GPU: `lspci -v | grep VGA`
-- GPU Driver version: `cat /proc/driver/nvidia/version`
-- GPU Driver in use: `lspci -n -n -k | grep -A 2 -e VGA -e 3D`
+- GPU driver version: `cat /proc/driver/nvidia/version`
+- GPU driver in use: `lspci -n -n -k | grep -A 2 -e VGA -e 3D`
 - CUDA compiler version: `nvcc --version`
 - Info about the GPU: `nvidia-smi`
 

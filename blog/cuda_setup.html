@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Keven Villeneuve's personal website">
-        <title>~/kevenv - CUDA Tutorial 1 - Hello world!</title>
+        <title>~/kevenv - CUDA Tutorial 1 - Setup!</title>
         <link rel="icon" href="../imgs/icon.png">
         <link rel="stylesheet" href="../style/style.css">
         <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
@@ -24,7 +24,7 @@
             </nav>
         </header>
         <hr>
-<h1>CUDA Tutorial 1 - Hello world!</h1>
+<h1>CUDA Tutorial 1 - Setup</h1>
 <p>Welcome to this tutorial on CUDA! Before we get started we should setup our development environment.</p>
 <h2>Installation</h2>
 <ol>
@@ -100,8 +100,8 @@ After running our program with <code>./hello</code> we should see "hello world!"
 <p>When developping CUDA programs, a bunch of tools can be useful:</p>
 <ul>
 <li>Find the GPU: <code>lspci -v | grep VGA</code></li>
-<li>GPU Driver version: <code>cat /proc/driver/nvidia/version</code></li>
-<li>GPU Driver in use: <code>lspci -n -n -k | grep -A 2 -e VGA -e 3D</code></li>
+<li>GPU driver version: <code>cat /proc/driver/nvidia/version</code></li>
+<li>GPU driver in use: <code>lspci -n -n -k | grep -A 2 -e VGA -e 3D</code></li>
 <li>CUDA compiler version: <code>nvcc --version</code></li>
 <li>Info about the GPU: <code>nvidia-smi</code></li>
 </ul>
