@@ -248,7 +248,11 @@ apply chain rule repetitively
 output = loss
 </code></pre></div></td></tr></table></div>
 
-<p>backprop -&gt; iterative improve weights to min loss</p>
+<p>backprop -&gt; iterative improve weights to min loss (train nnet):</p>
+<ul>
+<li>gradient points in direction of increasing value</li>
+<li>to min L, take step in direction opposite to gradient</li>
+</ul>
 <h2>micrograd vs pytorch</h2>
 <ul>
 <li>similar API</li>
