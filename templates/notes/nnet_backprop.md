@@ -61,7 +61,7 @@ Ex:
 ```math
 \begin{align}
 
-f(x,y,z) &= x * y + z \\
+f(x,y,z) &= x \cdot y + z \\
 \frac{\partial f}{\partial x} &= y \cdot 1 + 0 = y \\
 \frac{\partial f}{\partial y} &= x \cdot 1 + 0 = x \\
 \frac{\partial f}{\partial z} &= 0 + 1 = 1
@@ -73,7 +73,7 @@ $`\frac{\partial f}{\partial y}`$ : how does y influences f ?
 
 small change in y when keep x,z constants -> small change in f
 
-## Autodiff
+## Autodiff / Autograd
 - Automatic differentiation
 - mathematical expression (function) -> graph of nodes (expression graph)
 - forward pass = traverse/eval graph = eval math expression
@@ -96,10 +96,15 @@ Value
     operator (+, -, *, /, ^, ...)
     grad = 0 (dL/dV)
 ```
-operations on : scalar (1x1), vector (Nx1), matrix(MxN), tensor(MxNxK)
+operations on : scalar (1x1), vector (Nx1), matrix(MxN), tensor(MxNxKx...)
 
 ## Backprop
 Backpropagation = wiggle machine to figure out how inputs affect output
+
+- backprop = reversed autodiff
+- how to get output from inputs?
+    - follow gradient -> chain rule
+- indep of nnet
 
 ```
 from end node, reverse
@@ -165,21 +170,56 @@ dL/db = (dL / dc) * (dc / db) = (dL / dc) * a
 => grad through the * node is previous node grad times the value of the opposite node
 ```
 
-### Autograd
-- backprop using autograd = reverse autodiff
-- how to get output from inputs?
-    - follow gradient -> chain rule
-- indep of nnet
+### Implementation
+1. reversed topological sort
+    - graph traversal in which each node v is visited only after all its dependencies are visited (for DAG only = tree)
+    - <https://en.wikipedia.org/wiki/Topological_sorting>
+    - <https://www.youtube.com/watch?app=desktop&v=eL-KzMXSXXI>
 
+2. compute grad of each node, apply chain rule repetitively
+    - base case = 1
+
+<img src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*uMg_ojFXts2WZSjcZe4oRQ.png" style="height: 200px;" alt="">
+
+```python
+topo = []
+visited = set()
+def build_topo(n):
+    if n not in visited: # maintain visited set of nodes
+        visited.append(n)
+    for child in n.children:
+        build_topo() # recursion
+    topo.append(n) # add parent *after* all children have been visited
+build_topo(root)
 ```
-reversed topological sort
-apply chain rule repetitively
-    base case = 1
+
+### Bug
 ```
+b = a + a
+db/da = 2  != 1
+if &a == &a (point to same address)
+
+or
+
+d = a * b
+e = a + b
+f = d * e
+
+whenever reuse variable more than once
+need to accumulate grad not just set it! (must init grad to 0)
+```
+<https://en.wikipedia.org/wiki/Chain_rule#Multivariable_case>
 
 ## Neural networks (nnet)
-- MLP (Multi Layer Perceptron) = layers of neuron
+- MLP (Multi Layer Perceptron) = layers of neuron (fully connected)
+    - nnet of n layers = #hidden, exclude input + output layer
+    - activation fct : sigmoid (logistic, tanh), relu (<https://en.wikipedia.org/wiki/Activation_function>)
+<img src="https://www.sharpsightlabs.com/wp-content/uploads/2023/07/multilayer-perceptron.png" style="height: 200px;" alt="">
+<img src="https://cs231n.github.io/assets/nn1/neural_net2.jpeg" style="height: 200px;" alt="">
+
 - neuron (Perceptron) = weighted sum + bias
+<img src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*dsVvCeoxlU4GZ1y701Mo8g.png" style="height: 150px;" alt="">
+<img src="https://cs231n.github.io/assets/nn1/neuron_model.jpeg" style="height: 150px;" alt="">
 
 ```
 input = input data, weights, biases
@@ -205,6 +245,7 @@ backprop -> iterative improve weights to min loss (train nnet):
     - `f"some {var} value"`
     - `"%.4f" % var`
 - put 2 lines on 1 : `line 1; line 2`
+- `_private_method()`
 
 ### Includes
 ```python
