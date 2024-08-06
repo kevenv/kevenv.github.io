@@ -94,6 +94,6 @@ For this to work, make sure that the CUDA toolkit is in your system `PATH` and t
 ## Next
 This concludes the first tutorial.
 Our first kernel didn't do much, in fact it didn't take advantage of the GPU at all since it was running on a single thread.
-In the [next one]({{root}}blog/cuda_basic_kernel.html) we will see how to write a more useful kernel and wake up that GPU!
+In the [next one]({{root}}blog/cuda_saxpy.html) we will see how to write a more useful kernel and wake up that GPU!
 
 The source code for this tutorial is available on [GitHub](https://github.com/kevenv/cuda_exercises/tree/master/hello).

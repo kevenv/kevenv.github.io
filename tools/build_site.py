@@ -42,7 +42,8 @@ if __name__ == '__main__':
             ('publications/volume_product_sampling','../','Volume product sampling'),
             ('publications/ddm_compression','../','DDM compression'),
         ('blog','','Blog'),
-            ('blog/cuda_setup','../','CUDA Tutorial 1 - Setup!'),
+            ('blog/cuda_setup','../','CUDA Tutorial 1 - Setup'),
+            ('blog/cuda_saxpy','../','CUDA Tutorial 2 - SAXPY'),
 
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),
