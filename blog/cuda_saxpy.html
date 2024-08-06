@@ -164,7 +164,7 @@ The documentation is available here:</p>
 <span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaMalloc</span><span class="p">(...);</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cudaSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// error happenned running cudaMalloc()</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;cuda error: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cudaGetErrorString</span><span class="p">(</span><span class="n">error</span><span class="p">));</span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CUDA ERROR: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cudaGetErrorString</span><span class="p">(</span><span class="n">error</span><span class="p">));</span>
 <span class="w">    </span><span class="c1">// handle the error</span>
 <span class="w">    </span><span class="c1">// ...</span>
 <span class="p">}</span>
