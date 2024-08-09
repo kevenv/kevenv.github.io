@@ -93,6 +93,12 @@
 <h2>Other</h2>
 <ul>
 <li><code>ssh -p [port] [user]@[ip]</code> : login to SSH</li>
+<li><code>scp [src path] [user]@[ip]:[dst path]</code> : copy file to remote<ul>
+<li>-p [port] : specify port</li>
+<li>-r : recursive (directory)</li>
+</ul>
+</li>
+<li><code>scp [user]@[ip]:[src path] [dst path]</code> : copy file from remote</li>
 <li><code>reboot</code> : reboot system</li>
 <li><code>poweroff</code> : shutdown system</li>
 <li><code>wget</code> : ?</li>

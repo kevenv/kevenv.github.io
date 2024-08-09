@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>~/kevenv - GDB cheatsheet</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">~/kevenv</div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../notes.html">Notes</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>GDB cheatsheet</h1>
+<ul>
+<li><code>gdb ./[program]</code> : debug program with GDB</li>
+<li><code>gdb --args ./[program] [args]</code> : debug program with GDB</li>
+</ul>
+<p>must compile the program using flags <code>-O0 -g</code>.</p>
+<h2>Basic</h2>
+<ul>
+<li><code>r</code>: run program</li>
+<li><code>bt</code> : show call stack / backtrace</li>
+<li><code>up</code> : move up call stack</li>
+<li><code>down</code> : move down call stack</li>
+<li><code>frame</code> : show stack frame</li>
+<li><code>n</code> : next</li>
+<li><code>s</code> : step into</li>
+<li><code>c</code> : continue</li>
+<li><code>finish</code> : step out of function</li>
+<li><code>ni</code> : next instruction</li>
+<li><code>si</code> : step into instruction</li>
+<li><code>q</code> : quit</li>
+</ul>
+<h2>Breakpoints</h2>
+<ul>
+<li><code>b [line]</code> : add breakpoint at line X of current file</li>
+<li><code>b [function]</code> : add breakpoint at function X</li>
+<li><code>b *[address]</code> : add breakpoint at address/pointer X</li>
+<li><code>info break</code> : list breakpoints</li>
+<li><code>clear</code> : delete all breakpoints</li>
+<li><code>watch [X]</code> : add watchpoint on variable X</li>
+</ul>
+<h2>Info</h2>
+<ul>
+<li><code>p [X]</code> : print variable X</li>
+<li><code>p/x [X]</code> : print variable X in hexadecimal</li>
+<li><code>p [c expression]</code> : print C expression</li>
+<li><code>display [X]</code> : print variable X each step</li>
+<li><code>what [X]</code> : print type of variable X</li>
+<li><code>i frame</code> : show stack frame</li>
+<li><code>i locals</code> : show local variables</li>
+<li><code>i args</code> : show function args</li>
+<li><code>i registers ax rip rbp cs ss ds</code> : show registers</li>
+<li><code>display/i $pc</code> : show PC when changed</li>
+<li><code>x/100xg $sp</code> : print stack memory<ul>
+<li>100 : number of entries</li>
+<li>x : hexadecimal</li>
+<li>g : 8 bytes per entry</li>
+</ul>
+</li>
+<li><code>set var [X]</code> : change variable value</li>
+</ul>
+<h2>Code</h2>
+<ul>
+<li><code>l</code> : shows the next set of code</li>
+<li><code>l -</code> : show the prev set of code</li>
+<li><code>l [line]</code> : show code on line X</li>
+<li><code>l [start line, end line]</code> : show code at line S to E</li>
+<li><code>l [function]</code> : show code of function X</li>
+<li><code>disassemble</code> : show ASM code</li>
+<li><code>file [code file]</code> : load code file</li>
+<li><code>file [bin]</code> : load ELF bin and symbols</li>
+</ul>
+<h2>Split view (TUI)</h2>
+<ul>
+<li><code>tui enable/disable</code> : enable tui for split view</li>
+<li><code>layout split</code> : layout code/asm</li>
+<li><code>layout asm</code> : layout asm</li>
+<li><code>layout reg</code> : layout regisers</li>
+</ul>
+<h2>Reverse debugging</h2>
+<ul>
+<li><code>target record-full</code> : enable reverse debugging</li>
+<li><code>rn</code> : reverse next</li>
+<li><code>rs</code> : reverse step</li>
+<li><code>rc</code> : reverse continue</li>
+</ul>
+<p>might not always work properly!</p>
+<h2>Remote</h2>
+<ul>
+<li><code>tar rem [ip]:[port]</code> : connect to remote target (localhost -&gt; :1234)</li>
+<li><code>symbol-file [bin]</code> : load symbols</li>
+<li><code>gdb -x=[script.gdb]</code> : load GDB script (text file with a list of GDB commands)</li>
+</ul>
+<h2>Valgrind</h2>
+<ul>
+<li><code>valgrind ./[program]</code> : run program under valgrind<ul>
+<li>--leak-check=full : detect memory leaks, read after free</li>
+</ul>
+</li>
+</ul>
+<p>must compile the program using flags <code>-O0 -g</code>.</p>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

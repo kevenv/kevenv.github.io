@@ -30,6 +30,7 @@
     - `--ignore-cr-at-eol` : ignore endlines
     - `--name-only` : only list files
 - `git -c core.fileMode=false diff` : diff two files, ignore file permissions
+- `difftastic`
 
 ## Stash & Patch
 - `git stash`
@@ -46,6 +47,7 @@
 
 ## Info
 - `git log` : show changes log
+- `git reflog` : show local repo history
 - `git remote -v` : list remote
 - `git remote show origin` : info on remote
 - `git remote add [remote name] [remote url]` : add remote

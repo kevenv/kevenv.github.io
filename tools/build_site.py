@@ -55,6 +55,7 @@ if __name__ == '__main__':
             ('notes/bash_cheatsheet','../','Bash cheatsheet'),
             ('notes/git_cheatsheet','../','Git cheatsheet'),
             ('notes/makefile_cheatsheet','../','Makefile cheatsheet'),
+            ('notes/gdb_cheatsheet','../','GDB cheatsheet'),
             ('notes/c_cheatsheet','../','C cheatsheet'),
             ('notes/c_style','../','C style'),
             ('notes/bit_ops','../','Bitwise operations'),

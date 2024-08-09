@@ -50,6 +50,10 @@
 
 ## Other
 - `ssh -p [port] [user]@[ip]` : login to SSH
+- `scp [src path] [user]@[ip]:[dst path]` : copy file to remote
+    - -p [port] : specify port
+    - -r : recursive (directory)
+- `scp [user]@[ip]:[src path] [dst path]` : copy file from remote
 - `reboot` : reboot system
 - `poweroff` : shutdown system
 - `wget` : ?
