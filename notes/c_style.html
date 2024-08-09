@@ -259,35 +259,6 @@ instead of
 <li><a href="https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/">https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/</a></li>
 <li><a href="https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/">https://www.reddit.com/r/C_Programming/comments/e4hro6/when_to_use_size_t/</a></li>
 </ul>
-<h2>GCC flags</h2>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>-Wall -Wextra -Wconversion -Werror
--Wpedantic -pedantic-errors ???
--Wno-sign-conversion -Wno-unused-variable -Wno-unused-function -Wno-unused-parameter
--std=c99
--O0 -g
-</code></pre></div></td></tr></table></div>
-
-<h2>Utils</h2>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// stringify a C expression</span>
-<span class="cp">#define TO_STR(expr) #expr</span>
-
-<span class="c1">// ceil(a / b)</span>
-<span class="cp">#define DIV_CEIL(a, b) (((a) + (b)-1) / (b))</span>
-
-<span class="c1">// align an address to a power of 2</span>
-<span class="cp">#define ALIGN(p, a)  (((u64)(p) + (a)-1) &amp; ~((a)-1))</span>
-</code></pre></div></td></tr></table></div>
         <hr>
         <footer>
             <div>
