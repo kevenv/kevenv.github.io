@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>~/kevenv - Neural networks</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">~/kevenv</div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../notes.html">Notes</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Neural networks</h1>
+<h2>Train/test set</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code>training
+    train set (80%)
+        tune model parameters(weights)
+    validation set (10%)
+        tune model hyperparameters, architecture
+        assess performance on the validation set
+        ensure that your model is improving and not overfitting
+
+        cross-validation
+            more stable results
+            use all data for training
+            can be repeatedly split into several training/validation set
+    for each epoch
+        // train
+        // validation
+testing (10%)
+    how the model will perform on new, unseen data
+    should remain unseen during the training and validation processes
+    evaluate very few times otherwise starts to train on test set as well = data-leak
+
+    often confused with validation set
+        https://www.reddit.com/r/MachineLearning/comments/qzsrdw/d_test_set_just_a_glorified_validation_set/
+        test set is the “never touch it set”
+        should never ever ever ever touch the test set until you finish the project 
+</code></pre></div></td></tr></table></div>
+
+<h2>softmax vs crossentropy?</h2>
+<h2>Batching</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code>batch
+    Full-Batch Training
+        loop through all examples each iteration
+
+    batch training
+        loop through N examples each iteration
+
+        why use batch?
+            too large to fit into memory all at once
+
+    mini-batch
+        minibatch is a small, randomly selected subset of data u
+        minibatch size (e.g., 32, 64, or 128)
+
+        dataloader = DataLoader(dataset, batch_size=10, shuffle=True) 
+        for epoch in range(100):  # number of epochs
+            for inputs, target in dataloader:  # iterate over mini-batches
+
+    SGD vs mini batch?
+        SGD (1 random at a time)
+        mini batch SGD (N at a time)
+        GD (all at a time)
+</code></pre></div></td></tr></table></div>
+
+<h2>PyTorch</h2>
+<h3>Install</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip3<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>torch<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu124
+</code></pre></div></td></tr></table></div>
+
+<p>Validation:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+
+<p><a href="https://pytorch.org/get-started/locally/#linux-prerequisites">https://pytorch.org/get-started/locally/#linux-prerequisites</a></p>
+<h2>Basic</h2>
+<p><a href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html">https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html</a></p>
+<h2>Huggingface</h2>
+<ul>
+<li>seems to be the standard repo for models,datasets</li>
+<li>saves to cache<ul>
+<li><code>~/.cache/huggingface/datasets/ylecun___mnist/mnist/1.0.0/b06aab39e05f7bcd9635d18ed25d06eae523c57</code></li>
+</ul>
+</li>
+<li>Arrow files <code>mnist-train.arrow</code></li>
+</ul>
+<h2>File format (Dataset)</h2>
+<h3>Apache Arrow</h3>
+<ul>
+<li>language-independent</li>
+<li>columnar memory format for flat and hierarchical data</li>
+<li>fast, in-memory analytics.</li>
+<li>CPUs and GPUs</li>
+</ul>
+<h3>Parquet</h3>
+<ul>
+<li>efficient storage and retrieval of large datasets in distributed env</li>
+</ul>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>
