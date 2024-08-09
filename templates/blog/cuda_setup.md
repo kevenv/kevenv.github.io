@@ -71,12 +71,12 @@ After running our program with `./hello` we should see "hello world!" printed on
 ## Tools
 When developping CUDA programs, a bunch of tools can be useful:
 
+- Info about the GPU: `nvidia-smi`
+- GPU process monitor: `nvtop`
 - Find the GPU: `lspci -v | grep VGA`
 - GPU driver version: `cat /proc/driver/nvidia/version`
 - GPU driver in use: `lspci -n -n -k | grep -A 2 -e VGA -e 3D`
 - CUDA compiler version: `nvcc --version`
-- Info about the GPU: `nvidia-smi`
-- GPU process monitor: `nvtop`
 
 The [cuda-samples](https://github.com/NVIDIA/cuda-samples) contains useful tools as well:
 

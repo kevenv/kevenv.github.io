@@ -33,7 +33,7 @@ int main()
         y[i] = 2.0f*i;
     }
 
-    saxpy_cpu(a, x, y);
+    saxpy_cpu(n, a, x, y);
 
     free(x);
     free(y);
@@ -64,14 +64,15 @@ each thread runs the same code but will have different exec context.
 ```CUDA
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
-    int i = thread_idx;
-    y[i] = a*x[i] + y[i];
+    y[i] = a*x[i] + y[i]; // where i is the thread's index;
 }
 ```
 
 ## CUDA execution model
 In CUDA the threads are separated and organized as a **grid of blocks**
 and a **block of threads** to map to the capabilities of the GPU.
+
+TODO: diagram
 
 The index of the current thread can be calculated using the following built-in variables:
 ```CUDA
@@ -104,7 +105,7 @@ kernel_name<<<4,16>>>(); // <<<num_blocks, threads_per_block>>>
 ### SAXPY kernel
 Now let's get back to our SAXPY problem.
 If the number of elements `N` is equal to the number of `threads_per_block`, then only a single block is needed.
-```CUDA
+```CUDA hl_lines="3 10 12"
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
     int i = threadIdx.x;
@@ -123,7 +124,7 @@ int main()
 ```
 
 In the case of `N = 64`, two blocks would be needed.
-```CUDA
+```CUDA hl_lines="3 10 12"
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x; // 2D to 1D idx
@@ -144,7 +145,7 @@ int main()
 In practice the number of elements `N` rarely fits the `threads_per_block` exactly.
 If we have one more element `N = 65` we need another block to run a single thread on that element. This means that the other 63 threads will run unnecessarily and start accessing unallocated memory.
 We need to make sure to avoid getting out of bounds in our arrays.
-```CUDA
+```CUDA hl_lines="4 12 14"
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x; // 2D to 1D idx
@@ -170,7 +171,7 @@ num_blocks = (N + threads_per_block-1) / threads_per_block;
 ```
 
 Finally for a more realistic example, we use `N = 100M` and `threads_per_block = 256`.
-```CUDA
+```CUDA hl_lines="12 13 14"
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x; // 2D to 1D idx

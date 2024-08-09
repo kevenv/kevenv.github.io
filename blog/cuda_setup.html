@@ -103,12 +103,12 @@ After running our program with <code>./hello</code> we should see "hello world!"
 <h2>Tools</h2>
 <p>When developping CUDA programs, a bunch of tools can be useful:</p>
 <ul>
+<li>Info about the GPU: <code>nvidia-smi</code></li>
+<li>GPU process monitor: <code>nvtop</code></li>
 <li>Find the GPU: <code>lspci -v | grep VGA</code></li>
 <li>GPU driver version: <code>cat /proc/driver/nvidia/version</code></li>
 <li>GPU driver in use: <code>lspci -n -n -k | grep -A 2 -e VGA -e 3D</code></li>
 <li>CUDA compiler version: <code>nvcc --version</code></li>
-<li>Info about the GPU: <code>nvidia-smi</code></li>
-<li>GPU process monitor: <code>nvtop</code></li>
 </ul>
 <p>The <a href="https://github.com/NVIDIA/cuda-samples">cuda-samples</a> contains useful tools as well:</p>
 <ul>
