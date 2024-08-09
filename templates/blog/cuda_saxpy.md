@@ -1,13 +1,12 @@
 # CUDA Tutorial 2 - SAXPY
 
 In this tutorial we will create a CUDA kernel that implements _SAXPY_ (Single precision A X Plus Y), one of the core routine of [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms), a standard linear algebra library commonly used for scientific computing.
-
 The SAXPY function combines vector addition and scalar multiplication:
 ```C
+y = a*x + y
+
 // x,y : vectors of n dimensions
 // a : scalar
-
-y = a*x + y
 ```
 
 ## CPU implementation
@@ -25,7 +24,7 @@ To use this function, we need some code to initialize the vectors and call the f
 ```C
 int main()
 {
-    const int n = 1000000;
+    const int n = 100000000;
     const float a = 1.0;
     float* x = (float*)malloc(n * sizeof(float));
     float* y = (float*)malloc(n * sizeof(float));
@@ -42,7 +41,7 @@ int main()
 }
 ```
 
-## GPU implementation
+## GPU architecture
 To implement this function on the GPU we must understand how the GPU execute programs.
 
 A GPU is basically a processor with a ton of cores to compute many things in parallel.
@@ -65,37 +64,137 @@ each thread runs the same code but will have different exec context.
 ```CUDA
 __global__ void saxpy(float a, float* x, float* y)
 {
-    int i = ?
+    int i = thread_idx;
     y[i] = a*x[i] + y[i];
 }
 ```
 
+## CUDA execution model
+In CUDA the threads are separated and organized as a **grid of blocks**
+and a **block of threads** to map to the capabilities of the GPU.
+
+The index of the current thread can be calculated using the following variables:
 ```CUDA
-__global__ void saxpy(float a, float* x, float* y)
+threadIdx // index of the current thread in a block
+blockIdx  // index of the current block in a grid
+blockDim  // dimensions of a block
+```
+These variables are reserved and accessible anywhere within a CUDA kernel.
+
+To help map the problem to the GPU, the CUDA API support multiple dimensions (up to 3D) on thread indexing.
+If the array is 2D we use 2D indexing, if the array is 3D we use 3D indexing.
+
+```CUDA
+threadIdx.x   threadIdx.y   threadIdx.z
+blockIdx.x    blockIdx.y    blockIdx.z
+blockDim.x    blockDim.y    blockDim.z
+```
+
+CUDA kernels are launched via the `kernel_name<<<grid_dim, block_dim>>>()` syntax. For example:
+```CUDA
+dim3 grid_dim(4,4,2);    // grid of 4x4x2 blocks
+dim3 block_dim(16,16,1); // block of 16x16x1 threads
+kernel_name<<<grid_dim, block_dim>>>(); // kernel launch
+```
+If only one dimension is used then we can use a shorter version:
+```CUDA
+kernel_name<<<4,16>>>();
+```
+
+### SAXPY kernel
+Now let's get back to our SAXPY problem.
+If the number of elements `n` is equal to the number of `threads_per_block`, then only a single block is needed.
+```CUDA
+__global__ void saxpy(int n, float a, float* x, float* y)
 {
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < n) {
-        y[i] = a*x[i] + y[i];
-    }
+    int i = threadIdx.x;
+    y[i] = a*x[i] + y[i];
+}
+
+int main()
+{
+    // ...
+    int n = 32;
+    int threads_per_block = 32;
+    int num_blocks = 1;
+    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    // ...
 }
 ```
 
-## CUDA Execution Model
-thread
-idx
+In the case of `n = 64`, two blocks would be needed.
+```CUDA
+__global__ void saxpy(int n, float a, float* x, float* y)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x; // 2D to 1D idx
+    y[i] = a*x[i] + y[i];
+}
 
-<<<grid dim, block dim>>>
-grid of blocks
-blocks of threads
-
-max #threads per block = 1024
-how to find this?
-
-```C
-int num_blocks = (n + threads_per_block-1) / threads_per_block;
+int main()
+{
+    // ...
+    int n = 64;
+    int threads_per_block = 32;
+    int num_blocks = 2;
+    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    // ...
+}
 ```
 
+In practice the number of elements `n` rarely fits the `threads_per_block` exactly.
+If we have one more element `n = 65` we need another block to run a single thread on that element. This means that 63 threads will run unecessarily which we need to make sure to avoid out of bounds in our arrays.
+```CUDA
+__global__ void saxpy(int n, float a, float* x, float* y)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x; // 2D to 1D idx
+    if (i < n) { // avoid out of bounds
+        y[i] = a*x[i] + y[i];
+    }
+}
+
+int main()
+{
+    // ...
+    int n = 65;
+    int threads_per_block = 32;
+    int num_blocks = 3;
+    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    // ...
+}
+```
+
+We can compute the number of blocks needed via the following expression:
+```C
+num_blocks = (n + threads_per_block-1) / threads_per_block;
+```
+
+Finally for a more realistic example, we use `n = 100M` and `threads_per_block = 256`.
+```CUDA
+__global__ void saxpy(int n, float a, float* x, float* y)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x; // 2D to 1D idx
+    if (i < n) { // avoid out of bounds
+        y[i] = a*x[i] + y[i];
+    }
+}
+
+int main()
+{
+    // ...
+    int n = 100000000;
+    int threads_per_block = 256;
+    int num_blocks = (n + threads_per_block-1) / threads_per_block;
+    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    // ...
+}
+```
+
+Note that the `threads_per_block` cannot be set arbitrary, it depends on the capability of the GPU. Currently (year 2024) the maximum is 1024.
+TODO: how to find this?
+The maximum value is not always the one leading to the best performance, it depends on the problem to solve, the kernel implementation and the GPU.
+
 ## CUDA API
+For the GPU implementation we need to use the CUDA API.
 The CUDA API is a simple C-like API providing full access to the GPU compute capabilities.
 The documentation is available here:
 
@@ -123,16 +222,17 @@ if (error != cudaSuccess) {
 
 We can also get the last error thrown via `cudaGetLastError()`, this is especially useful as it is the only way to detect errors during kernel launch:
 ```CUDA
-some_kernel<<<1,1>>>();
+some_kernel<<<num_blocks, threads_per_block>>>();
 cudaError_t error = cudaGetLastError();
 ```
 
-Note that to keep the tutorial code short we will ignore most errors handling but it goes without saying that in production code you should handle them properly if you don't want any bad surprises.
+Note that to keep the tutorial code short **we will ignore most errors handling** but it goes without saying that in production code you should handle them properly if you don't want any bad surprises.
 
 In CUDA the GPU is referred to as the "device" while the CPU is called the "host".
 These terms come from the fact that the GPU is a _co-processor_, it works in _parallel_ to the CPU. It is not the main processor running your OS, it works under the supervision of the CPU, the GPU only does what the CPU asks it to.
 
-### GPU Implementation
+## GPU implementation
+Now that we know a bit more about the CUDA API, let's see how to use it to run SAXPY on the GPU.
 The first step is to allocate memory for those vectors on the GPU:
 ```CUDA
 float* d_x;
@@ -225,8 +325,8 @@ printf("GPU time: %ld ticks\n", t2 - t1);
 
 On my machine I get:
 ```
-CPU time: 797 ticks
-GPU time: 170 ticks
+CPU time: 81835 ticks
+GPU time: 4792 ticks
 ```
 The CPU is noticably slower than the GPU as expected.
 

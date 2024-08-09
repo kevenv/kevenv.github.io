@@ -73,15 +73,19 @@ make
 <span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // printf</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // printf</span>
 
 <span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">hello</span><span class="p">()</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;hello world!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;hello from GPU!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
 <span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;hello from CPU!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
 <span class="w">    </span><span class="n">hello</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;&gt;&gt;</span><span class="p">();</span>
 <span class="w">    </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
@@ -104,6 +108,7 @@ After running our program with <code>./hello</code> we should see "hello world!"
 <li>GPU driver in use: <code>lspci -n -n -k | grep -A 2 -e VGA -e 3D</code></li>
 <li>CUDA compiler version: <code>nvcc --version</code></li>
 <li>Info about the GPU: <code>nvidia-smi</code></li>
+<li>GPU process monitor: <code>nvtop</code></li>
 </ul>
 <p>The <a href="https://github.com/NVIDIA/cuda-samples">cuda-samples</a> contains useful tools as well:</p>
 <ul>

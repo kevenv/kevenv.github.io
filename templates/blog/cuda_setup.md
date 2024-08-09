@@ -41,11 +41,13 @@ Create a new file named `hello.cu` with the following code:
 
 __global__ void hello()
 {
-    printf("hello world!\n");
+    printf("hello from GPU!\n");
 }
 
 int main()
 {
+    printf("hello from CPU!\n");
+    
     hello<<<1,1>>>();
     cudaDeviceSynchronize();
     return 0;
@@ -74,6 +76,7 @@ When developping CUDA programs, a bunch of tools can be useful:
 - GPU driver in use: `lspci -n -n -k | grep -A 2 -e VGA -e 3D`
 - CUDA compiler version: `nvcc --version`
 - Info about the GPU: `nvidia-smi`
+- GPU process monitor: `nvtop`
 
 The [cuda-samples](https://github.com/NVIDIA/cuda-samples) contains useful tools as well:
 
