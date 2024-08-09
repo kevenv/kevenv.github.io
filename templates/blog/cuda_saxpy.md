@@ -1,12 +1,12 @@
 # CUDA Tutorial 2 - SAXPY
 
-In this tutorial we will create a CUDA kernel that implements _SAXPY_ (Single precision A X Plus Y), one of the core routine of [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms), a standard linear algebra library commonly used for scientific computing.
+In this tutorial we will create a CUDA kernel that implements _SAXPY_ (Single-precision A X Plus Y), one of the core routine of [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms), a standard linear algebra library commonly used for scientific computing.
 The SAXPY function combines vector addition and scalar multiplication:
 ```C
 y = a*x + y
 
-// x,y : vectors of n dimensions
-// a : scalar
+// x,y : vectors of N dimensions (float32)
+// a : scalar (float32)
 ```
 
 ## CPU implementation
@@ -24,13 +24,13 @@ To use this function, we need some code to initialize the vectors and call the f
 ```C
 int main()
 {
-    const int n = 100000000;
-    const float a = 1.0;
-    float* x = (float*)malloc(n * sizeof(float));
-    float* y = (float*)malloc(n * sizeof(float));
-    for (int i = 0; i < n; i++) {
+    const int N = 100000000;
+    const float a = 2.0f;
+    float* x = (float*)malloc(N * sizeof(float));
+    float* y = (float*)malloc(N * sizeof(float));
+    for (int i = 0; i < N; i++) {
         x[i] = i;
-        y[i] = 2*i;
+        y[i] = 2.0f*i;
     }
 
     saxpy_cpu(a, x, y);
@@ -58,11 +58,11 @@ if the computation can be separated without introducing too much communication.
 
 For SAXPY we can easily see that each component of the vector can be added independently so in the best case we would have as many threads as the number of dimensions of the vector. If all threads compute at the same time the operation essentially goes from O(N) to O(1). In order word we can "unroll" the loop.
 
-When we define a kernel, this function will run on n threads.
+When we define a kernel, this function will run on N threads in parallel.
 each thread runs the same code but will have different exec context.
 
 ```CUDA
-__global__ void saxpy(float a, float* x, float* y)
+__global__ void saxpy(int n, float a, float* x, float* y)
 {
     int i = thread_idx;
     y[i] = a*x[i] + y[i];
@@ -73,13 +73,13 @@ __global__ void saxpy(float a, float* x, float* y)
 In CUDA the threads are separated and organized as a **grid of blocks**
 and a **block of threads** to map to the capabilities of the GPU.
 
-The index of the current thread can be calculated using the following variables:
+The index of the current thread can be calculated using the following built-in variables:
 ```CUDA
 threadIdx // index of the current thread in a block
 blockIdx  // index of the current block in a grid
 blockDim  // dimensions of a block
 ```
-These variables are reserved and accessible anywhere within a CUDA kernel.
+These variables are accessible anywhere within a CUDA kernel and are assigned automatically by the hardware for each thread and block.
 
 To help map the problem to the GPU, the CUDA API support multiple dimensions (up to 3D) on thread indexing.
 If the array is 2D we use 2D indexing, if the array is 3D we use 3D indexing.
@@ -98,12 +98,12 @@ kernel_name<<<grid_dim, block_dim>>>(); // kernel launch
 ```
 If only one dimension is used then we can use a shorter version:
 ```CUDA
-kernel_name<<<4,16>>>();
+kernel_name<<<4,16>>>(); // <<<num_blocks, threads_per_block>>>
 ```
 
 ### SAXPY kernel
 Now let's get back to our SAXPY problem.
-If the number of elements `n` is equal to the number of `threads_per_block`, then only a single block is needed.
+If the number of elements `N` is equal to the number of `threads_per_block`, then only a single block is needed.
 ```CUDA
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
@@ -114,39 +114,40 @@ __global__ void saxpy(int n, float a, float* x, float* y)
 int main()
 {
     // ...
-    int n = 32;
+    int N = 32;
     int threads_per_block = 32;
     int num_blocks = 1;
-    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
     // ...
 }
 ```
 
-In the case of `n = 64`, two blocks would be needed.
+In the case of `N = 64`, two blocks would be needed.
 ```CUDA
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
-    int i = blockIdx.x * blockDim.x + threadIdx.x; // 2D to 1D idx
+    int i = threadIdx.x + blockIdx.x * blockDim.x; // 2D to 1D idx
     y[i] = a*x[i] + y[i];
 }
 
 int main()
 {
     // ...
-    int n = 64;
+    int N = 64;
     int threads_per_block = 32;
     int num_blocks = 2;
-    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
     // ...
 }
 ```
 
-In practice the number of elements `n` rarely fits the `threads_per_block` exactly.
-If we have one more element `n = 65` we need another block to run a single thread on that element. This means that 63 threads will run unecessarily which we need to make sure to avoid out of bounds in our arrays.
+In practice the number of elements `N` rarely fits the `threads_per_block` exactly.
+If we have one more element `N = 65` we need another block to run a single thread on that element. This means that the other 63 threads will run unnecessarily and start accessing unallocated memory.
+We need to make sure to avoid getting out of bounds in our arrays.
 ```CUDA
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
-    int i = blockIdx.x * blockDim.x + threadIdx.x; // 2D to 1D idx
+    int i = threadIdx.x + blockIdx.x * blockDim.x; // 2D to 1D idx
     if (i < n) { // avoid out of bounds
         y[i] = a*x[i] + y[i];
     }
@@ -155,24 +156,24 @@ __global__ void saxpy(int n, float a, float* x, float* y)
 int main()
 {
     // ...
-    int n = 65;
+    int N = 65;
     int threads_per_block = 32;
     int num_blocks = 3;
-    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
     // ...
 }
 ```
 
 We can compute the number of blocks needed via the following expression:
 ```C
-num_blocks = (n + threads_per_block-1) / threads_per_block;
+num_blocks = (N + threads_per_block-1) / threads_per_block;
 ```
 
-Finally for a more realistic example, we use `n = 100M` and `threads_per_block = 256`.
+Finally for a more realistic example, we use `N = 100M` and `threads_per_block = 256`.
 ```CUDA
 __global__ void saxpy(int n, float a, float* x, float* y)
 {
-    int i = blockIdx.x * blockDim.x + threadIdx.x; // 2D to 1D idx
+    int i = threadIdx.x + blockIdx.x * blockDim.x; // 2D to 1D idx
     if (i < n) { // avoid out of bounds
         y[i] = a*x[i] + y[i];
     }
@@ -181,10 +182,10 @@ __global__ void saxpy(int n, float a, float* x, float* y)
 int main()
 {
     // ...
-    int n = 100000000;
+    int N = 100000000;
     int threads_per_block = 256;
-    int num_blocks = (n + threads_per_block-1) / threads_per_block;
-    saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+    int num_blocks = (N + threads_per_block-1) / threads_per_block;
+    saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
     // ...
 }
 ```
@@ -237,29 +238,29 @@ The first step is to allocate memory for those vectors on the GPU:
 ```CUDA
 float* d_x;
 float* d_y;
-cudaMalloc(&d_x, n * sizeof(float));
-cudaMalloc(&d_y, n * sizeof(float));
+cudaMalloc(&d_x, N * sizeof(float));
+cudaMalloc(&d_y, N * sizeof(float));
 ```
 As a convention I am appending "d_" to the name of variables when they are used on the GPU instead of the CPU (d for device).
 
 To initialize those vectors we must copy the CPU vectors to the GPU ones.
 This can be done using `cudaMemcpy()`. The CUDA version is very similar to the C one but takes an additionnal parameter to specify the "direction" of the copy. In this case we want to copy from the CPU to the GPU so we should use `cudaMemcpyHostToDevice`:
 ```CUDA
-cudaMemcpy(d_x, x, n * sizeof(float), cudaMemcpyHostToDevice);
-cudaMemcpy(d_y, y, n * sizeof(float), cudaMemcpyHostToDevice);
+cudaMemcpy(d_x, x, N * sizeof(float), cudaMemcpyHostToDevice);
+cudaMemcpy(d_y, y, N * sizeof(float), cudaMemcpyHostToDevice);
 ```
 Under the hood this will trigger a transfer of memory fom the CPU to the GPU via PCI-express.
 
 We can then launch the kernel:
 ```CUDA
-saxpy<<<num_blocks, threads_per_block>>>(a, d_x, d_y);
+saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
 cudaDeviceSynchronize();
 ```
 
 After the kernel has finished executing we need to get the results back to the CPU.
 We can do that by using `cudaMemcpy()` with `cudaMemcpyDeviceToHost` to copy from GPU to CPU memory:
 ```CUDA
-cudaMemcpy(y, d_y, n * sizeof(float), cudaMemcpyDeviceToHost);
+cudaMemcpy(y, d_y, N * sizeof(float), cudaMemcpyDeviceToHost);
 ```
 
 When we are done with the GPU, we should free the allocated GPU memory:
@@ -274,7 +275,7 @@ Let's compare the output from the GPU implementation to the CPU one:
 ```CUDA
 saxpy_cpu(a, x, y_ref);
 
-for (int i = 0; i < n; i++) {
+for (int i = 0; i < N; i++) {
     if (!equals(y[i], y_ref[i])) {
         printf("failed!\n");
         return 1;
@@ -303,7 +304,7 @@ A quick way to figure out the elapsed time of a particular function in C is to u
 clock_t t1 = clock();
 
 // thing to measure
-saxpy_cpu(n, a, x, y_ref);
+saxpy_cpu(N, a, x, y_ref);
 
 clock_t t2 = clock();
 
@@ -316,7 +317,7 @@ We can use the same technique to measure the GPU implementation but be mindful t
 ```cuda
 clock_t t1 = clock();
 
-saxpy<<<num_blocks, threads_per_block>>>(n, a, d_x, d_y);
+saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
 cudaDeviceSynchronize();
 
 clock_t t2 = clock();
@@ -329,6 +330,9 @@ CPU time: 81835 ticks
 GPU time: 4792 ticks
 ```
 The CPU is noticably slower than the GPU as expected.
+
+Note that SAXPY is very simple so its performance is not limited by the arithmetic intensity (_compute-bound_) but is is limited by the memory transfers (_bandwidth-bound_).
+However, it can still benefit from GPU acceleration if the problem size `N` is large enough.
 
 ## Next
 This concludes our tutorial. 
