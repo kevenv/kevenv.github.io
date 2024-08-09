@@ -57,14 +57,15 @@ if __name__ == '__main__':
             ('notes/makefile_cheatsheet','../','Makefile cheatsheet'),
             ('notes/c_style','../','C style'),
             ('notes/bit_ops','../','Bitwise operations'),
+            ('notes/sort_algos','../','Sorting algorithms'),
+            ('notes/priority_queue','../','Priority queue'),
             ('notes/css_cheatsheet','../','CSS cheatsheet'),
             ('notes/fedora_setup','../','Fedora setup'),
             ('notes/fedora_nvidia','../','Fedora + Nvidia'),
 
-            ('notes/sort_algos','../','Sorting algorithms'),
-            ('notes/priority_queue','../','Priority queue'),
-            ('notes/why_linux','../','Why Linux'),
             ('notes/nnet_backprop','../','Backprop'),
+            ('notes/parse_args','../','Parse args in C'),
+            ('notes/why_linux','../','Why Linux'),
     ]
     for page in pages:
         print(page)
