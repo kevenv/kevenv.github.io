@@ -132,6 +132,12 @@ dc/da = 1 + 0 = 1
 </code></pre></div></td></tr></table></div>
 
 <p>operations on : scalar (1x1), vector (Nx1), matrix(MxN), tensor(MxNxKx...)</p>
+<ul>
+<li>deriv tanh(x) -&gt; 1-tanh(x)^2</li>
+<li>deriv exp(x) = exp(x) = n.value</li>
+<li>a / b = a * 1/b = a * b^-1</li>
+<li>a - b = a + (-b)</li>
+</ul>
 <h2>Backprop</h2>
 <p>Backpropagation = wiggle machine to figure out how inputs affect output</p>
 <ul>
@@ -322,16 +328,127 @@ output = loss
 <li>to min L, take step in direction opposite to gradient</li>
 <li>known as "gradient descent", optimization problem</li>
 </ul>
-<h2>micrograd vs pytorch</h2>
+<h3>Impl</h3>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code>Neuron
+    ctor: init w,b to [-1,1]
+    call: Wx+b, # forward()
+    parameters() list of w + b
+        zip(a,b) # zip a with b, pair each element of a and b together
+        sum(v, init value)
+Layer = N indep Neuron
+MLP = N layers
+    parameters()
+        flat list of all parameters (w,b)
+Module
+    zero_grad()
+    parameters()
+
+x = [2.0, 3.0, -1.0]
+nn = MLP(3, [4,4,1])
+nn(x)
+</code></pre></div></td></tr></table></div>
+
+<p>train nnet with gradient descent</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">epochs</span>
+    <span class="c1"># forward</span>
+    <span class="n">ypred</span> <span class="o">=</span> <span class="n">nn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> 
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">MSE</span><span class="p">(</span><span class="n">ypred</span><span class="p">,</span> <span class="n">yref</span><span class="p">)</span>
+
+    <span class="c1"># flush grad</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>    
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">nn</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># backward</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># update</span>
+    <span class="c1"># optimizer.step()</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">nn</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+        <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="c1"># not too big (unstable, !converge), not too small (slow)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">data</span> <span class="o">+=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="o">-</span><span class="n">p</span><span class="o">.</span><span class="n">grad</span>
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li>learning rate decay, shrink over time <code>1.0 - 0.9/100*t</code></li>
+</ul>
+<h3>Loss function</h3>
+<p>measure perf of nnet:</p>
+<ul>
+<li>MSE = <code>sum((y - yref)^2)</code></li>
+<li>cross entropy<ul>
+<li>binary cross entropy</li>
+</ul>
+</li>
+<li>max margin loss</li>
+</ul>
+<h2>micrograd vs PyTorch</h2>
 <ul>
 <li>similar API</li>
 <li>much smaller, ~200lines of python!</li>
 <li>scalar vs tensor = optimization</li>
 </ul>
+<h2>PyTorch</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">])</span> <span class="c1"># create tensor</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">x1</span><span class="o">.</span><span class="n">double</span><span class="p">()</span> <span class="c1"># cast (default type = f32)</span>
+<span class="n">x1</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># leaf nodes (default = no grad)</span>
+<span class="n">x1</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># get dimensions</span>
+<span class="n">x1</span><span class="o">.</span><span class="n">dtype</span> <span class="c1"># get type</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">])</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">)</span> <span class="c1"># exec operations</span>
+<span class="n">x3</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="ow">or</span> <span class="n">x3</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c1"># get value (.item() returns value, strips out tensor)</span>
+<span class="n">x3</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c1"># get grad</span>
+<span class="n">x3</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># run backprop</span>
+</code></pre></div></td></tr></table></div>
+
 <h2>Python tricks</h2>
 <ul>
 <li><code>__repr__</code> vs <code>__str__</code> : str is for making it look good, repr is for making it accurate (debug)</li>
 <li><code>__rmul__</code> : 1 * object</li>
+<li><code>__truediv__</code> : a / b</li>
+<li><code>__pow__</code> : a^n</li>
 <li>format string<ul>
 <li><code>"some {.4f} value".format(var)</code></li>
 <li><code>f"some {var} value"</code></li>

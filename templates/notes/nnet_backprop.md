@@ -98,6 +98,11 @@ Value
 ```
 operations on : scalar (1x1), vector (Nx1), matrix(MxN), tensor(MxNxKx...)
 
+- deriv tanh(x) -> 1-tanh(x)^2
+- deriv exp(x) = exp(x) = n.value
+- a / b = a * 1/b = a * b^-1
+- a - b = a + (-b)
+
 ## Backprop
 Backpropagation = wiggle machine to figure out how inputs affect output
 
@@ -232,14 +237,83 @@ backprop -> iterative improve weights to min loss (train nnet):
 - to min L, take step in direction opposite to gradient
 - known as "gradient descent", optimization problem
 
+### Impl
+```
+Neuron
+    ctor: init w,b to [-1,1]
+    call: Wx+b, # forward()
+    parameters() list of w + b
+        zip(a,b) # zip a with b, pair each element of a and b together
+        sum(v, init value)
+Layer = N indep Neuron
+MLP = N layers
+    parameters()
+        flat list of all parameters (w,b)
+Module
+    zero_grad()
+    parameters()
+
+x = [2.0, 3.0, -1.0]
+nn = MLP(3, [4,4,1])
+nn(x)
+```
+
+train nnet with gradient descent
+```python
+for t in epochs
+    # forward
+    ypred = nn(x) 
+    loss = MSE(ypred, yref)
+
+    # flush grad
+    p.zero_grad()    
+        for p in nn.parameters()
+            p.grad = 0.0
+    # backward
+    loss.backward()
+
+    # update
+    # optimizer.step()
+    for p in nn.parameters()
+        learning_rate = 0.01 # not too big (unstable, !converge), not too small (slow)
+        p.data += learning_rate * -p.grad
+```
+
+- learning rate decay, shrink over time `1.0 - 0.9/100*t`
+
+### Loss function
+measure perf of nnet:
+
+- MSE = `sum((y - yref)^2)`
+- cross entropy
+    - binary cross entropy
+- max margin loss
+
 ## micrograd vs PyTorch
 - similar API
 - much smaller, ~200lines of python!
 - scalar vs tensor = optimization
 
+## PyTorch
+```python
+import torch
+x1 = torch.Tensor([2.0]) # create tensor
+x1 = x1.double() # cast (default type = f32)
+x1.requires_grad = True # leaf nodes (default = no grad)
+x1.shape # get dimensions
+x1.dtype # get type
+x2 = torch.Tensor([3.0])
+x3 = torch.tanh(x1 + x2) # exec operations
+x3.data.item() or x3.item() # get value (.item() returns value, strips out tensor)
+x3.grad.item() # get grad
+x3.backward() # run backprop
+```
+
 ## Python tricks
 - `__repr__` vs `__str__` : str is for making it look good, repr is for making it accurate (debug)
 - `__rmul__` : 1 * object
+- `__truediv__` : a / b
+- `__pow__` : a^n
 - format string
     - `"some {.4f} value".format(var)`
     - `f"some {var} value"`
