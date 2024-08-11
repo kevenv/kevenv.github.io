@@ -266,7 +266,7 @@ dL/db = (dL / dc) * (dc / db) = (dL / dc) * a
 <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">build_topo</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span> <span class="c1"># maintain visited set of nodes</span>
-        <span class="n">visited</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
         <span class="n">build_topo</span><span class="p">()</span> <span class="c1"># recursion</span>
     <span class="n">topo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c1"># add parent *after* all children have been visited</span>
@@ -457,6 +457,7 @@ nn(x)
 </li>
 <li>put 2 lines on 1 : <code>line 1; line 2</code></li>
 <li><code>_private_method()</code></li>
+<li>use <code>_</code> as unused variable name</li>
 </ul>
 <h3>Includes</h3>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
@@ -469,7 +470,70 @@ nn(x)
 </code></pre></div></td></tr></table></div>
 
 <h3>Draw graph of nodes</h3>
-<p>TODO</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Digraph</span>
+
+<span class="k">def</span> <span class="nf">trace</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+    <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">_prev</span><span class="p">:</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">child</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="n">build</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="n">build</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span>
+
+<span class="k">def</span> <span class="nf">draw_dot</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">,</span> <span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;LR&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    format: png | svg | ...</span>
+<span class="sd">    rankdir: TB (top to bottom graph) | LR (left to right)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">rankdir</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;LR&#39;</span><span class="p">,</span> <span class="s1">&#39;TB&#39;</span><span class="p">]</span>
+    <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">trace</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">Digraph</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span> <span class="n">graph_attr</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rankdir&#39;</span><span class="p">:</span> <span class="n">rankdir</span><span class="p">})</span> <span class="c1">#, node_attr={&#39;rankdir&#39;: &#39;TB&#39;})</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;{ data </span><span class="si">%.4f</span><span class="s2"> | grad </span><span class="si">%.4f</span><span class="s2"> }&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">grad</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;record&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">_op</span><span class="p">:</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">_op</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">n</span><span class="o">.</span><span class="n">_op</span><span class="p">)</span>
+            <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">_op</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="n">dot</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n1</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n2</span><span class="p">))</span> <span class="o">+</span> <span class="n">n2</span><span class="o">.</span><span class="n">_op</span><span class="p">)</span>
+
+    <span class="n">dot</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;gout&#39;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
         <hr>
         <footer>
             <div>
