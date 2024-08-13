@@ -287,6 +287,7 @@ measure perf of nnet:
 - MSE = `sum((y - yref)^2)`
 - cross entropy
     - binary cross entropy
+    - negative log likelihood (-log(softmax(x))), logit
 - max margin loss
 
 ## micrograd vs PyTorch
