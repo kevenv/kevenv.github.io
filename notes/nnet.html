@@ -98,7 +98,9 @@ testing (10%)
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code>batch
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code>batch
     Full-Batch Training
         loop through all examples each iteration
 
@@ -115,6 +117,8 @@ testing (10%)
         dataloader = DataLoader(dataset, batch_size=10, shuffle=True) 
         for epoch in range(100):  # number of epochs
             for inputs, target in dataloader:  # iterate over mini-batches
+
+        DL book p.270
 
     SGD vs mini batch?
         SGD (1 random at a time)

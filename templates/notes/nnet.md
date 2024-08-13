@@ -50,6 +50,8 @@ batch
 		for epoch in range(100):  # number of epochs
     		for inputs, target in dataloader:  # iterate over mini-batches
 
+        DL book p.270
+
 	SGD vs mini batch?
 		SGD (1 random at a time)
 		mini batch SGD (N at a time)

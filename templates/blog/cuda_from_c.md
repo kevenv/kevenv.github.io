@@ -1,6 +1,6 @@
 # CUDA from C
 
-When first learning CUDA we usually define and run kernels within the same `.cu` file and compile it using the CUDA compiler `nvcc` but what if we want to integrate CUDA to an existing C codebase? In this article, I will show you how to launch CUDA kernels from usual C code.
+When first learning CUDA, we usually define and run kernels within the same `.cu` file and compile it using the CUDA compiler `nvcc`, but what if we want to integrate CUDA to an existing C codebase? In this article, I will show you how to launch CUDA kernels from usual C code.
 
 ## Basic kernel
 Starting from the basic "hello world" example:
@@ -86,7 +86,7 @@ int main()
 
 We also must wrap the kernel launch within a C function to able to call it from normal C code since the `<<< >>>` syntax is specific to the CUDA compiler `nvcc` and not supported by C compilers.
 
-Finally we must include `<cuda_runtime.h>` in `app.c` to access functions from the CUDA runtime API such as `cudaDeviceSynchronize()`.
+Finally, we must include `<cuda_runtime.h>` in `app.c` to access functions from the CUDA runtime API such as `cudaDeviceSynchronize()`.
 
 ## Build
 To build the application we must first compile the CUDA kernel without linking using the CUDA compiler:
