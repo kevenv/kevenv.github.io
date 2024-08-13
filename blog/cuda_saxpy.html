@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Keven Villeneuve's personal website">
-        <title>~/kevenv - CUDA Tutorial 2 - SAXPY</title>
+        <title>~/kevenv - CUDA - SAXPY</title>
         <link rel="icon" href="../imgs/icon.png">
         <link rel="stylesheet" href="../style/style.css">
         <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
@@ -24,8 +24,8 @@
             </nav>
         </header>
         <hr>
-<h1>CUDA Tutorial 2 - SAXPY</h1>
-<p>In this tutorial we will create a CUDA kernel that implements <em>SAXPY</em> (Single-precision A X Plus Y), one of the core routine of <a href="https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms">BLAS</a>, a standard linear algebra library commonly used for scientific computing.
+<h1>CUDA - SAXPY</h1>
+<p>In this article we will create a CUDA kernel that implements <em>SAXPY</em> (Single-precision A X Plus Y), one of the core routine of <a href="https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms">BLAS</a>, a standard linear algebra library commonly used for scientific computing.
 The SAXPY function combines vector addition and scalar multiplication:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
@@ -330,7 +330,7 @@ The documentation is available here:</p>
 <span class="n">cudaError_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cudaGetLastError</span><span class="p">();</span>
 </code></pre></div></td></tr></table></div>
 
-<p>Note that to keep the tutorial code short <strong>we will ignore most errors handling</strong> but it goes without saying that in production code you should handle them properly if you don't want any bad surprises.</p>
+<p>Note that to keep the article's code short <strong>we will ignore most errors handling</strong> but it goes without saying that in production code you should handle them properly if you don't want any bad surprises.</p>
 <p>In CUDA the GPU is referred to as the "device" while the CPU is called the "host".
 These terms come from the fact that the GPU is a <em>co-processor</em>, it works in <em>parallel</em> to the CPU. It is not the main processor running your OS, it works under the supervision of the CPU, the GPU only does what the CPU asks it to.</p>
 <h2>GPU implementation</h2>
@@ -461,8 +461,8 @@ GPU time: 4792 ticks
 <p>Note that SAXPY is very simple so its performance is not limited by the arithmetic intensity (<em>compute-bound</em>) but is is limited by the memory transfers (<em>bandwidth-bound</em>).
 However, it can still benefit from GPU acceleration if the problem size <code>N</code> is large enough.</p>
 <h2>Next</h2>
-<p>This concludes our tutorial. </p>
-<p>The source code for this tutorial is available on <a href="https://github.com/kevenv/cuda_exercises/tree/master/saxpy">GitHub</a>.</p>
+<p>This concludes our article. </p>
+<p>The source code for this article is available on <a href="https://github.com/kevenv/cuda_exercises/tree/master/saxpy">GitHub</a>.</p>
         <hr>
         <footer>
             <div>

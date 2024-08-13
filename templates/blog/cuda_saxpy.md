@@ -1,6 +1,6 @@
-# CUDA Tutorial 2 - SAXPY
+# CUDA - SAXPY
 
-In this tutorial we will create a CUDA kernel that implements _SAXPY_ (Single-precision A X Plus Y), one of the core routine of [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms), a standard linear algebra library commonly used for scientific computing.
+In this article we will create a CUDA kernel that implements _SAXPY_ (Single-precision A X Plus Y), one of the core routine of [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms), a standard linear algebra library commonly used for scientific computing.
 The SAXPY function combines vector addition and scalar multiplication:
 ```C
 y = a*x + y
@@ -228,7 +228,7 @@ some_kernel<<<num_blocks, threads_per_block>>>();
 cudaError_t error = cudaGetLastError();
 ```
 
-Note that to keep the tutorial code short **we will ignore most errors handling** but it goes without saying that in production code you should handle them properly if you don't want any bad surprises.
+Note that to keep the article's code short **we will ignore most errors handling** but it goes without saying that in production code you should handle them properly if you don't want any bad surprises.
 
 In CUDA the GPU is referred to as the "device" while the CPU is called the "host".
 These terms come from the fact that the GPU is a _co-processor_, it works in _parallel_ to the CPU. It is not the main processor running your OS, it works under the supervision of the CPU, the GPU only does what the CPU asks it to.
@@ -336,6 +336,6 @@ Note that SAXPY is very simple so its performance is not limited by the arithmet
 However, it can still benefit from GPU acceleration if the problem size `N` is large enough.
 
 ## Next
-This concludes our tutorial. 
+This concludes our article. 
 
-The source code for this tutorial is available on [GitHub](https://github.com/kevenv/cuda_exercises/tree/master/saxpy).
+The source code for this article is available on [GitHub](https://github.com/kevenv/cuda_exercises/tree/master/saxpy).

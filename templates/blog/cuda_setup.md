@@ -1,4 +1,4 @@
-# CUDA Tutorial 1 - Setup
+# CUDA - Setup
 
 Welcome to this tutorial on CUDA! Before we get started we should setup our development environment.
 
@@ -59,7 +59,7 @@ We can immediately see the resemblance to usual C code however some things are d
 The `__global__` attribute signals that the given function should be run on the GPU instead of the CPU, in CUDA parlance this is known as a "CUDA kernel".
 
 To launch our `hello` kernel we must use the syntax `hello<<<1,1>>>()`.
-The meaning of the `<<<1,1>>>` will be explained in the next tutorial in details but in this case it specifies that the kernel should run only on a single thread.
+The meaning of the `<<<1,1>>>` will be explained in the next article in details but in this case it specifies that the kernel should run only on a single thread.
 
 Finally we must call `cudaDeviceSynchronize()` to ensure that the kernel finishes executing since kernels on the GPU runs asynchronously to the CPU.
 
@@ -95,8 +95,8 @@ For this to work, make sure that the CUDA toolkit is in your system `PATH` and t
 ```
 
 ## Next
-This concludes the first tutorial.
+This concludes the first article.
 Our first kernel didn't do much, in fact it didn't take advantage of the GPU at all since it was running on a single thread.
 In the [next one]({{root}}blog/cuda_saxpy.html) we will see how to write a more useful kernel and wake up that GPU!
 
-The source code for this tutorial is available on [GitHub](https://github.com/kevenv/cuda_exercises/tree/master/hello).
+The source code for this article is available on [GitHub](https://github.com/kevenv/cuda_exercises/tree/master/hello).
