@@ -58,6 +58,9 @@ batch
 		GD (all at a time)
 ```
 
+## Regularization
+- L2 regularization
+
 ## PyTorch
 ### Install
 ```bash
