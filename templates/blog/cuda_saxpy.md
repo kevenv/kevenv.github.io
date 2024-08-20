@@ -251,11 +251,11 @@ cudaMemcpy(d_x, x, N * sizeof(float), cudaMemcpyHostToDevice);
 cudaMemcpy(d_y, y, N * sizeof(float), cudaMemcpyHostToDevice);
 ```
 Under the hood this will trigger a transfer of memory fom the CPU to the GPU via PCI-express.
+The `cudaMemcpy()` function is synchronous (blocking), meaning that the CPU will wait until the data transfer is completed.
 
 We can then launch the kernel:
 ```CUDA
 saxpy<<<num_blocks, threads_per_block>>>(N, a, d_x, d_y);
-cudaDeviceSynchronize();
 ```
 
 After the kernel has finished executing we need to get the results back to the CPU.
@@ -263,6 +263,9 @@ We can do that by using `cudaMemcpy()` with `cudaMemcpyDeviceToHost` to copy fro
 ```CUDA
 cudaMemcpy(y, d_y, N * sizeof(float), cudaMemcpyDeviceToHost);
 ```
+
+Since kernel launches are asynchronous (non-blocking), there could be a race between the kernel execution and the memory transfer.
+However `cudaMemcpy()` ensures that the data transfer will not begin until the kernel has completed so there is no need to call `cudaDeviceSynchronize()` in this case.
 
 When we are done with the GPU, we should free the allocated GPU memory:
 ```CUDA

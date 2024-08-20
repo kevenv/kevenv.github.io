@@ -353,11 +353,10 @@ This can be done using <code>cudaMemcpy()</code>. The CUDA version is very simil
 <span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_y</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 
-<p>Under the hood this will trigger a transfer of memory fom the CPU to the GPU via PCI-express.</p>
+<p>Under the hood this will trigger a transfer of memory fom the CPU to the GPU via PCI-express.
+The <code>cudaMemcpy()</code> function is synchronous (blocking), meaning that the CPU will wait until the data transfer is completed.</p>
 <p>We can then launch the kernel:</p>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">saxpy</span><span class="o">&lt;&lt;&lt;</span><span class="n">num_blocks</span><span class="p">,</span><span class="w"> </span><span class="n">threads_per_block</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">d_x</span><span class="p">,</span><span class="w"> </span><span class="n">d_y</span><span class="p">);</span>
-<span class="n">cudaDeviceSynchronize</span><span class="p">();</span>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">saxpy</span><span class="o">&lt;&lt;&lt;</span><span class="n">num_blocks</span><span class="p">,</span><span class="w"> </span><span class="n">threads_per_block</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">d_x</span><span class="p">,</span><span class="w"> </span><span class="n">d_y</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 
 <p>After the kernel has finished executing we need to get the results back to the CPU.
@@ -365,6 +364,8 @@ We can do that by using <code>cudaMemcpy()</code> with <code>cudaMemcpyDeviceToH
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">d_y</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 
+<p>Since kernel launches are asynchronous (non-blocking), there could be a race between the kernel execution and the memory transfer.
+However <code>cudaMemcpy()</code> ensures that the data transfer will not begin until the kernel has completed so there is no need to call <code>cudaDeviceSynchronize()</code> in this case.</p>
 <p>When we are done with the GPU, we should free the allocated GPU memory:</p>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_x</span><span class="p">);</span>

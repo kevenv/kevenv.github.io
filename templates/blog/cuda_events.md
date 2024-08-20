@@ -57,7 +57,7 @@ int main()
 
 The way I believe this works under the hood is:
 ```C
-// GPU: queue of operations
+// GPU: commands queue
 []
 
 // CPU: cudaEventRecord(start, stream);
