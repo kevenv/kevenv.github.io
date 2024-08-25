@@ -143,8 +143,10 @@
 - `>` : stdout
 - `<` : stdin
 - `&>` : stdout + stderr
+- `0>` : stdin
 - `1>` : stdout
 - `2>` : stderr
+- `2>&1` : stderr to stdout, can use `cmd | tee out.txt` to also print on screen
 
 ## Bash profile
 - `~/.bashrc`

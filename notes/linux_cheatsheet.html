@@ -204,8 +204,10 @@
 <li><code>&gt;</code> : stdout</li>
 <li><code>&lt;</code> : stdin</li>
 <li><code>&amp;&gt;</code> : stdout + stderr</li>
+<li><code>0&gt;</code> : stdin</li>
 <li><code>1&gt;</code> : stdout</li>
 <li><code>2&gt;</code> : stderr</li>
+<li><code>2&gt;&amp;1</code> : stderr to stdout, can use <code>cmd | tee out.txt</code> to also print on screen</li>
 </ul>
 <h2>Bash profile</h2>
 <ul>
