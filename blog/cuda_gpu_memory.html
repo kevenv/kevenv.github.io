@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>~/kevenv - CUDA - GPU memory</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">~/kevenv</div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../notes.html">Notes</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>CUDA - GPU memory</h1>
+<p>There are many kinds of memory in a GPU but in this section we are interested in RAM, the biggest chunk of memory used for textures and data.
+The main characteristic used to describe RAM is its <strong>size</strong>, more RAM allows processing more data at a time. Its <strong>bandwidth</strong>, how fast can we transfer data to it, is also an important aspect that affects performance.</p>
+<p>The specs of the memory used in the GeForce RTX 4090 is given below.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Memory size</strong></td>
+<td>24 GB</td>
+</tr>
+<tr>
+<td><strong>Memory type</strong></td>
+<td>GDDR6X</td>
+</tr>
+<tr>
+<td><strong>Memory interface width</strong></td>
+<td>384-bit</td>
+</tr>
+<tr>
+<td><strong>Memory clock (data rate)</strong></td>
+<td>21 Gbps</td>
+</tr>
+<tr>
+<td><strong>Memory bandwidth</strong></td>
+<td>1008 GB/s</td>
+</tr>
+<tr>
+<td><strong>PCI Express interface</strong></td>
+<td>Gen 4 (x16: 31.508 GB/s)</td>
+</tr>
+</tbody>
+</table>
+<h2>Memory interconnect</h2>
+<p>To understand those specs we must understand how the CPU, GPU and the GPU memory are interconnected.</p>
+<p>There is a link between the GPU and its RAM but there is also a link between the GPU and the CPU.
+The bandwidth of the PCI-e bus is for the transfer of data between the GPU and the CPU, while the memory bandwidth is between the GPU and its GDDR RAM.</p>
+<p>The PCI-e bus is not only used to transfer data between the CPU and the GPU but also to communicate and program the GPU via MMIO registers.</p>
+<p>The bandwidth of GDDR will usually be much bigger than the bandwidth of PCI-e.</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>GPU
+    [GDDR6X]
+      |
+    [GPU]
+      | (PCI-e)
+MOTHERBOARD
+      | 
+    [CPU] -- [DRAM controller] -- [DDR5]
+        (PCI-e)
+</code></pre></div></td></tr></table></div>
+
+<h2>GDDR</h2>
+<p>The type of RAM used in a GPU is usually <em>GDDR SDRAM (Graphics Double Data Rate Synchronous Dynamic Random-Access Memory)</em>, which is similar to the <em>DDR SDRAM</em> used with the CPU but optimized for throughput instead of latency.</p>
+<p>The <em>DDR (Double Data Rate)</em> technology essentially transfers data on both the rising and falling edges of the memory clock signal, effectively doubling the data rate (2 bits of data can be transfered during each clock cycle).</p>
+<p>The GDDR6X used in the RTX 4090 is the 6th generation of GDDR and is able to transmit 4 bits of data per cycle thanks to fancy signal modulation.</p>
+<p>A single chip of GDDR has N data pins, in the case of 4090 = 384, each pin can transmit in parallel one bit at the memory clock rate.
+DDR</p>
+<p>1008 GB/s, GDDR size = 24GB
+1008/24 = can W whole RAM 42 times in 1 second
+doesnt fit int RAM, so its not about the data size but how much R/W per second can you do =&gt; how fast the RAM is</p>
+<h1>memory access per seconds</h1>
+<h2>Memory bandwidth</h2>
+<p>The memory bandwidth is the number of bytes that can be transfered per second.
+The theoretical maximum memory bandwidth can be computed as follow:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>21 Gbps * 384 bit / 8 bit/byte = 1008 GB/s
+</code></pre></div></td></tr></table></div>
+
+<p>memory clock speed
+    Gbps (Giga Bits Per Second) = data rate
+    GHz = base clock</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>GDDR
+    memory clock speed is usually described in terms of the data rate per pin
+    not just the base clock.
+
+data rate: 21 Gbps
+    clock * 8 / E9 * 4 (DDR + PAM4: two bits per symbol to be transmitted) instead of *2 (DDR)
+    cycle/s * bit/byte bit/cycle
+
+https://www.reddit.com/r/pcmasterrace/comments/1b3xxyl/why_is_gddr6x_better_then_gddr6_in_gaming/
+
+PAM4 : 4 signal levels instead of 2 (2^2-bit=4)
+</code></pre></div></td></tr></table></div>
+
+<p>Note that this is much higher than the maximum PCI-e 4.0 bandwidth of 31.508 GB/s (using x16: 16 lanes).
+So the data transfer between the CPU and the GPU using PCI-e will be the bottleneck.</p>
+<p>If its internal clock runs at 100 MHz, then the effective rate is 200 MT/s, because there are 100 million rising edges per second and 100 million falling edges per second of a clock signal running at 100 MHz.</p>
+<h2>Effective memory bandwidth</h2>
+<p>In practice we rarely reach the maximum memory bandwidth.
+To compute the effective memory bandwidth of a given CUDA kernel, we can use the kernel execution time:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>bw = (R + W) / (t * 10^9) in GB/s
+
+R: number of bytes read from VRAM
+W: number of bytes write to VRAM
+t: elapsed time (ms)
+</code></pre></div></td></tr></table></div>
+
+<p>For our SAXPY example:</p>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>// read x and y, each an array of float (4 bytes)
+R = N * 4 * 2
+// write y
+W = N * 4 * 1
+bw = (N*4*3) / t
+</code></pre></div></td></tr></table></div>
+
+<h2>References</h2>
+<ul>
+<li><a href="https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf">https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf</a> (Appendix A)</li>
+<li><a href="https://en.wikipedia.org/wiki/GDDR6_SDRAM#GDDR6X">https://en.wikipedia.org/wiki/GDDR6_SDRAM#GDDR6X</a></li>
+<li><a href="https://www.micron.com/content/dam/micron/global/public/products/technical-marketing-brief/gddr6x-pam4-2x-speed-tech-brief.pdf">https://www.micron.com/content/dam/micron/global/public/products/technical-marketing-brief/gddr6x-pam4-2x-speed-tech-brief.pdf</a></li>
+</ul>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

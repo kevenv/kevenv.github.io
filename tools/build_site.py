@@ -45,7 +45,8 @@ if __name__ == '__main__':
             ('blog/cuda_setup','../','CUDA - Setup'),
             ('blog/cuda_saxpy','../','CUDA - SAXPY'),
             ('blog/cuda_from_c','../','CUDA - Launching kernels from C'),
-            ('blog/cuda_events','../','CUDA - Events (Measuring timings)'),
+            ('blog/cuda_events','../','CUDA - Events (measuring timings)'),
+            ('blog/cuda_gpu_memory','../','CUDA - GPU memory'),
 
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),

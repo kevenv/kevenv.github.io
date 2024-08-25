@@ -1,4 +1,4 @@
-# CUDA - Events (Measuring timings)
+# CUDA - Events (measuring timings)
 
 In the [article on SAXPY]({{{root}}}blog/cuda_saxpy.html) we have seen how to measure the kernel execution time using CPU timers, this is fine to get a quick idea of the timings but there is a more accurate way to do this using **CUDA events**.
 
