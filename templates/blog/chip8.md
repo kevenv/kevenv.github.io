@@ -176,6 +176,36 @@ int main(int argc, char* argv[])
 
 ## CPU
 
+### BCD
+All the Chip8 instructions are straighforward and easy to implement but the `FX33` one needs further explanations.
+
+This instruction converts a number stored in the `V[x]` register to its BCD representation. BCD stands for _Binary Coded Decimal_, which means that each digit of the number should be converted to its binary representation.
+
+Ex: 234 -> 2,3,4 -> 0b010, 0b011, 0b100
+
+The maximum value that can be stored in `V[x]` is 255 since it is a 8-bit register, therefore we need at most 3 digits.
+
+The BCD representation must be stored at memory locations:
+
+- `I`   : 100s digit
+- `I+1` : 10s digit
+- `I+2` : 1s digit
+
+This instruction is almost always used to update the game's score to the screen to be easily understood by the player, as such it can be implemented at the very end after the rest of the Chip8 is implemented and working properly.
+
+```C
+void chip8_fx33(chip8_t* chip8, u8 x)
+{
+    // convert to BCD (Binary Coded Decimal)
+    u8 n = V[x];
+    RAM[I + 0] = n / 100;
+    n = n % 100;
+    RAM[I + 1] = n / 10;
+    n = n % 10;
+    RAM[I + 2] = n / 1;
+}
+```
+
 ## Keypad
 User inputs can be done via the _keypad_, consisting of 16 keys indexed from 0 to F.
 The keys are laid out in the following way:
