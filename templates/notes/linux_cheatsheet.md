@@ -17,7 +17,8 @@
 - `touch [file]` : create empty file, mark file as newly edited
 - `source [file]` : execute a `.sh` file within the current shell
 - `cat [file]` : print file to the screen
-- `tree` : print directory hierarchy
+- `tree -a` : print directory hierarchy
+    - -a : show all files (hidden)
     - -L [max depth] : max depth
 - `tail -n [num of lines] [file]` : show last N lines of a file
 - `file [file]` : get file type
