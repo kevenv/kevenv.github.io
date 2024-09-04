@@ -65,6 +65,9 @@
 - `git reset --hard HEAD` : revert all local changes
 - `git reset --soft HEAD~1` : undo local commit, not pushed yet
 - `git revert [commit]` : create revert commit
+- `git ...` : undo remote commit
+    - `git reset --hard [commit]`
+    - `git push origin [branch] -f`
 - `git clean -xdf`
     - `-n` : dry run
     - `-x` : ignore `.gitignore`

@@ -103,6 +103,11 @@
 <li><code>git reset --hard HEAD</code> : revert all local changes</li>
 <li><code>git reset --soft HEAD~1</code> : undo local commit, not pushed yet</li>
 <li><code>git revert [commit]</code> : create revert commit</li>
+<li><code>git ...</code> : undo remote commit<ul>
+<li><code>git reset --hard [commit]</code></li>
+<li><code>git push origin [branch] -f</code></li>
+</ul>
+</li>
 <li><code>git clean -xdf</code><ul>
 <li><code>-n</code> : dry run</li>
 <li><code>-x</code> : ignore <code>.gitignore</code></li>
