@@ -116,10 +116,12 @@
 ## Kernel
 - `lsmod` : list kernel modules
     - also `cat /proc/modules`
+- `modprobe [module]` : load kernel module and dependencies
 - `insmod [module].ko` : install kernel module
 - `rmmod [module]` : remove kernel module
 - `modinfo -F [info] [module]`: get info about kernel module
 - `dmesg | tail -n 5` : show kernel log
+    - -W : show live
 - `ls -l /dev` : list device files
     - major, minor
 - `cat /proc/devices` : list assigned device numbers
