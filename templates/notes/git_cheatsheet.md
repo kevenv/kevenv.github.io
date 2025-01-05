@@ -12,6 +12,7 @@
 - `git branch` : list branches
 - `git checkout [branch]` : switch branch
 - `git checkout -b [branch]` : create new branch
+- `git checkout -d [branch]` : delete branch
 - `git checkout [commit]` : switch branch to specific commit
 - `git fetch` : fetch changes
 - `git pull` : fetch + merge changes
@@ -79,6 +80,12 @@
 - `git tag` : list tags
 - `git tag [tag name]` : add tag
 - `git push --tags` : push tags
+
+## Bisect
+- `git bisect start`
+- `git bisect bad [commit]`
+- `git bisect good [commit]`
+- `git bisect reset`
 
 ## Submodules
 - `git clone --recursive` : clone with submodules

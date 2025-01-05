@@ -172,10 +172,14 @@
 <li>also <code>cat /proc/modules</code></li>
 </ul>
 </li>
+<li><code>modprobe [module]</code> : load kernel module and dependencies</li>
 <li><code>insmod [module].ko</code> : install kernel module</li>
 <li><code>rmmod [module]</code> : remove kernel module</li>
 <li><code>modinfo -F [info] [module]</code>: get info about kernel module</li>
-<li><code>dmesg | tail -n 5</code> : show kernel log</li>
+<li><code>dmesg | tail -n 5</code> : show kernel log<ul>
+<li>-W : show live</li>
+</ul>
+</li>
 <li><code>ls -l /dev</code> : list device files<ul>
 <li>major, minor</li>
 </ul>
