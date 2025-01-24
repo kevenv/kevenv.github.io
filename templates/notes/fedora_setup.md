@@ -56,8 +56,9 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 ```
 - Arc Menu
 - Dash to Panel
-- system-monitor-next
-- freon
+- ~~system-monitor-next~~
+- astra monitor
+- freon + lm-sensors
 
 ## Configure
 config gnome + exts
@@ -80,6 +81,8 @@ config gnome + exts
 ## Install apps
 - veracrypt
 ```
+Fedora RPM package from official website: https://www.veracrypt.fr/en/Downloads.html
+
 build from source: https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-setup.tar.bz2
 ```
 - keepassXC
