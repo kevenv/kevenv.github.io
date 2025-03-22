@@ -187,8 +187,8 @@ All together we can load a BMP image very easily without needing any external li
 
 struct image_t {
     u8* pixels;
-    u32 w;
-    u32 h;
+    u32 width;
+    u32 height;
 };
 
 image_t* bmp_load(const char* file_name)
@@ -209,9 +209,9 @@ image_t* bmp_load(const char* file_name)
     
     // alloc buffer for pixels
     image = (image_t*)malloc(sizeof(image_t));
-    image->w = info_header.width;
-    image->h = info_header.height;
-    u32 image_size = image->w * image->h * 4;
+    image->width = info_header.width;
+    image->height = info_header.height;
+    u32 image_size = image->width * image->height * 4;
     image->pixels = (u8*)malloc(image_size);
     u8* tmp = (u8*)malloc(info_header.image_size);
 
@@ -221,14 +221,14 @@ image_t* bmp_load(const char* file_name)
 
     // convert RGB24 -> ABGR8888
     // flip image in Y
-    u32 pitch = ((image->w * 3) + (4 - 1)) & ~((u32)(4 - 1)); // 4-byte alignment
-    for (u32 y = 0; y < image->h; y++) {
-        for (u32 x = 0; x < image->w; x++) {
-            u32 y_ = image->h - 1 - y; // flip image in Y
-            image->pixels[(x + y * image->w) * 4 + 0] = tmp[x * 3 + y_ * pitch + 2]; // R
-            image->pixels[(x + y * image->w) * 4 + 1] = tmp[x * 3 + y_ * pitch + 1]; // G
-            image->pixels[(x + y * image->w) * 4 + 2] = tmp[x * 3 + y_ * pitch + 0]; // B
-            image->pixels[(x + y * image->w) * 4 + 3] = 255; // A (unused)
+    u32 pitch = ((image->width * 3) + (4 - 1)) & ~((u32)(4 - 1)); // 4-byte alignment
+    for (u32 y = 0; y < image->height; y++) {
+        for (u32 x = 0; x < image->width; x++) {
+            u32 y_ = image->height - 1 - y; // flip image in Y
+            image->pixels[(x + y * image->width) * 4 + 0] = tmp[x * 3 + y_ * pitch + 2]; // R
+            image->pixels[(x + y * image->width) * 4 + 1] = tmp[x * 3 + y_ * pitch + 1]; // G
+            image->pixels[(x + y * image->width) * 4 + 2] = tmp[x * 3 + y_ * pitch + 0]; // B
+            image->pixels[(x + y * image->width) * 4 + 3] = 255; // A (unused)
         }
     }
     free(tmp);
@@ -312,8 +312,8 @@ image_t* image = bmp_load(file_name);
 
 // copy image to SDL surface
 SDL_Surface* image_surface = SDL_CreateRGBSurfaceWithFormatFrom(
-    image->pixels, image->w, image->h, 
-    32, image->w * 4, SDL_PIXELFORMAT_ABGR8888
+    image->pixels, image->width, image->height, 
+    32, image->width * 4, SDL_PIXELFORMAT_ABGR8888
 );
 ```
 

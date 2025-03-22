@@ -209,8 +209,8 @@ An implementation for a QOI decoder could look something like this:
 
 struct image_t {
     u8* pixels;
-    u32 w;
-    u32 h;
+    u32 width;
+    u32 height;
     u8 channels; // 3: RGB (24-bpp), 4: RGBA (32-bpp))
 };
 
@@ -230,10 +230,10 @@ image_t* qoi_load(const char* file_name)
     
     // alloc buffer for pixels
     image_t* image = (image_t*)malloc(sizeof(image_t));
-    image->w = header.width;
-    image->h = header.height;
+    image->width = header.width;
+    image->height = header.height;
     image->channels = header.channels;
-    image->pixels = (u8*)malloc(image->w * image->h * 4);
+    image->pixels = (u8*)malloc(image->width * image->height * 4);
 
     // read byte stream into temporary buffer
     fseek(file, 0, SEEK_END);
@@ -286,7 +286,7 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
     rgba_t prev_pixels[QOI_BUFFER_SIZE] = {0}; // running array of previously seen pixels, must be zero-initialized
     u8 run_length = 0;
     u32 idx = 0; // index of current byte in stream
-    for (u32 i = 0; i < image->w * image->h; i++) {
+    for (u32 i = 0; i < image->width * image->height; i++) {
         if (run_length > 0) {
             run_length--;
         }
@@ -381,14 +381,14 @@ bool qoi_save(image_t* image, const char* file_name)
     // write header
     qoi_header_t header;
     memcpy(header.magic, QOI_MAGIC, 4);
-    header.width = little_to_big(image->w);
-    header.height = little_to_big(image->h);
+    header.width = little_to_big(image->width);
+    header.height = little_to_big(image->height);
     header.channels = image->channels;
     header.colorspace = (u8)QOI_COLOR_SPACE_SRGB;
     fwrite(&header, sizeof(header), 1, file);
 
     // encode chunks
-    u8* bytes = (u8*)malloc(image->w * image->h * image->channels);
+    u8* bytes = (u8*)malloc(image->width * image->height * image->channels);
     u32 bytes_size = 0; // compressed size should be smaller than original size
     qoi_encode_chunks(image, bytes, &bytes_size);
 
@@ -435,7 +435,7 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
     rgba_t prev_pixels[QOI_BUFFER_SIZE] = {0}; // running array of previously seen pixels, must be zero-initialized
     u32 run_length = 0;
     u32 idx = 0; // index of current byte in stream
-    for (u32 i = 0; i < image->w * image->h; i++) {
+    for (u32 i = 0; i < image->width * image->height; i++) {
         rgba_t pixel;
         pixel.r = image->pixels[i * 4 + 0];
         pixel.g = image->pixels[i * 4 + 1];
