@@ -31,7 +31,7 @@ dep2:
 clean:
     clean cmds
 
-.PHONY clean all
+.PHONY: clean all
 ```
 
 **Note: each build cmd runs in a separate shell!**
