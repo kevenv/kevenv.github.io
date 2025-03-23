@@ -444,7 +444,8 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
 
         if (pixel.rgba == last_pixel.rgba) {
             run_length++;
-            if (run_length == 62) { // TODO: check end?
+            u32 last_pixel = image->width * image->height - 1; // emmit last run if last pixel
+            if (run_length == 62 || i == last_pixel) {
                 // 1. Run
                 bytes[idx++] = QOI_OP_RUN | (u8)(run_length - 1);
                 run_length = 0;
@@ -516,7 +517,7 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
     }
     bytes[idx++] = 0x01;
 
-    *bytes_size = idx - 1;
+    *bytes_size = idx;
 }
 ```
 Notice that the code for the encoder is not much more complicated than the decoder.
