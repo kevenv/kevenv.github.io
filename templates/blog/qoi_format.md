@@ -52,42 +52,44 @@ The QOI compression algorithm essentially chooses between 4 techniques to compre
 
 Those methods were choosen to tradeoff quality with complexity after surely many iterations while testing with all kind of images.
 
+We can visualize which technique is used for each pixel of an image.
+Here we check the result on a real life picture:
+<img src="{{rootImages}}blog/qoi_kodim23_viz.png" style="height: 230px;" alt="">
+Notice how most of the image is compressed using the "difference" and "index" method.
+It is interesting to realize that the sharp edges of the image cannot be compressed and have to be stored using the "full" method.
+The "run" method is barely used but it is not really surprising since a picture of a real life scene usually does not have big area of the exact same color, life is full of subtle variations and imperfections.
+
+Images with graphics like logo and text do exhibit large zones of the same color and QOI is also very efficient at compressing them.
+On the image below we can see that it is mostly compressed using RLE like it should:
+<img src="{{rootImages}}blog/qoi_dice_viz.png" style="height: 255px;" alt="">
+
+TODO: color legend
+merge RGB+RGBA yellow?
+
 ### 1. Run
 We have already seen the first method in the section above on data compression however the specific implementation of RLE used in QOI is a bit different.
-
-A run is defined based on the previous pixel decoded.
-
-In case of a run, the previous pixel decoded is simply repeated a specific number of time, its _run-length_.
-The run-length is stored on 6-bit and a bias of -1 is used to avoid lengths of zero.
-The range of valid values would thus be [0,2^6-1] = [0,63] -> [1,64].
-Run-length of 63 and 64 and illegal and reserved, leaving only [1,62] as valid.
-
-It uses 6-bit to store the run-length.
-The run-length is stored with a bias of -1 to avoid length of 0
+When a run is encountered, the previous pixel decoded is repeated a specific number of times, its _run-length_.
+The run-length is stored on 6-bit with a bias of -1 (to avoid lengths of zero) which would allow a maximum length of 64, however the values 63 and 64 are illegal and reserved for the rest of the compression algorithm.
+This means only the range of [1,62] is a valid run-length.
 
 ### 2. Index
 If a repetition is not detected, we can use the next best thing and send an _index_ to a previously seen pixel instead.
 QOI keeps a buffer of 64 pixels that have been previously seen at any time, those are not necessarily the last pixels seen up to that point.
+Since the buffer size is 64, we only need 6-bit to store the index.
 
-This buffer could be implemented as a list but to find matching pixel it uses a hashmap.
-
-Each time a new pixel is decoded it is added to this buffer by using a hash function:
+When encoding, we need to find out if the pixel is in the buffer.
+Using an array/queue here would make the search slow O(N) and so a hashmap O(1) is used instead.
+Each time a new pixel is decoded it is added to this buffer by using the hash function:
 ```C
 u32 hash = last_pixel.r * 3 + last_pixel.g * 5 + last_pixel.b * 7 + last_pixel.a * 11;
 u8 index = (u8)(hash % 64);
 prev_pixels[index] = last_pixel;
 ```
+The prime numbers series 3,5,7,11 ensures a good uniformity and the % 64 wraps the index to fit into the array.
 
-The hashmap key is a hash function based on the pixel's value.
-The prime numbers series 3,5,7,11 ensures a good uniformity and the % 64 wrap the index to fit into the array.
-
-The use of a hashmap like this also accelerates finding matches, which will be useful in the image encoder. : instead of a stack/queue of pixels, we use a hashmap
-when decoding, need to query/find if pixel is in cache -> slow in array O(N) but hashmap is O(1)
-hashmap of pixels
-key = hash fct based on pixel values
-collision -> fixed size cache
-
-The index is stored in 6-bit [0,63]
+Notice how this buffer acts like a _cache_ of pixels previously seen.
+Usually the image will be much bigger than the buffer so we cannot keep all the previous pixels decoded, some pixels will need to be replaced.
+When a _hash collision_ occurs a pixel gets replaced in the cache.
 
 ### 3. Difference
 Pixels that are physically very close to each other usually vary slightly in value but it is rare that they have the exact same value.
@@ -182,7 +184,7 @@ enum qoi_color_space_t {
 ### Chunks
 Images are encoded row by row from left to right, top to bottom.
 The compressed pixels data consists of a series of _chunks_ varying in size.
-Each chunk starts with a 8-bit or 2-bit _tag_ identifying the type.
+Each chunk starts with a 8-bit or 2-bit _tag_ specifying the type of chunk.
 A chunk can have up to 4 bytes of data bytes following its tag.
 
 ![QOI chunk format]({{rootImages}}blog/qoi_chunk.svg)
@@ -288,7 +290,7 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
     u32 idx = 0; // index of current byte in stream
     for (u32 i = 0; i < image->width * image->height; i++) {
         if (run_length > 0) {
-            run_length--;
+            run_length--; // continue run
         }
         else {
             u8 byte = bytes[idx++];
@@ -322,8 +324,8 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
             else if ((byte & QOI_MASK_2B) == QOI_OP_LUMA) {
                 u8 byte2 = bytes[idx++];
                 u8 dg = (byte & 0b00111111) - 32;
-                u8 db_dg = ((byte2 >> 0) & 0b1111) - 8;
                 u8 dr_dg = ((byte2 >> 4) & 0b1111) - 8;
+                u8 db_dg = ((byte2 >> 0) & 0b1111) - 8;
                 last_pixel.r += (u8)(dr_dg + dg);
                 last_pixel.g += dg;
                 last_pixel.b += (u8)(db_dg + dg);
@@ -331,7 +333,7 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
             // 1. Run
             else if ((byte & QOI_MASK_2B) == QOI_OP_RUN) {
                 run_length = (byte & 0b00111111) + 1;
-                run_length--;
+                run_length--; // start run
             }
 
             // store last pixel in previous pixels buffer
@@ -347,6 +349,9 @@ void qoi_decode_chunks(image_t* image, u8* bytes)
 }
 ```
 This is the whole thing! It is pretty amazing to see that compressing images efficiently could be that short and easy to implement.
+
+The encoder and decoder must initialize the previous pixel with the value RGBA=(0,0,0,255) as previous pixel
+so that the previous pixel decoded
 
 Note that for convenience this code uses a _union_ with an _anonymous struct_ to treat RGBA values sometimes as a `u32` and sometimes as four `u8` components:
 ```C
@@ -462,7 +467,6 @@ void qoi_encode_chunks(image_t* image, u8* bytes, u32* bytes_size)
 
             // 1. Run
             if (run_length > 0) {
-                assert(run_length <= 62);
                 bytes[idx++] = QOI_OP_RUN | (u8)(run_length - 1);
                 run_length = 0;
             }
@@ -528,7 +532,8 @@ QOI can be used in place of PNG for faster compression and decompression at the 
 In this article **we have omitted proper errors handling** to keep the code short, please see the full source code available on [GitHub](https://github.com/kevenv/image_viewer) for more details.
 
 ## References
-- <https://qoiformat.org/>
-- <https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression>
+- <https://qoiformat.org/> : Specification.
+- <https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression> : Blog post by inventor.
 - <https://en.wikipedia.org/wiki/QOI_(image_format)>
 - <https://en.wikipedia.org/wiki/Run-length_encoding>
+- <https://www.youtube.com/watch?v=EFUYNoFRHQI&t=1411s> : Nice visual explanation.
