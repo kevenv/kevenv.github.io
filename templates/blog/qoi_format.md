@@ -1,6 +1,6 @@
 # QOI image format
 
-In this article we will show how to implement an image encoder and decoder for the _QOI_ (Quite OK Image) format, a relatively new image format created by the game developer _Dominic Szablewski_ that has generated a lot of interest recently in the computer graphics community due to its simplicity.
+In this article we will show how to implement an image encoder and decoder for the _QOI (Quite OK Image)_ format, a relatively new image format created by the game developer Dominic Szablewski that has generated a lot of interest recently in the computer graphics community due to its simplicity.
 
 QOI is a very simple lossless image format that is easy to understand and fast to encode, yet compresses images to a comparable size as the much more complex _PNG_ image format.
 Thus it sits between _BMP_ (uncompressed) and _PNG_ (compressed) in terms of compression ratio.
@@ -23,7 +23,7 @@ We find _repetitive patterns_ and replace them by an equivalent compressed repre
 Files can only be compressed if they have a lot of redundancy, there is no magic here.
 In practice raw data is usually not encoded the most efficient way and is compressible.
 
-One of the simplest technique to do lossless data compression is _RLE_ (Run Length Encoding).
+One of the simplest technique to do lossless data compression is _RLE (Run Length Encoding)_.
 Say we have the following data:
 ```
 2 5 5 5 5 5 5 5 3 3
@@ -51,20 +51,15 @@ The QOI compression algorithm essentially chooses between 4 techniques to compre
 4. Full (uncompressed)
 
 Those methods were choosen to tradeoff quality with complexity after surely many iterations while testing with all kind of images.
-
-We can visualize which technique is used for each pixel of an image.
-Here we check the result on a real life picture:
-<img src="{{rootImages}}blog/qoi_kodim23_viz.png" style="height: 230px;" alt="">
-Notice how most of the image is compressed using the "difference" and "index" method.
-It is interesting to realize that the sharp edges of the image cannot be compressed and have to be stored using the "full" method.
-The "run" method is barely used but it is not really surprising since a picture of a real life scene usually does not have big area of the exact same color, life is full of subtle variations and imperfections.
+Before explaining each method in detail, we can visualize which technique is used for each pixel of a real life picture:
+![QOI compression on Kodim23]({{rootImages}}blog/qoi_kodim23_viz.png)
+Notice how most of the image is compressed using the _difference_ (in purple) and _index_ method (in blue).
+It is interesting to realize that the sharp edges of the image cannot be compressed and have to be stored using the _full_ method (in yellow).
+The _run_ method (in green) is barely used but it is not really surprising since a picture of a real life scene usually does not have big area of the exact same color, life is full of subtle variations and imperfections.
 
 Images with graphics like logo and text do exhibit large zones of the same color and QOI is also very efficient at compressing them.
-On the image below we can see that it is mostly compressed using RLE like it should:
-<img src="{{rootImages}}blog/qoi_dice_viz.png" style="height: 255px;" alt="">
-
-TODO: color legend
-merge RGB+RGBA yellow?
+On the image below we can see that it is mostly compressed using _run_ (in green) like it should:
+![QOI compression on Dice]({{rootImages}}blog/qoi_dice_viz.png)
 
 ### 1. Run
 We have already seen the first method in the section above on data compression however the specific implementation of RLE used in QOI is a bit different.
@@ -78,14 +73,14 @@ QOI keeps a buffer of 64 pixels that have been previously seen at any time, thos
 Since the buffer size is 64, we only need 6-bit to store the index.
 
 When encoding, we need to find out if the pixel is in the buffer.
-Using an array/queue here would make the search slow O(N) and so a hashmap O(1) is used instead.
+Using an array/queue here would make the search slow **O(N)** and so a hashmap **O(1)** is used instead.
 Each time a new pixel is decoded it is added to this buffer by using the hash function:
 ```C
 u32 hash = last_pixel.r * 3 + last_pixel.g * 5 + last_pixel.b * 7 + last_pixel.a * 11;
 u8 index = (u8)(hash % 64);
 prev_pixels[index] = last_pixel;
 ```
-The prime numbers series 3,5,7,11 ensures a good uniformity and the % 64 wraps the index to fit into the array.
+The prime numbers series **3,5,7,11** ensures a good uniformity and the **% 64** wraps the index to fit into the array.
 
 Notice how this buffer acts like a _cache_ of pixels previously seen.
 Usually the image will be much bigger than the buffer so we cannot keep all the previous pixels decoded, some pixels will need to be replaced.
@@ -135,7 +130,7 @@ It is important to notice that the difference method does not encode the alpha c
 therefore this method can only be used if the A channel did not change from the previous pixel.
 
 ### 4. Full
-The last method is used when we are out of options and none of the previous ones worked or resulted in compression. In that case we just send the raw pixel in the order R,G,B,A (or RGB), one byte per color channel.
+The last method is used when we are out of options and none of the previous ones worked or resulted in compression. In that case we just send the raw pixel in the order R,G,B,A (or R,G,B), one byte per color channel.
 
 One thing to notice is that none of those methods take much advantage of the specific properties of images.
 To keep things simple, QOI treats the image as a single 1D stream of pixels and not a 2D grid like PNG does.
@@ -193,7 +188,11 @@ There are 6 types of chunks corresponding to the different compression methods:
 
 ![QOI tags format]({{rootImages}}blog/qoi_tags.svg)
 
-Conveniently, all chunks are byte aligned which allow us to treat it as a single _byte stream_.
+On the figure, from left to right are the first to last byte of each chunk, all fields are stored in the _least significant bit_ first _(LSB)_.
+The **index** is the 6-bit index value into the previous pixels buffer and **run** is the run length.
+**dr**, **dg**, **db** are the difference from the previous pixel for the R, G, B channels respectively, while **r**, **g**, **b**, **a** are simply the raw pixel value for each color channels.
+
+Conveniently, all chunks are _byte aligned_ which allow us to treat it as a single _byte stream_.
 The stream should end when all the pixels have been decoded but the end of the stream 
 is also marked with the following sequence of 8 bytes:
 ```
@@ -532,8 +531,8 @@ QOI can be used in place of PNG for faster compression and decompression at the 
 In this article **we have omitted proper errors handling** to keep the code short, please see the full source code available on [GitHub](https://github.com/kevenv/image_viewer) for more details.
 
 ## References
-- <https://qoiformat.org/> : Specification.
-- <https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression> : Blog post by inventor.
+- <https://qoiformat.org/>
+- <https://phoboslab.org/log/2021/11/qoi-fast-lossless-image-compression>
 - <https://en.wikipedia.org/wiki/QOI_(image_format)>
 - <https://en.wikipedia.org/wiki/Run-length_encoding>
-- <https://www.youtube.com/watch?v=EFUYNoFRHQI&t=1411s> : Nice visual explanation.
+- <https://www.youtube.com/watch?v=EFUYNoFRHQI&t=1411s>
