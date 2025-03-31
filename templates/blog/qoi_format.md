@@ -68,7 +68,7 @@ The run-length is stored on 6-bit with a bias of -1 (to avoid lengths of zero) w
 This means only the range of [1,62] is a valid run-length.
 
 ### 2. Index
-If a repetition is not detected, we can use the next best thing and send an _index_ to a previously seen pixel instead.
+If a repetition is not detected, we can use the next best thing an _index_ to a previously seen pixel instead.
 QOI keeps a buffer of 64 pixels that have been previously seen at any time, those are not necessarily the last pixels seen up to that point.
 Since the buffer size is 64, we only need 6-bit to store the index.
 
@@ -88,49 +88,34 @@ When a _hash collision_ occurs a pixel gets replaced in the cache.
 
 ### 3. Difference
 Pixels that are physically very close to each other usually vary slightly in value but it is rare that they have the exact same value.
+When the _difference_ in value between two pixels is small, it is more efficient to store this difference instead of the full value.
+QOI has two variants of this method, one for very small differences and the other for bigger ones.
 
-When the _difference_ in value between two pixels is small, it is more efficient to store this difference instead of the full value. 
+#### Difference
+The first variant stores the difference with the previous pixel for each color channel.
+This difference is a value between -2 and 1 and stored as a 2-bit unsigned integer with a bias of 2.
 
-Therefore, instead of sending the pixel value, we can send the _difference_ with the previous pixel.
+It is important to know that the difference method does not encode the alpha channel (A).
+Consequently, it can only be used if the **A** channel did not change from the previous pixel.
 
-QOI has two variants of the difference method, one for very small difference and the other for bigger ones.
+#### Luma
+The second variant leverages the fact that pictures in the real world typically have much more variations of green than red and blue.
+Since things like trees and grass with rich variations of green are abundant in nature, and because humans are most sensitive to green, the pictures that we take will tend to have more green in it.
+Therefore, in this variant QOI allocates more bits to the green channel.
+The difference for the green channel is stored using 6 bits (-32,31) with a bias of 32 while the other ones uses 4 bits (-8,7) with a bias of 8 and are relative to the green difference.
 
-[/]The second variant takes advantage of the fact that human eyes are most sensitive to green, meaning that we are able to distinghish between many more shades of green than red or blue.
-
-QOI allocates more bits for the green channel in this variant.
-[/]bias towards bigger diff of G? nature = trees,grass?
-
-green channel is used to indicate the general direction of
-change : luminance
-usually brightness chg > color chg?
-
-encode diff using 2 bytes - 2-bit tag = 2*8-2=14bits
-14/3 ~= 4.7
-
-dr dg db
-5   5  4
-4   4  6
-
-dr-dg dg db-dr
-4     6  4
-
-dr: 2^4-1=16-1 - 8 = [-8, 7]
-dg: 2^6-1=64-1 - 32 = [-32,31]
-
-dr-dg: [-8--32,7-31] = [24,-24]
-
-RGB -> YUV / YCbCr
-    Y=luminance ~G
-    chrominance:
-    U=B-Y
-    V=R-Y
-its called "luma" but not really YUV,maybe just because looks similar
-
-It is important to notice that the difference method does not encode the alpha channel (A).
-therefore this method can only be used if the A channel did not change from the previous pixel.
+This variant is called "Luma" in QOI due to its similarity to the _YUV_ color model where
+a RGB color is split into one _luma_ component **Y** and two _chroma_ components **U**, **V**:
+```
+Y = 0.2126 R + 0.7152 G + 0.0722 B
+U = B - Y
+V = R - Y
+```
+Luma relates to _luminance_ which is a measure of the perceptual brightness of light.
+This component is approximated in QOI by simply using the green channel which contributes the most to luminance.
 
 ### 4. Full
-The last method is used when we are out of options and none of the previous ones worked or resulted in compression. In that case we just send the raw pixel in the order R,G,B,A (or R,G,B), one byte per color channel.
+The last method is used when we are out of options and none of the previous ones worked or resulted in compression. In that case we just store the raw pixel in the order R,G,B,A (or R,G,B), one byte per color channel.
 
 One thing to notice is that none of those methods take much advantage of the specific properties of images.
 To keep things simple, QOI treats the image as a single 1D stream of pixels and not a 2D grid like PNG does.
