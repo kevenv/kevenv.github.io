@@ -51,6 +51,7 @@ if __name__ == '__main__':
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),
             ('blog/tar_format','../','Tar file format'),
+            ('blog/wav_format','../','WAV audio format'),
             ('blog/chip8','../','Chip8 emulator'),
             # ('blog/zip_format','../','ZIP format'),
         ('notes','','Notes'),
