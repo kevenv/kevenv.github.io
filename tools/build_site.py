@@ -50,6 +50,9 @@ if __name__ == '__main__':
 
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),
+            ('blog/gif_format_1','../','GIF image format (Part 1 : Format)'),
+            ('blog/gif_format_2','../','GIF image format (Part 2 : Compression)'),
+            ('blog/gif_format_3','../','GIF image format (Part 3 : Animation)'),
             ('blog/tar_format','../','Tar file format'),
             ('blog/wav_format','../','WAV audio format'),
             ('blog/chip8','../','Chip8 emulator'),
