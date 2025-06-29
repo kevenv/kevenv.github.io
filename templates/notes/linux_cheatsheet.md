@@ -30,6 +30,7 @@
     - `find [directory] -name [file]` : find file in directory
     - `find [directory] -name *.[ext]` : find all files of a given type
     - `find [directory] -type f -exec grep "[text]" '{}' \; -print` : find text in files
+    - `find / -name "[pattern]" 2>/dev/null` : find all and ignore errors
 
 ## Permissions
 - `sudo [cmd]` : run a cmd as root
