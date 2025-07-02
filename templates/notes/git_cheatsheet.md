@@ -81,6 +81,10 @@
 - `git tag [tag name]` : add tag
 - `git push --tags` : push tags
 
+## Blame
+- `git blame -L [start line],[end line] [file]` : find who last edited a file at specific line
+- `git show [commit]` : get info on commit
+
 ## Bisect
 - `git bisect start`
 - `git bisect bad [commit]`
