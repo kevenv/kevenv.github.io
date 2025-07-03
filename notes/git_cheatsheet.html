@@ -54,6 +54,9 @@
 </li>
 <li><code>git commit -m "[message]"</code> : commit changes</li>
 <li><code>git status</code> : status of local repo</li>
+</ul>
+<h2>Diff</h2>
+<ul>
 <li><code>git diff [file a] [file b]</code> : diff two files<ul>
 <li><code>--cached</code> : diff the added files</li>
 <li><code>-w</code> : ignore whitespaces</li>
@@ -64,31 +67,6 @@
 </li>
 <li><code>git -c core.fileMode=false diff</code> : diff two files, ignore file permissions</li>
 <li><code>difftastic</code></li>
-</ul>
-<h2>Stash &amp; Patch</h2>
-<ul>
-<li><code>git stash</code><ul>
-<li><code>save "[message]"</code> : stash current changes</li>
-<li><code>list</code> : show stash</li>
-<li><code>pop</code> : pop stash</li>
-<li><code>drop</code> : drop stash</li>
-<li><code>apply stash@{0}</code> : apply stash</li>
-<li><code>show -p stash@{0}</code> : show stash changes</li>
-</ul>
-</li>
-<li><code>git show -p stash@{0} &gt; [patch file].patch</code> : create patch from stash</li>
-<li><code>git diff &gt; [patch file].patch</code> : create patch from unstaged changes</li>
-<li><code>git diff --cached &gt; [patch file].patch</code> : create patch from staged changes</li>
-<li><code>git apply [patch file].patch</code> : apply patch file</li>
-</ul>
-<h2>Info</h2>
-<ul>
-<li><code>git log</code> : show changes log</li>
-<li><code>git reflog</code> : show local repo history</li>
-<li><code>git remote -v</code> : list remote</li>
-<li><code>git remote show origin</code> : info on remote</li>
-<li><code>git remote add [remote name] [remote url]</code> : add remote</li>
-<li><code>git remote set-url origin [remote url]</code> : change remote</li>
 </ul>
 <h2>Merge</h2>
 <ul>
@@ -118,24 +96,65 @@
 </ul>
 </li>
 </ul>
+<h2>Stash &amp; Patch</h2>
+<ul>
+<li><code>git stash</code><ul>
+<li><code>save "[message]"</code> : stash current changes</li>
+<li><code>list</code> : show stash</li>
+<li><code>pop</code> : pop stash</li>
+<li><code>drop</code> : drop stash</li>
+<li><code>apply stash@{0}</code> : apply stash</li>
+<li><code>show -p stash@{0}</code> : show stash changes</li>
+</ul>
+</li>
+<li><code>git show -p stash@{0} &gt; [patch file].patch</code> : create patch from stash</li>
+<li><code>git diff &gt; [patch file].patch</code> : create patch from unstaged changes</li>
+<li><code>git diff --cached &gt; [patch file].patch</code> : create patch from staged changes</li>
+<li><code>git apply [patch file].patch</code> : apply patch file</li>
+</ul>
 <h2>Tags</h2>
 <ul>
 <li><code>git tag</code> : list tags</li>
 <li><code>git tag [tag name]</code> : add tag</li>
 <li><code>git push --tags</code> : push tags</li>
 </ul>
-<h2>Blame</h2>
+<h2>Info</h2>
 <ul>
-<li><code>git blame -L [start line],[end line] [file]</code> : find who last edited a file at specific line</li>
+<li><code>git log</code> : show changes log</li>
+<li><code>git reflog</code> : show local repo history</li>
 <li><code>git show [commit]</code> : get info on commit</li>
+<li><code>git blame -L [start line],[end line] [file]</code> : find who last edited a file at specific line</li>
+<li><code>git remote -v</code> : list remote</li>
+<li><code>git remote show origin</code> : info on remote</li>
+<li><code>git remote add [remote name] [remote url]</code> : add remote</li>
+<li><code>git remote set-url origin [remote url]</code> : change remote</li>
 </ul>
 <h2>Bisect</h2>
-<ul>
+<ol>
+<li>checkout repo at bad commit<ul>
+<li><code>git checkout [commit]</code></li>
+</ul>
+</li>
+<li>start bisect<ul>
 <li><code>git bisect start</code></li>
-<li><code>git bisect bad [commit]</code></li>
+<li><code>git bisect bad</code></li>
+</ul>
+</li>
+<li>mark known good commit<ul>
 <li><code>git bisect good [commit]</code></li>
+</ul>
+</li>
+<li>checkout commit in between bad and good (done by bisect automatically)</li>
+<li>check if commit is still bad<ul>
+<li><code>git bisect bad/good</code></li>
+</ul>
+</li>
+<li>repeat 4-5 until found the guilty commit</li>
+<li>stop bisect (checkout to previous state)<ul>
 <li><code>git bisect reset</code></li>
 </ul>
+</li>
+</ol>
 <h2>Submodules</h2>
 <ul>
 <li><code>git clone --recursive</code> : clone with submodules</li>

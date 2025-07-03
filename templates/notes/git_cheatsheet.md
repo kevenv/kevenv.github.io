@@ -24,6 +24,8 @@
     - `git add -p` : add changes interactively
 - `git commit -m "[message]"` : commit changes
 - `git status` : status of local repo
+
+## Diff
 - `git diff [file a] [file b]` : diff two files
     - `--cached` : diff the added files
     - `-w` : ignore whitespaces
@@ -32,27 +34,6 @@
     - `--name-only` : only list files
 - `git -c core.fileMode=false diff` : diff two files, ignore file permissions
 - `difftastic`
-
-## Stash & Patch
-- `git stash`
-    - `save "[message]"` : stash current changes
-    - `list` : show stash
-    - `pop` : pop stash
-    - `drop` : drop stash
-    - `apply stash@{0}` : apply stash
-    - `show -p stash@{0}` : show stash changes
-- `git show -p stash@{0} > [patch file].patch` : create patch from stash
-- `git diff > [patch file].patch` : create patch from unstaged changes
-- `git diff --cached > [patch file].patch` : create patch from staged changes
-- `git apply [patch file].patch` : apply patch file
-
-## Info
-- `git log` : show changes log
-- `git reflog` : show local repo history
-- `git remote -v` : list remote
-- `git remote show origin` : info on remote
-- `git remote add [remote name] [remote url]` : add remote
-- `git remote set-url origin [remote url]` : change remote
 
 ## Merge
 - `git rebase [src branch]` : rebase current branch from another branch
@@ -76,20 +57,48 @@
     - `-f` : force
     - `-X` : only ignored files
 
+## Stash & Patch
+- `git stash`
+    - `save "[message]"` : stash current changes
+    - `list` : show stash
+    - `pop` : pop stash
+    - `drop` : drop stash
+    - `apply stash@{0}` : apply stash
+    - `show -p stash@{0}` : show stash changes
+- `git show -p stash@{0} > [patch file].patch` : create patch from stash
+- `git diff > [patch file].patch` : create patch from unstaged changes
+- `git diff --cached > [patch file].patch` : create patch from staged changes
+- `git apply [patch file].patch` : apply patch file
+
 ## Tags
 - `git tag` : list tags
 - `git tag [tag name]` : add tag
 - `git push --tags` : push tags
 
-## Blame
-- `git blame -L [start line],[end line] [file]` : find who last edited a file at specific line
+## Info
+- `git log` : show changes log
+- `git reflog` : show local repo history
 - `git show [commit]` : get info on commit
+- `git blame -L [start line],[end line] [file]` : find who last edited a file at specific line
+- `git remote -v` : list remote
+- `git remote show origin` : info on remote
+- `git remote add [remote name] [remote url]` : add remote
+- `git remote set-url origin [remote url]` : change remote
 
 ## Bisect
-- `git bisect start`
-- `git bisect bad [commit]`
-- `git bisect good [commit]`
-- `git bisect reset`
+1. checkout repo at bad commit
+    - `git checkout [commit]`
+2. start bisect
+    - `git bisect start`
+    - `git bisect bad`
+3. mark known good commit
+    - `git bisect good [commit]`
+4. checkout commit in between bad and good (done by bisect automatically)
+5. check if commit is still bad
+    - `git bisect bad/good`
+6. repeat 4-5 until found the guilty commit
+7. stop bisect (checkout to previous state)
+    - `git bisect reset`
 
 ## Submodules
 - `git clone --recursive` : clone with submodules
