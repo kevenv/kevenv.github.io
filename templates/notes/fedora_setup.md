@@ -59,11 +59,15 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 - ~~system-monitor-next~~
 - astra monitor
 - freon + lm-sensors
+- spacebar?
+- switcher?
+- tactile?
+- just perfection?
 
 ## Configure
 config gnome + exts
 - gnome tweaks
-- `settings/accessibility/seeing/reduce animations`
+- `gsettings set org.gnome.desktop.interface enable-animations false`
 - gnome remote desktop : `settings/sharing/remote desktop`
 
 ### Keyboard shortcuts
@@ -109,6 +113,14 @@ sudo ln -s /usr/bin/dnf5 /usr/local/bin/dnf
 sudo dnf install fedora-workstation-repositories
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install google-chrome-stable
+
+extensions:
+- ublock origin
+- session buddy
+- vertical tabs
+
+search engine:
+duck duck go
 ```
 - sublime text
 - sublime merge

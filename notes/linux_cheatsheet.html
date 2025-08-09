@@ -27,7 +27,10 @@
 <h1>Linux cheatsheet</h1>
 <h2>Basic</h2>
 <ul>
-<li><code>cd [directory]</code> : change directory</li>
+<li><code>cd [directory]</code> : change directory<ul>
+<li><code>cd !$</code> : change directory to last arg</li>
+</ul>
+</li>
 <li><code>ls [directory]</code> : list files &amp; directories<ul>
 <li>-l : list</li>
 <li>-a : all (hidden too)</li>
@@ -60,6 +63,7 @@
 <li><code>file [file]</code> : get file type</li>
 <li><code>stat [file]</code> : get file info</li>
 <li><code>man [cmd]</code> : show manual for cmd</li>
+<li><code>tldr</code> [cmd]` :  show short help for cmd</li>
 <li><code>pwd</code> : show current directory</li>
 <li><code>which [cmd]</code> : show where cmd is located</li>
 <li><code>find</code> : find files<ul>
@@ -153,6 +157,7 @@
 </li>
 <li><code>free -h --si</code> : show how much RAM</li>
 <li><code>htop</code> : list process, kill process</li>
+<li><code>btop</code> : list process, kill process</li>
 <li><code>sensors</code> : show temperature</li>
 <li><code>watch -t -n 1 "sensors | grep 'Core 0:'"</code> : show CPU temperature</li>
 <li><code>nmap -Pn -p- -v [ip]</code> : find open ports</li>
@@ -256,7 +261,7 @@
 <li><code>dnf autoremove</code> : remove unused packages</li>
 <li><code>dnf clean all</code> : clear cached packages</li>
 <li><code>dnf history</code> : show dnf history</li>
-<li><code>dnf repolist all</code> : list repos</li>
+<li><code>dnf repo list --all</code> : list repos</li>
 <li><code>dnf config-manager --add-repo [some_repo.repo]</code> : add repo</li>
 <li><code>dnf config-manager --set-enabled [repo]</code> : enable repo</li>
 <li><code>dnf config-manager --set-disabled [repo]</code> : disable repo</li>

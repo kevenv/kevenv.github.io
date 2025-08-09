@@ -2,6 +2,7 @@
 
 ## Basic
 - `cd [directory]` : change directory
+    - `cd !$` : change directory to last arg
 - `ls [directory]` : list files & directories
     - -l : list
     - -a : all (hidden too)
@@ -24,6 +25,7 @@
 - `file [file]` : get file type
 - `stat [file]` : get file info
 - `man [cmd]` : show manual for cmd
+- `tldr` [cmd]` :  show short help for cmd
 - `pwd` : show current directory
 - `which [cmd]` : show where cmd is located
 - `find` : find files
@@ -100,6 +102,7 @@
     - -d [max depth] : max depth
 - `free -h --si` : show how much RAM
 - `htop` : list process, kill process
+- `btop` : list process, kill process
 - `sensors` : show temperature
 - `watch -t -n 1 "sensors | grep 'Core 0:'"` : show CPU temperature
 - `nmap -Pn -p- -v [ip]` : find open ports
@@ -184,7 +187,7 @@
 - `dnf autoremove` : remove unused packages
 - `dnf clean all` : clear cached packages
 - `dnf history` : show dnf history
-- `dnf repolist all` : list repos
+- `dnf repo list --all` : list repos
 - `dnf config-manager --add-repo [some_repo.repo]` : add repo
 - `dnf config-manager --set-enabled [repo]` : enable repo
 - `dnf config-manager --set-disabled [repo]` : disable repo

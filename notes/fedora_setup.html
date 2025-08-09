@@ -95,11 +95,15 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 <li>~~system-monitor-next~~</li>
 <li>astra monitor</li>
 <li>freon + lm-sensors</li>
+<li>spacebar?</li>
+<li>switcher?</li>
+<li>tactile?</li>
+<li>just perfection?</li>
 </ul>
 <h2>Configure</h2>
 <p>config gnome + exts
 - gnome tweaks
-- <code>settings/accessibility/seeing/reduce animations</code>
+- <code>gsettings set org.gnome.desktop.interface enable-animations false</code>
 - gnome remote desktop : <code>settings/sharing/remote desktop</code></p>
 <h3>Keyboard shortcuts</h3>
 <ul>
@@ -155,11 +159,27 @@ sudo ln -s /usr/bin/dnf5 /usr/local/bin/dnf
 <ul>
 <li>chrome</li>
 </ul>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf install fedora-workstation-repositories
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>sudo dnf install fedora-workstation-repositories
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install google-chrome-stable
+
+extensions:
+- ublock origin
+- session buddy
+- vertical tabs
+
+search engine:
+duck duck go
 </code></pre></div></td></tr></table></div>
 
 <ul>
