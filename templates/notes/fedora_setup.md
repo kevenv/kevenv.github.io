@@ -66,6 +66,7 @@ flatpak install flathub com.mattjakeman.ExtensionManager`
 
 ## Configure
 config gnome + exts
+
 - gnome tweaks
 - `gsettings set org.gnome.desktop.interface enable-animations false`
 - gnome remote desktop : `settings/sharing/remote desktop`
@@ -185,6 +186,15 @@ sudo dnf install strace-with-colors
 - gtkwave
 - gtkterm
 - clion
+- transmission
+- obsidian
+- libreoffice
+- gnome calculator
+- gnome disks
+- gnome disk usage analyzer
+- gnome system monitor
+- pdf viewer
+- file manager : nautilus
 
 ## dnfdragora
 - `dnfdragora --exit`
