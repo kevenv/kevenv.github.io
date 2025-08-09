@@ -77,6 +77,7 @@
 
 ## Info
 - `git log` : show changes log
+    - `--stats` : 
 - `git reflog` : show local repo history
 - `git show [commit]` : get info on commit
 - `git blame -L [start line],[end line] [file]` : find who last edited a file at specific line
