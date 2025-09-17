@@ -57,6 +57,14 @@
     - `-f` : force
     - `-X` : only ignored files
 
+### Revert rebase not pushed
+1. find the commit just before the rebase : `gif reflog`
+2. revert : `git reset --hard [commit]`
+```
+    <hash> HEAD@{1}: rebase: ...
+    <hash> HEAD@{2}: checkout: moving from ...
+```
+
 ## Stash & Patch
 - `git stash`
     - `save "[message]"` : stash current changes

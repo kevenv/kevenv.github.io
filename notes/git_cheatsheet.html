@@ -96,6 +96,16 @@
 </ul>
 </li>
 </ul>
+<h3>Revert rebase not pushed</h3>
+<ol>
+<li>find the commit just before the rebase : <code>gif reflog</code></li>
+<li>revert : <code>git reset --hard [commit]</code></li>
+</ol>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>    &lt;hash&gt; HEAD@{1}: rebase: ...
+    &lt;hash&gt; HEAD@{2}: checkout: moving from ...
+</code></pre></div></td></tr></table></div>
+
 <h2>Stash &amp; Patch</h2>
 <ul>
 <li><code>git stash</code><ul>
