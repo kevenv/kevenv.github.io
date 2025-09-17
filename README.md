@@ -16,6 +16,8 @@ Personal website
 ## Test
 `python -m http.server`
 
+[localhost:8000](localhost:8000)
+
 ## Dependencies
 - python3
 - pystache
