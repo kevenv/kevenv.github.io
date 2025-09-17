@@ -1,6 +1,8 @@
 # kevenv.github.io
 Personal website
 
+https://github.com/kevenv/kevenv.github.io
+
 ## Philosophy
 - no web frameworks
 - no useless js, jquery BS
@@ -16,7 +18,7 @@ Personal website
 ## Test
 `python -m http.server`
 
-[localhost:8000](localhost:8000)
+http://localhost:8000
 
 ## Dependencies
 - python3
