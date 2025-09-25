@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>~/kevenv - Python cheatsheet</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">~/kevenv</div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../notes.html">Notes</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Python cheatsheet</h1>
+<h2>PIP</h2>
+<ul>
+<li><code>pip list</code> : list installed python libs</li>
+<li><code>pip install --user [lib]</code> : install python lib</li>
+<li><code>pip install --user -r requirements.txt</code> : install all python libs in requirements file</li>
+<li><code>pipreqs requirements.txt</code> : create requirements.txt for current project</li>
+</ul>
+<h3>Virtual Environment (venv)</h3>
+<ul>
+<li><code>python -m venv [venv]</code> : create venv</li>
+<li><code>source [venv]/bin/activate</code> : enable venv</li>
+<li><code>pip freeze &gt; requirements.txt</code> : create requirements.txt</li>
+<li><code>deactivate</code> : disable venv</li>
+<li><code>rm -rf [venv]</code> : remove venv</li>
+</ul>
+<h2>HTTP</h2>
+<ul>
+<li><code>python -m http.server</code> : run HTTP server</li>
+</ul>
+<h3>Debugger (pdb)</h3>
+<p>TODO:</p>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>~/kevenv - Fedora cheatsheet</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">~/kevenv</div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../notes.html">Notes</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Fedora cheatsheet</h1>
+<h2>DNF</h2>
+<ul>
+<li><code>dnf search [package]</code> : search for package in repos</li>
+<li><code>dnf info [package]</code> : get info about package</li>
+<li><code>dnf install [package]</code> : install package</li>
+<li><code>dnf remove [package]</code> : remove package</li>
+<li><code>dnf erase [package]</code> : remove package+deps+config (careful!)</li>
+<li><code>dnf list installed</code> : list installed packages</li>
+<li><code>dnf list available</code> : list all availables packages</li>
+<li><code>dnf list installed *pattern*</code>: list packages with pattern</li>
+<li><code>dnf upgrade</code> : upgrade/update all packages<ul>
+<li><code>-v</code> : verbose</li>
+<li><code>--exclude=kernel*,*nvidia*</code> : exclude some packages</li>
+</ul>
+</li>
+<li><code>dnf autoremove</code> : remove unused packages</li>
+<li><code>dnf clean all</code> : clear cached packages</li>
+<li><code>dnf history</code> : show dnf history</li>
+<li><code>dnf repo list --all</code> : list repos</li>
+<li><code>dnf config-manager --add-repo [some_repo.repo]</code> : add repo</li>
+<li><code>dnf config-manager --set-enabled [repo]</code> : enable repo</li>
+<li><code>dnf config-manager --set-disabled [repo]</code> : disable repo</li>
+<li><code>rm /etc/yum.repos.d/[repo]</code> : remove repo</li>
+<li><code>dnf repository-packages [repo] list --installed</code> : list all packages installed from specific repo</li>
+<li><code>dnf provides [file]</code> : find package that provides a file</li>
+<li><code>dnf repoquery -l [package]</code> : list files in package</li>
+<li><code>dnf repoquery --requires [package]</code>: list dependencies of package</li>
+<li><code>dnf repoquery --whatrequires [package]</code> : list packages that depends on a package</li>
+</ul>
+<h2>Services</h2>
+<ul>
+<li><code>systemctl status [service]</code> : get status of service</li>
+<li><code>systemctl enable [service]</code> : enable service at boot</li>
+<li><code>systemctl disable [service]</code> : disable service at boot</li>
+<li><code>systemctl start [service]</code> : start service</li>
+<li><code>systemctl stop [service]</code> : stop service</li>
+<li><code>systemctl restart [service]</code> : restart service</li>
+<li><code>systemctl list-units</code> : list services running</li>
+</ul>
+<h2>dnfdragora</h2>
+<ul>
+<li><code>dnfdragora --exit</code></li>
+</ul>
+<h2>RPM Fusion</h2>
+<ul>
+<li><code>rpmfusion-nonfree-nvidia-driver</code></li>
+<li><code>rpmfusion-nonfree-updates</code> (discord)</li>
+</ul>
+<h2>COPR</h2>
+<p>Fedora COPR = AUR</p>
+<ul>
+<li><code>sudo dnf copr enable [repo]/[package]</code></li>
+<li><code>sudo dnf install [package]</code></li>
+</ul>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>

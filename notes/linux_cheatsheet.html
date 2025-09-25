@@ -242,64 +242,6 @@
 </ul>
 </li>
 </ul>
-<h2>Fedora</h2>
-<h3>DNF</h3>
-<ul>
-<li><code>dnf search [package]</code> : search for package in repos</li>
-<li><code>dnf info [package]</code> : get info about package</li>
-<li><code>dnf install [package]</code> : install package</li>
-<li><code>dnf remove [package]</code> : remove package</li>
-<li><code>dnf erase [package]</code> : remove package+deps+config (careful!)</li>
-<li><code>dnf list installed</code> : list installed packages</li>
-<li><code>dnf list available</code> : list all availables packages</li>
-<li><code>dnf list installed *pattern*</code>: list packages with pattern</li>
-<li><code>dnf upgrade</code> : upgrade/update all packages<ul>
-<li><code>-v</code> : verbose</li>
-<li><code>--exclude=kernel*,*nvidia*</code> : exclude some packages</li>
-</ul>
-</li>
-<li><code>dnf autoremove</code> : remove unused packages</li>
-<li><code>dnf clean all</code> : clear cached packages</li>
-<li><code>dnf history</code> : show dnf history</li>
-<li><code>dnf repo list --all</code> : list repos</li>
-<li><code>dnf config-manager --add-repo [some_repo.repo]</code> : add repo</li>
-<li><code>dnf config-manager --set-enabled [repo]</code> : enable repo</li>
-<li><code>dnf config-manager --set-disabled [repo]</code> : disable repo</li>
-<li><code>rm /etc/yum.repos.d/[repo]</code> : remove repo</li>
-<li><code>dnf repository-packages [repo] list --installed</code> : list all packages installed from specific repo</li>
-<li><code>dnf provides [file]</code> : find package that provides a file</li>
-<li><code>dnf repoquery -l [package]</code> : list files in package</li>
-<li><code>dnf repoquery --requires [package]</code>: list dependencies of package</li>
-<li><code>dnf repoquery --whatrequires [package]</code> : list packages that depends on a package</li>
-</ul>
-<h3>Services</h3>
-<ul>
-<li><code>systemctl status [service]</code> : get status of service</li>
-<li><code>systemctl enable [service]</code> : enable service at boot</li>
-<li><code>systemctl disable [service]</code> : disable service at boot</li>
-<li><code>systemctl start [service]</code> : start service</li>
-<li><code>systemctl stop [service]</code> : stop service</li>
-<li><code>systemctl restart [service]</code> : restart service</li>
-<li><code>systemctl list-units</code> : list services running</li>
-</ul>
-<h2>Python</h2>
-<ul>
-<li><code>pip list</code> : list installed python libs</li>
-<li><code>pip install --user [lib]</code> : install python lib</li>
-<li><code>pip install --user -r requirements.txt</code> : install all python libs in requirements file</li>
-<li><code>pipreqs requirements.txt</code> : create requirements.txt for current project</li>
-<li><code>python -m http.server</code> : run HTTP server</li>
-</ul>
-<h3>Virtual Environment (venv)</h3>
-<ul>
-<li><code>python -m venv [venv]</code> : create venv</li>
-<li><code>source [venv]/bin/activate</code> : enable venv</li>
-<li><code>pip freeze &gt; requirements.txt</code> : create requirements.txt</li>
-<li><code>deactivate</code> : disable venv</li>
-<li><code>rm -rf [venv]</code> : remove venv</li>
-</ul>
-<h3>Debugger (pdb)</h3>
-<p>?</p>
         <hr>
         <footer>
             <div>
