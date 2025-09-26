@@ -35,6 +35,13 @@
 - `systemctl restart [service]` : restart service
 - `systemctl list-units` : list services running
 
+## Flatpak
+- `flatpak install [app]` : install an app
+- `flatpak list` : list installed apps
+- `flatpak update` : update all apps
+- `flatpak search [app]` : search for an app in Flathub repo
+- `flatpak run [app]` : run an app
+
 ## dnfdragora
 - `dnfdragora --exit`
 

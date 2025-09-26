@@ -169,3 +169,8 @@
 - `/dev` : udev, devices files
 - `/sys` : sysfs, devices/bus/drivers/kernel
     - `/sys/bus/pci/devices`
+
+## Linux binaries
+- AppImage (Universal linux binary)
+- snap (Ubuntu)
+- flatpak (Fedora)
