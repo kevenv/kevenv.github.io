@@ -87,6 +87,20 @@
 <li><code>sudo dnf copr enable [repo]/[package]</code></li>
 <li><code>sudo dnf install [package]</code></li>
 </ul>
+<h2>Upgrade to new release</h2>
+<ul>
+<li><code>sudo dnf upgrade --refresh</code></li>
+<li><code>sudo dnf install dnf-plugin-system-upgrade</code></li>
+<li><code>sudo dnf system-upgrade download --releasever=41</code></li>
+<li><code>sudo dnf system-upgrade reboot</code></li>
+<li>
+<p><code>cat /etc/os-release</code></p>
+</li>
+<li>
+<p>https://docs.fedoraproject.org/en-US/quick-docs/upgrading-fedora-new-release/</p>
+</li>
+<li>https://docs.fedoraproject.org/en-US/quick-docs/upgrading-fedora-offline/#sect-optional-post-upgrade-tasks</li>
+</ul>
         <hr>
         <footer>
             <div>

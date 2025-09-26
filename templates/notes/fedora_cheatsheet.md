@@ -54,3 +54,13 @@ Fedora COPR = AUR
 
 - `sudo dnf copr enable [repo]/[package]`
 - `sudo dnf install [package]`
+
+## Upgrade to new release
+- `sudo dnf upgrade --refresh`
+- `sudo dnf install dnf-plugin-system-upgrade`
+- `sudo dnf system-upgrade download --releasever=41`
+- `sudo dnf system-upgrade reboot`
+- `cat /etc/os-release`
+
+- https://docs.fedoraproject.org/en-US/quick-docs/upgrading-fedora-new-release/
+- https://docs.fedoraproject.org/en-US/quick-docs/upgrading-fedora-offline/#sect-optional-post-upgrade-tasks
