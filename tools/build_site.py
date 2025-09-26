@@ -71,8 +71,6 @@ if __name__ == '__main__':
             ('notes/sort_algos','../','Sorting algorithms'),
             ('notes/priority_queue','../','Priority queue'),
             ('notes/css_cheatsheet','../','CSS cheatsheet'),
-            ('notes/fedora_setup','../','Fedora setup'),
-            ('notes/fedora_nvidia','../','Fedora + Nvidia'),
 
             # ('notes/nnet_backprop','../','Backprop'),
             ('notes/nnet','../','Neural networks'),
