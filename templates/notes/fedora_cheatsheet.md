@@ -6,10 +6,10 @@
 - `dnf install [package]` : install package
 - `dnf remove [package]` : remove package
 - `dnf erase [package]` : remove package+deps+config (careful!)
-- `dnf list installed` : list installed packages
-- `dnf list available` : list all availables packages
-- `dnf list installed *pattern*`: list packages with pattern
-- `dnf upgrade` : upgrade/update all packages
+- `dnf list --installed` : list installed packages
+- `dnf list --available` : list all availables packages
+- `dnf list --installed *pattern*`: list packages with pattern
+- `dnf upgrade --refresh` : upgrade/update all packages
     - `-v` : verbose
     - `--exclude=kernel*,*nvidia*` : exclude some packages
 - `dnf autoremove` : remove unused packages

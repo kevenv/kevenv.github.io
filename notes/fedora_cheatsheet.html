@@ -32,10 +32,10 @@
 <li><code>dnf install [package]</code> : install package</li>
 <li><code>dnf remove [package]</code> : remove package</li>
 <li><code>dnf erase [package]</code> : remove package+deps+config (careful!)</li>
-<li><code>dnf list installed</code> : list installed packages</li>
-<li><code>dnf list available</code> : list all availables packages</li>
-<li><code>dnf list installed *pattern*</code>: list packages with pattern</li>
-<li><code>dnf upgrade</code> : upgrade/update all packages<ul>
+<li><code>dnf list --installed</code> : list installed packages</li>
+<li><code>dnf list --available</code> : list all availables packages</li>
+<li><code>dnf list --installed *pattern*</code>: list packages with pattern</li>
+<li><code>dnf upgrade --refresh</code> : upgrade/update all packages<ul>
 <li><code>-v</code> : verbose</li>
 <li><code>--exclude=kernel*,*nvidia*</code> : exclude some packages</li>
 </ul>
