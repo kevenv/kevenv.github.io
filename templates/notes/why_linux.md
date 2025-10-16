@@ -40,7 +40,7 @@ This is why I now try to use everything by default. This is the most tested conf
     - major contributor of kernel, gnome, wayland, systemd, pulseaudio, kvm...
 - <i class='bx bx-plus' ></i> target audience seems to be devs
 - <i class='bx bx-plus' ></i> has the newest stuff first
-- <i class='bx bx-minus' ></i> packages manager is slow
+- <i class='bx bx-minus' ></i> must be upgraded once a year
 
 ### Ubuntu
 - <i class='bx bx-plus' ></i> most popular, most commercial support
