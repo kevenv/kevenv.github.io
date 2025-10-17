@@ -248,6 +248,25 @@
 <li>snap (Ubuntu)</li>
 <li>flatpak (Fedora)</li>
 </ul>
+<h2>Docker</h2>
+<ul>
+<li><code>docker images</code> : list images</li>
+<li><code>docker ps</code> : list containers</li>
+<li><code>docker build -t [image] .</code> : build image from <code>Dockerfile</code></li>
+<li><code>docker pull [image]</code> : download image from docker registry (docker hub)</li>
+<li><code>docker rmi [image]</code> : remove image</li>
+<li><code>docker run -d --name [container] [image]</code> : start container from image<ul>
+<li><code>-d</code> : run container in background</li>
+<li><code>-p [host_port]:[container_port]</code> : open ports</li>
+<li><code>--restart=unless-stopped</code> : start container when docker starts</li>
+</ul>
+</li>
+<li><code>docker stop [container]</code> : stop container</li>
+<li><code>docker rm [container]</code> : remove container</li>
+<li><code>docker scan [image]</code> : check image for vulnerabilities</li>
+<li><code>sudo systemctl status docker</code> : check docker status</li>
+<li><code>sudo systemctl enable docker</code> : start docker at boot</li>
+</ul>
         <hr>
         <footer>
             <div>

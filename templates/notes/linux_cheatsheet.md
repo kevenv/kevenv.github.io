@@ -174,3 +174,19 @@
 - AppImage (Universal linux binary)
 - snap (Ubuntu)
 - flatpak (Fedora)
+
+## Docker
+- `docker images` : list images
+- `docker ps` : list containers
+- `docker build -t [image] .` : build image from `Dockerfile`
+- `docker pull [image]` : download image from docker registry (docker hub)
+- `docker rmi [image]` : remove image
+- `docker run -d --name [container] [image]` : start container from image
+	- `-d` : run container in background
+	- `-p [host_port]:[container_port]` : open ports
+	- `--restart=unless-stopped` : start container when docker starts
+- `docker stop [container]` : stop container
+- `docker rm [container]` : remove container
+- `docker scan [image]` : check image for vulnerabilities
+- `sudo systemctl status docker` : check docker status
+- `sudo systemctl enable docker` : start docker at boot
