@@ -93,13 +93,15 @@
 - `ifconfig` : show network info
 - `iftop` : list TCP sockets
 - `netstat -nat` : list TCP sockets
-- `df -shc * | sort -rh` : show disk usage
+- `du -shc * | sort -rh` : show size of files in directory
     - -s : summary
     - -h : human readable
     - -c : show total
     - -b : bytes
     - --apparent size
     - -d [max depth] : max depth
+- `du -sh [directory]` : show size of directory
+- `df` : show disks usage
 - `free -h --si` : show how much RAM
 - `htop` : list process, kill process
 - `btop` : list process, kill process
