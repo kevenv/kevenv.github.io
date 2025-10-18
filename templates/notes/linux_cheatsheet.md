@@ -174,6 +174,18 @@
 - `/sys` : sysfs, devices/bus/drivers/kernel
     - `/sys/bus/pci/devices`
 
+## Time
+- `stat [file]`
+```
+mtime : modified time, last write
+atime : access time, last read
+    depends on mount options:
+        relatime : update atime not every read
+        noatime : don't update atime
+ctime : change time, last metadata write or last data write
+btime : creation/birth time, first created
+```
+
 ## Linux binaries
 - AppImage (Universal linux binary)
 - snap (Ubuntu)

@@ -246,6 +246,25 @@
 </ul>
 </li>
 </ul>
+<h2>Time</h2>
+<ul>
+<li><code>stat [file]</code></li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>mtime : modified time, last write
+atime : access time, last read
+    depends on mount options:
+        relatime : update atime not every read
+        noatime : don&#39;t update atime
+ctime : change time, last metadata write or last data write
+btime : creation/birth time, first created
+</code></pre></div></td></tr></table></div>
+
 <h2>Linux binaries</h2>
 <ul>
 <li>AppImage (Universal linux binary)</li>
