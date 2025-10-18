@@ -15,6 +15,7 @@
 - `mkdir [directory]` : create directory
     - -p : create parent directories as needed
 - `ln -s [target] [symlink]` : create a symlink
+- `ln [target] [hardlink]` : create a hardlink (same inode)
 - `touch [file]` : create empty file, mark file as newly edited
 - `source [file]` : execute a `.sh` file within the current shell
 - `cat [file]` : print file to the screen
@@ -23,7 +24,7 @@
     - -L [max depth] : max depth
 - `tail -n [num of lines] [file]` : show last N lines of a file
 - `file [file]` : get file type
-- `stat [file]` : get file info
+- `stat [file]` : get file info (modified, access, creation time)
 - `man [cmd]` : show manual for cmd
 - `tldr` [cmd]` :  show short help for cmd
 - `pwd` : show current directory
@@ -67,6 +68,7 @@
 - `unzip` : ?
 - `hexdump` : dump file as hexa
 - `find . -name [file] | entr [cmd]` : run a cmd whenever a file changes
+- `time [cmd]` : time execution of cmd
 
 ## Disk
 - `lsblk` : list disk

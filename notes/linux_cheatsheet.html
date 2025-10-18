@@ -51,6 +51,7 @@
 </ul>
 </li>
 <li><code>ln -s [target] [symlink]</code> : create a symlink</li>
+<li><code>ln [target] [hardlink]</code> : create a hardlink (same inode)</li>
 <li><code>touch [file]</code> : create empty file, mark file as newly edited</li>
 <li><code>source [file]</code> : execute a <code>.sh</code> file within the current shell</li>
 <li><code>cat [file]</code> : print file to the screen</li>
@@ -61,7 +62,7 @@
 </li>
 <li><code>tail -n [num of lines] [file]</code> : show last N lines of a file</li>
 <li><code>file [file]</code> : get file type</li>
-<li><code>stat [file]</code> : get file info</li>
+<li><code>stat [file]</code> : get file info (modified, access, creation time)</li>
 <li><code>man [cmd]</code> : show manual for cmd</li>
 <li><code>tldr</code> [cmd]` :  show short help for cmd</li>
 <li><code>pwd</code> : show current directory</li>
@@ -114,6 +115,7 @@
 <li><code>unzip</code> : ?</li>
 <li><code>hexdump</code> : dump file as hexa</li>
 <li><code>find . -name [file] | entr [cmd]</code> : run a cmd whenever a file changes</li>
+<li><code>time [cmd]</code> : time execution of cmd</li>
 </ul>
 <h2>Disk</h2>
 <ul>
