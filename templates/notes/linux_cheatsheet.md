@@ -194,15 +194,20 @@ btime : creation/birth time, first created
 ## Docker
 - `docker images` : list images
 - `docker ps` : list containers
-- `docker build -t [image] .` : build image from `Dockerfile`
 - `docker pull [image]` : download image from docker registry (docker hub)
 - `docker rmi [image]` : remove image
+- `docker image prune` : remove untagged images
+- `docker build -t [image] .` : build image from `Dockerfile`
+    - `--nocache` : don't use cache
+    - `--build-arg [var]=[value]` : pass env vars
 - `docker run -d --name [container] [image]` : start container from image
 	- `-d` : run container in background
+    - `-it` : run container interactively
 	- `-p [host_port]:[container_port]` : open ports
 	- `--restart=unless-stopped` : start container when docker starts
-- `docker stop [container]` : stop container
-- `docker rm [container]` : remove container
+- `docker rm -f [container]` : stop and remove container
+- `docker logs -f [container]` : check container stdout
+- `docker exec -it [container] /bin/bash` : explore container
 - `docker scan [image]` : check image for vulnerabilities
 - `sudo systemctl status docker` : check docker status
 - `sudo systemctl enable docker` : start docker at boot
