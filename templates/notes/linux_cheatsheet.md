@@ -77,6 +77,7 @@
 - `mount [disk name] [directory]` : mount disk
 - `umount [directory]` : unmount disk
 - `cat /proc/mounts` : mount info
+- `cat /etc/fstab` : list mounted disks
 
 ## Info
 - `fastfetch` : system info
@@ -93,7 +94,7 @@
     - -t : tree
 - `nvidia-smi` : show GPU info
 - `ifconfig` : show network info
-- `iftop` : list TCP sockets
+- `sudo iftop -P` : list TCP sockets
 - `netstat -nat` : list TCP sockets
 - `du -shc * | sort -rh` : show size of files in directory
     - -s : summary
@@ -208,6 +209,9 @@ btime : creation/birth time, first created
 - `docker rm -f [container]` : stop and remove container
 - `docker logs -f [container]` : check container stdout
 - `docker exec -it [container] /bin/bash` : explore container
+- `docker inspect [container]` : inspect container
+- `docker network ls` : list docker networks
+- `docker network prune` : remove unused docker networks
 - `docker scan [image]` : check image for vulnerabilities
 - `sudo systemctl status docker` : check docker status
 - `sudo systemctl enable docker` : start docker at boot

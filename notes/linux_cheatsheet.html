@@ -125,6 +125,7 @@
 <li><code>mount [disk name] [directory]</code> : mount disk</li>
 <li><code>umount [directory]</code> : unmount disk</li>
 <li><code>cat /proc/mounts</code> : mount info</li>
+<li><code>cat /etc/fstab</code> : list mounted disks</li>
 </ul>
 <h2>Info</h2>
 <ul>
@@ -146,7 +147,7 @@
 </li>
 <li><code>nvidia-smi</code> : show GPU info</li>
 <li><code>ifconfig</code> : show network info</li>
-<li><code>iftop</code> : list TCP sockets</li>
+<li><code>sudo iftop -P</code> : list TCP sockets</li>
 <li><code>netstat -nat</code> : list TCP sockets</li>
 <li><code>du -shc * | sort -rh</code> : show size of files in directory<ul>
 <li>-s : summary</li>
@@ -293,6 +294,9 @@ btime : creation/birth time, first created
 <li><code>docker rm -f [container]</code> : stop and remove container</li>
 <li><code>docker logs -f [container]</code> : check container stdout</li>
 <li><code>docker exec -it [container] /bin/bash</code> : explore container</li>
+<li><code>docker inspect [container]</code> : inspect container</li>
+<li><code>docker network ls</code> : list docker networks</li>
+<li><code>docker network prune</code> : remove unused docker networks</li>
 <li><code>docker scan [image]</code> : check image for vulnerabilities</li>
 <li><code>sudo systemctl status docker</code> : check docker status</li>
 <li><code>sudo systemctl enable docker</code> : start docker at boot</li>
