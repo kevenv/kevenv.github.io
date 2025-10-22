@@ -194,7 +194,7 @@ btime : creation/birth time, first created
 
 ## Docker
 - `docker images` : list images
-- `docker ps` : list containers
+- `docker ps -a` : list containers
 - `docker pull [image]` : download image from docker registry (docker hub)
 - `docker rmi [image]` : remove image
 - `docker image prune` : remove untagged images
