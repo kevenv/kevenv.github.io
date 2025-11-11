@@ -15,10 +15,9 @@
 - `dnf autoremove` : remove unused packages
 - `dnf clean all` : clear cached packages
 - `dnf history` : show dnf history
-- `dnf repo list --all` : list repos
+- `dnf repolist --all` : list repos
 - `dnf config-manager --add-repo [some_repo.repo]` : add repo
-- `dnf config-manager --set-enabled [repo]` : enable repo
-- `dnf config-manager --set-disabled [repo]` : disable repo
+- `sudo dnf config-manager setopt [repo].enabled=0` : disable repo
 - `rm /etc/yum.repos.d/[repo]` : remove repo
 - `dnf repository-packages [repo] list --installed` : list all packages installed from specific repo
 - `dnf provides [file]` : find package that provides a file
