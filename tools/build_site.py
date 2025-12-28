@@ -60,6 +60,7 @@ if __name__ == '__main__':
         ('notes','','Notes'),
             ('notes/linux_cheatsheet','../','Linux cheatsheet'),
             ('notes/fedora_cheatsheet','../','Fedora cheatsheet'),
+            ('notes/docker_cheatsheet','../','Docker cheatsheet'),
             ('notes/bash_cheatsheet','../','Bash cheatsheet'),
             ('notes/python_cheatsheet','../','Python cheatsheet'),
             ('notes/git_cheatsheet','../','Git cheatsheet'),
