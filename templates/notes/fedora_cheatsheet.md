@@ -46,3 +46,5 @@ Fedora COPR = AUR
 
 - `sudo dnf copr enable [repo]/[package]`
 - `sudo dnf install [package]`
+
+test
