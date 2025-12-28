@@ -78,14 +78,12 @@
 <li><code>systemctl start [service]</code> : start service</li>
 <li><code>systemctl stop [service]</code> : stop service</li>
 <li><code>systemctl restart [service]</code> : restart service</li>
-<li><code>systemctl daemon-reload</code> : reload services config</li>
-<li><code>systemctl list-units</code> : list services running<ul>
-<li><code>--type=service</code></li>
-</ul>
-</li>
-<li><code>journalctl -u [service]</code> : check log of service</li>
-<li><code>systemd-cgls</code> : list system processes</li>
 <li><code>nano /etc/systemd/system/[service]</code> : edit config of service</li>
+<li><code>systemctl daemon-reload</code> : reload services config</li>
+<li><code>systemctl list-units --type=service</code> : list services running</li>
+<li><code>systemctl list-timers</code> : list timers scheduled</li>
+<li><code>systemd-cgls</code> : list system processes</li>
+<li><code>journalctl -u [service]</code> : check log of service</li>
 </ul>
 <h2>Flatpak</h2>
 <ul>
@@ -101,7 +99,6 @@
 <li><code>sudo dnf copr enable [repo]/[package]</code></li>
 <li><code>sudo dnf install [package]</code></li>
 </ul>
-<p>test je suis un test</p>
         <hr>
         <footer>
             <div>
