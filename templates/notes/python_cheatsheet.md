@@ -1,7 +1,7 @@
 # Python cheatsheet
 
 ## PIP
-- `pip list` : list installed python libs
+- `pip list --user` : list installed python libs
 - `pip install --user [lib]` : install python lib
 - `pip install --user -r requirements.txt` : install all python libs in requirements file
 - `pipreqs requirements.txt` : create requirements.txt for current project
