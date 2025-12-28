@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Keven Villeneuve's personal website">
+        <title>~/kevenv - Docker cheatsheet</title>
+        <link rel="icon" href="../imgs/icon.png">
+        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="../style/boxicons-2.1.4/css/boxicons.min.css">
+<link rel="stylesheet" href="../style/codehilite.css">
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">~/kevenv</div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../publications.html">Publications</a>
+                <a href="../projects.html">Projects</a>
+                <a href="../notes.html">Notes</a>
+                <a href="../blog.html">Blog</a>
+            </nav>
+        </header>
+        <hr>
+<h1>Docker Cheatsheet</h1>
+<ul>
+<li><code>docker images</code> : list images</li>
+<li><code>docker ps -a</code> : list containers</li>
+<li><code>docker network ls</code> : list docker networks</li>
+<li><code>docker pull [image]</code> : download image from docker registry (docker hub)</li>
+<li><code>docker rmi [image]</code> : remove image</li>
+<li><code>docker rm -f [container]</code> : stop and remove container</li>
+<li><code>docker run -d --name [container] [image]</code> : start container from image<ul>
+<li><code>-d</code> : run container in background</li>
+<li><code>-it</code> : run container interactively</li>
+<li><code>-p [host_port]:[container_port]</code> : open ports</li>
+<li><code>--restart=unless-stopped</code> : start container when docker starts</li>
+</ul>
+</li>
+<li><code>docker build -t [image] .</code> : build image from <code>Dockerfile</code><ul>
+<li><code>--nocache</code> : don't use cache</li>
+<li><code>--build-arg [var]=[value]</code> : pass env vars</li>
+</ul>
+</li>
+</ul>
+<h3>Debug</h3>
+<ul>
+<li><code>docker logs -f [container]</code> : check container stdout</li>
+<li><code>docker exec -it [container] /bin/bash</code> : explore container</li>
+<li><code>docker inspect [container]</code> : inspect container</li>
+<li><code>lazydocker</code> : docker UI</li>
+<li><code>ctop</code> : btop for docker</li>
+</ul>
+<h3>Cleanup</h3>
+<ul>
+<li><code>docker image prune</code> : remove untagged images</li>
+<li><code>docker container prune</code> : remove unused containers</li>
+<li><code>docker network prune</code> : remove unused docker networks</li>
+<li><code>docker system prune</code> : remove image + container + network + build caches</li>
+</ul>
+<h3>Service</h3>
+<ul>
+<li><code>sudo systemctl status docker</code> : check docker status</li>
+<li><code>sudo systemctl enable docker</code> : start docker at boot</li>
+</ul>
+<h3>Update docker container</h3>
+<ul>
+<li><code>docker pull [image]</code></li>
+<li><code>docker rm -f [container]</code></li>
+<li><code>docker run ...</code></li>
+<li><code>docker system prune</code>
+or</li>
+<li><code>cd [location of docker-compose.yml]</code></li>
+<li><code>docker compose pull</code></li>
+<li><code>docker compose up -d</code></li>
+<li><code>docker system prune</code></li>
+</ul>
+        <hr>
+        <footer>
+            <div>
+                <a href="https://github.com/kevenv"><i class='bx bxl-github bx-sm'></i></a>
+                <a href="https://www.linkedin.com/in/kevenv"><i class='bx bxl-linkedin-square bx-sm'></i></a>
+                <a href="https://twitter.com/keven_v"><i class='bx bxl-twitter bx-sm'></i></a>
+                <a href="discord:kevenv"><i class='bx bxl-discord-alt bx-sm'></i></a>
+                <a href="mailto:keven.villeneuve@gmail.com"><i class='bx bxs-envelope bx-sm'></i></a>
+            </div>
+            <p>&copy; 2024 Keven Villeneuve</p>
+        </footer>
+    </body>
+</html>
