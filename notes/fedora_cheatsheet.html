@@ -53,7 +53,24 @@
 <li><code>dnf repoquery --requires [package]</code>: list dependencies of package</li>
 <li><code>dnf repoquery --whatrequires [package]</code> : list packages that depends on a package</li>
 </ul>
-<h2>Services</h2>
+<h2>Debian (apt)</h2>
+<ul>
+<li><code>apt install [package]</code> : install package</li>
+<li><code>apt remove --purge [package]</code> : remove package</li>
+<li><code>apt list --installed</code> : list installed packages</li>
+<li><code>apt update</code> : refresh packages repos</li>
+<li><code>apt upgrade</code> : upgrade/update all packages</li>
+<li><code>apt full-upgrade</code> : upgrade distribution</li>
+<li><code>apt autoremove</code> : remove unused packages</li>
+<li><code>apt autoclean</code> : remove outdated packages</li>
+<li><code>apt clean</code> : remove cached packages</li>
+<li><code>sudo ls -l /etc/apt/sources.list.d/</code> : repos</li>
+<li><code>sudo nano /etc/apt/trusted.gpg</code></li>
+<li><code>sudo ls -l /etc/apt/trusted.gpg.d/</code> : repos keys</li>
+<li><code>sudo nano /etc/apt/sources.list</code></li>
+<li><code>snap refresh</code> : update snap packages</li>
+</ul>
+<h2>Services (Systemd)</h2>
 <ul>
 <li><code>systemctl status [service]</code> : get status of service</li>
 <li><code>systemctl enable [service]</code> : enable service at boot</li>

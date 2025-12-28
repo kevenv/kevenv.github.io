@@ -78,17 +78,58 @@
 <h2>Permissions</h2>
 <ul>
 <li><code>sudo [cmd]</code> : run a cmd as root</li>
-<li><code>chmod [file]</code> : change file permissions<ul>
+<li><code>chmod u=,g=,o= [file]</code> : change file permissions<ul>
 <li>-R : recursive</li>
 <li>+x : make a file executable</li>
 <li>+rw : make a file read-write</li>
 <li>-w : make a file read-only</li>
+<li>+rx : make directory traversable</li>
 </ul>
 </li>
-<li><code>chown [owner]:[group] [file]</code> : change the owner of a file</li>
+<li><code>ls -la</code> : list file permissions</li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>owner(u) group(g) other(o)
+d rwx r-x r-x owner group
+</code></pre></div></td></tr></table></div>
+
+<ul>
+<li><code>chown [owner] [file]</code> : change owner of a file</li>
+<li><code>chgrp [group] [file]</code> : change group of a file</li>
+<li><code>chown [owner]:[group] [file]</code> : change the owner + group of a file<ul>
+<li>-R : recursive</li>
+</ul>
+</li>
+<li><code>usermod -aG [group] [user]</code> : add user to group</li>
+<li><code>sudo gpasswd -d [user] [group]</code> : remove user from a group</li>
+<li><code>newgrp [group]</code> : create group</li>
 <li><code>groups [user]</code> : list groups of a user</li>
 <li><code>cat /etc/group</code> : list all groups</li>
 </ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>docker:x:988:keven
+# group:password:gid:members
+</code></pre></div></td></tr></table></div>
+
+<h2>Time</h2>
+<ul>
+<li><code>stat [file]</code></li>
+</ul>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>mtime : modified time, last write
+atime : access time, last read
+    depends on mount options:
+        relatime : update atime not every read
+        noatime : don&#39;t update atime
+ctime : change time, last metadata write or last data write
+btime : creation/birth time, first created
+</code></pre></div></td></tr></table></div>
+
 <h2>Environment variables</h2>
 <ul>
 <li><code>export [var]=[name]</code> : set an env variable</li>
@@ -116,6 +157,28 @@
 <li><code>hexdump</code> : dump file as hexa</li>
 <li><code>find . -name [file] | entr [cmd]</code> : run a cmd whenever a file changes</li>
 <li><code>time [cmd]</code> : time execution of cmd</li>
+</ul>
+<h2>Network</h2>
+<ul>
+<li><code>ifconfig</code> : show network info</li>
+<li><code>sudo ss -tulnp</code> : list open ports<ul>
+<li>-t : tcp</li>
+<li>-u : udp</li>
+<li>-l : listen only</li>
+<li>-n : numeric ports instead of names</li>
+<li>-a : all</li>
+<li>-p : show process</li>
+</ul>
+</li>
+<li><code>sudo iftop -P -f "not udp and not multicast"</code> : list TCP sockets<ul>
+<li>-P : show ports</li>
+<li>-F "not (ip multicast or broadcast)" : filter out multicast</li>
+<li>T : show cumulative total</li>
+<li>t : one line per host</li>
+</ul>
+</li>
+<li><code>netstat -natup</code> : list TCP sockets</li>
+<li><code>nmap -Pn -p- -v [ip]</code> : find open ports</li>
 </ul>
 <h2>Disk</h2>
 <ul>
@@ -146,9 +209,6 @@
 </ul>
 </li>
 <li><code>nvidia-smi</code> : show GPU info</li>
-<li><code>ifconfig</code> : show network info</li>
-<li><code>sudo iftop -P</code> : list TCP sockets</li>
-<li><code>netstat -nat</code> : list TCP sockets</li>
 <li><code>du -shc * | sort -rh</code> : show size of files in directory<ul>
 <li>-s : summary</li>
 <li>-h : human readable</li>
@@ -165,7 +225,6 @@
 <li><code>btop</code> : list process, kill process</li>
 <li><code>sensors</code> : show temperature</li>
 <li><code>watch -t -n 1 "sensors | grep 'Core 0:'"</code> : show CPU temperature</li>
-<li><code>nmap -Pn -p- -v [ip]</code> : find open ports</li>
 <li><code>strace</code> : trace syscalls</li>
 <li><code>cat /proc/[pid]</code> : procfs, running processes</li>
 <li><code>cat /proc/meminfo</code> : memory info</li>
@@ -247,25 +306,6 @@
 </ul>
 </li>
 </ul>
-<h2>Time</h2>
-<ul>
-<li><code>stat [file]</code></li>
-</ul>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>mtime : modified time, last write
-atime : access time, last read
-    depends on mount options:
-        relatime : update atime not every read
-        noatime : don&#39;t update atime
-ctime : change time, last metadata write or last data write
-btime : creation/birth time, first created
-</code></pre></div></td></tr></table></div>
-
 <h2>Linux binaries</h2>
 <ul>
 <li>AppImage (Universal linux binary)</li>
