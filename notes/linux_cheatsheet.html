@@ -76,6 +76,19 @@
 </ul>
 </li>
 </ul>
+<h2>Other</h2>
+<ul>
+<li><code>reboot</code> : reboot system</li>
+<li><code>poweroff</code> : shutdown system</li>
+<li><code>wget</code> : ?</li>
+<li><code>tar -czvf [output file] [input dir]</code> : create tar file (<code>tar.gz</code>)</li>
+<li><code>tar -xvf [input file] -C [output dir]</code> : extract tar file</li>
+<li><code>zip</code> : ?</li>
+<li><code>unzip</code> : ?</li>
+<li><code>hexdump</code> : dump file as hexa</li>
+<li><code>find . -name [file] | entr [cmd]</code> : run a cmd whenever a file changes</li>
+<li><code>time [cmd]</code> : time execution of cmd</li>
+</ul>
 <h2>Permissions</h2>
 <ul>
 <li><code>sudo [cmd]</code> : run a cmd as root</li>
@@ -139,7 +152,7 @@ btime : creation/birth time, first created
 <li><code>export PATH=$PATH:[directory path]</code> : add directory to system PATH</li>
 <li><code>echo "export PATH=$PATH:[directory path]" &gt;&gt; ~/.bashrc</code> : change the system PATH permanently</li>
 </ul>
-<h2>Other</h2>
+<h2>SSH</h2>
 <ul>
 <li><code>ssh -p [port] [user]@[ip]</code> : login to SSH</li>
 <li><code>scp [src path] [user]@[ip]:[dst path]</code> : copy file to remote<ul>
@@ -148,16 +161,13 @@ btime : creation/birth time, first created
 </ul>
 </li>
 <li><code>scp [user]@[ip]:[src path] [dst path]</code> : copy file from remote</li>
-<li><code>reboot</code> : reboot system</li>
-<li><code>poweroff</code> : shutdown system</li>
-<li><code>wget</code> : ?</li>
-<li><code>tar -czvf [output file] [input dir]</code> : create tar file (<code>tar.gz</code>)</li>
-<li><code>tar -xvf [input file] -C [output dir]</code> : extract tar file</li>
-<li><code>zip</code> : ?</li>
-<li><code>unzip</code> : ?</li>
-<li><code>hexdump</code> : dump file as hexa</li>
-<li><code>find . -name [file] | entr [cmd]</code> : run a cmd whenever a file changes</li>
-<li><code>time [cmd]</code> : time execution of cmd</li>
+<li><code>ssh-keygen -t rsa -b 4096</code> : create key (<code>~/.ssh/id_rsa</code>)</li>
+<li><code>ssh-copy-id [user]@[ip]</code> : register key on target</li>
+<li><code>ssh-add ~/.ssh/id_rsa</code> : add key registered with ssh-agent</li>
+<li><code>ssh-add -d ~/.ssh/id_rsa</code> : delete key registered with ssh-agent</li>
+<li><code>ssh-add -l</code> : list keys registered with ssh-agent</li>
+<li><code>ps aux | grep ssh-agent</code> : check if ssh-agent is running</li>
+<li><code>eval $(ssh-agent -s)</code> : spawn ssh-agent</li>
 </ul>
 <h2>Network</h2>
 <ul>
