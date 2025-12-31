@@ -169,6 +169,24 @@ btime : creation/birth time, first created
 <li><code>ps aux | grep ssh-agent</code> : check if ssh-agent is running</li>
 <li><code>eval $(ssh-agent -s)</code> : spawn ssh-agent</li>
 </ul>
+<h2>Rsync</h2>
+<ul>
+<li><code>rsync -avhzP --delete -e "ssh -p [port]" [src] [user]@[ip]:[dst]</code><ul>
+<li>-n : dry-run</li>
+<li>-a : archive, preserve timestamps and permissions<ul>
+<li>might need <code>sudo</code> to preserve permissions</li>
+</ul>
+</li>
+<li>--delete : mirror, delete files on dst not in src</li>
+<li>-z : compress during transfer</li>
+<li>-P : progress and partial transfer</li>
+<li>-h : human summary</li>
+<li>-v : verbose</li>
+<li>-vv : very verbose</li>
+<li>-u : only changed files</li>
+</ul>
+</li>
+</ul>
 <h2>Network</h2>
 <ul>
 <li><code>ifconfig</code> : show network info</li>
