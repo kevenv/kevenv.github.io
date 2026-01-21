@@ -1,3 +1,4 @@
+import os
 import textwrap
 import pystache
 import markdown
@@ -89,13 +90,17 @@ if __name__ == '__main__':
 
         markdown_dirs = ['blog/', 'projects/', 'notes/']
         if any(s in p for s in markdown_dirs):
-            page_md = renderer.render_path('{}/{}.md'.format(TEMPLATES_PATH,p), {
+            page_path = '{}/{}.md'.format(TEMPLATES_PATH,p)
+            if "cheatsheet" in p and not os.path.exists(page_path): # skip cheatsheets as they are built externally
+                print(f'skipping')
+                continue
+            page_md = renderer.render_path(page_path, {
                 'root': root, 'rootImages': root_images, 'rootDocs': root_docs
             })
             page_html = '<link rel="stylesheet" href="{}style/codehilite.css">\n'.format(root)
             page_html += md.reset().convert(page_md)
             # extract head from body
-            idx = page_html.find("<h1>")
+            idx = page_html.find('<h1>')
             head = page_html[0:idx]
             page_html = page_html[idx:]
         else:
