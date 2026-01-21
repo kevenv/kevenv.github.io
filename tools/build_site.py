@@ -48,7 +48,6 @@ if __name__ == '__main__':
             ('blog/cuda_from_c','../','CUDA - Launching kernels from C'),
             ('blog/cuda_events','../','CUDA - Events (measuring timings)'),
             ('blog/cuda_gpu_memory','../','CUDA - GPU memory'),
-
             ('blog/bmp_format','../','BMP image format'),
             ('blog/qoi_format','../','QOI image format'),
             ('blog/gif_format_1','../','GIF image format (Part 1 : Format)'),
@@ -68,12 +67,13 @@ if __name__ == '__main__':
             ('notes/makefile_cheatsheet','../','Makefile cheatsheet'),
             ('notes/gdb_cheatsheet','../','GDB cheatsheet'),
             ('notes/c_cheatsheet','../','C cheatsheet'),
+            ('notes/css_cheatsheet','../','CSS cheatsheet'),
+            
             ('notes/c_style','../','C style'),
             ('notes/bit_ops','../','Bitwise operations'),
             ('notes/sort_algos','../','Sorting algorithms'),
             ('notes/priority_queue','../','Priority queue'),
-            ('notes/css_cheatsheet','../','CSS cheatsheet'),
-
+            
             # ('notes/nnet_backprop','../','Backprop'),
             ('notes/nnet','../','Neural networks'),
             ('notes/parse_args','../','Parse args in C'),
