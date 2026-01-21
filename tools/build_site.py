@@ -89,7 +89,7 @@ if __name__ == '__main__':
         root_images = root + IMAGES_PATH + '/'
         root_docs = root + DOCS_PATH + '/'
 
-        markdown_dirs = ['blog/', 'projects/', 'notes/']
+        markdown_dirs = ['blog/', 'projects/', 'notes/', 'history', 'courses']
         if any(s in p for s in markdown_dirs):
             # render with markdown
             page_path = '{}/{}.md'.format(TEMPLATES_PATH,p)
@@ -99,7 +99,10 @@ if __name__ == '__main__':
             page_md = renderer.render_path(page_path, {
                 'root': root, 'rootImages': root_images, 'rootDocs': root_docs
             })
-            page_html = '<link rel="stylesheet" href="{}style/codehilite.css">\n'.format(root)
+            if any(s in p for s in ['history', 'courses']):
+                page_html = '' # no need for codehilite
+            else:
+                page_html = '<link rel="stylesheet" href="{}style/codehilite.css">\n'.format(root)
             page_html += md.reset().convert(page_md)
             # extract head from body
             idx = page_html.find('<h1>')
