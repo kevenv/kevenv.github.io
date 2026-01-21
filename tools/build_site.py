@@ -24,7 +24,7 @@ if __name__ == '__main__':
         extension_configs=extension_configs
     )
 
-    # HTML
+    # PAGES
     pages = [
         ('index','','Home'),
         ('about','','About'),
@@ -79,6 +79,7 @@ if __name__ == '__main__':
             ('notes/parse_args','../','Parse args in C'),
             ('notes/why_linux','../','Why Linux'),
     ]
+
     for page in pages:
         print(page)
         
@@ -90,6 +91,7 @@ if __name__ == '__main__':
 
         markdown_dirs = ['blog/', 'projects/', 'notes/']
         if any(s in p for s in markdown_dirs):
+            # render with markdown
             page_path = '{}/{}.md'.format(TEMPLATES_PATH,p)
             if "cheatsheet" in p and not os.path.exists(page_path): # skip cheatsheets as they are built externally
                 print(f'skipping')
@@ -104,10 +106,13 @@ if __name__ == '__main__':
             head = page_html[0:idx]
             page_html = page_html[idx:]
         else:
+            # render with mustache
             head = ''
             page_html = renderer.render_path('{}/{}.mustache'.format(TEMPLATES_PATH,p), {
                 'root': root, 'rootImages': root_images, 'rootDocs': root_docs
             })
+        
+        # render layout
         # TODO: hacky way to avoid indenting <pre>
         pre_dirs = ['blog/', 'publications/', 'notes/']
         if all(s not in p for s in pre_dirs):
@@ -116,5 +121,7 @@ if __name__ == '__main__':
             'body': page_html, 'title': title, 'head': head,
             'root': root, 'rootImages': root_images, 'rootDocs': root_docs
         })
+
+        # write page
         with open('{}.html'.format(p),'w') as f:
             f.write(page_html)
