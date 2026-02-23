@@ -37,6 +37,13 @@
 -O0 -g
 </code></pre></div></td></tr></table></div>
 
+<h2>Asserts</h2>
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span>
+<span class="n">assert</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+
+<p>disable asserts : <code>-DNDEBUG</code></p>
 <h2>Restrict</h2>
 <ul>
 <li>hints to compiler that for the lifetime of the pointer, no other pointer will be used to access the object to which it points</li>
