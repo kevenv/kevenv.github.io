@@ -73,9 +73,6 @@ if __name__ == '__main__':
             ('notes/bit_ops','../','Bitwise operations'),
             ('notes/sort_algos','../','Sorting algorithms'),
             ('notes/priority_queue','../','Priority queue'),
-            
-            ('notes/parse_args','../','Parse args in C'),
-            ('notes/why_linux','../','Why Linux'),
     ]
 
     for page in pages:
