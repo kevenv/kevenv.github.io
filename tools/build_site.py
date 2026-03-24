@@ -62,12 +62,9 @@ if __name__ == '__main__':
             ('notes/makefile_cheatsheet','../','Makefile cheatsheet'),
             ('notes/gdb_cheatsheet','../','GDB cheatsheet'),
             ('notes/c_cheatsheet','../','C cheatsheet'),
-            ('notes/css_cheatsheet','../','CSS cheatsheet'),
-            
             ('notes/c_style','../','C style'),
             ('notes/bit_ops','../','Bitwise operations'),
-            ('notes/sort_algos','../','Sorting algorithms'),
-            ('notes/priority_queue','../','Priority queue'),
+            ('notes/css_cheatsheet','../','CSS cheatsheet'),
     ]
 
     for page in pages:
