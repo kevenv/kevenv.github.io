@@ -166,13 +166,6 @@ btime : creation/birth time, first created
 </ul>
 </li>
 <li><code>scp [user]@[ip]:[src path] [dst path]</code> : copy file from remote</li>
-<li><code>ssh-keygen -t rsa -b 4096</code> : create key (<code>~/.ssh/id_rsa</code>)</li>
-<li><code>ssh-copy-id [user]@[ip]</code> : register key on target</li>
-<li><code>ssh-add ~/.ssh/id_rsa</code> : add key registered with ssh-agent</li>
-<li><code>ssh-add -d ~/.ssh/id_rsa</code> : delete key registered with ssh-agent</li>
-<li><code>ssh-add -l</code> : list keys registered with ssh-agent</li>
-<li><code>ps aux | grep ssh-agent</code> : check if ssh-agent is running</li>
-<li><code>eval $(ssh-agent -s)</code> : spawn ssh-agent</li>
 </ul>
 <h2>Rsync</h2>
 <ul>
@@ -333,22 +326,6 @@ btime : creation/birth time, first created
 <li>inherit <code>~/.bashrc</code></li>
 </ul>
 </li>
-</ul>
-<h2>Filesystem</h2>
-<p><a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">FSH</a></p>
-<ul>
-<li><code>/proc</code> : procfs, running processes</li>
-<li><code>/dev</code> : udev, devices files</li>
-<li><code>/sys</code> : sysfs, devices/bus/drivers/kernel<ul>
-<li><code>/sys/bus/pci/devices</code></li>
-</ul>
-</li>
-</ul>
-<h2>Linux binaries</h2>
-<ul>
-<li>AppImage (Universal linux binary)</li>
-<li>snap (Ubuntu)</li>
-<li>flatpak (Fedora)</li>
 </ul>
         <hr>
         <footer>
