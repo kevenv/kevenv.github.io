@@ -105,11 +105,58 @@
 <li>+rx : make directory traversable</li>
 </ul>
 </li>
+<li><code>chmod [number] [file]</code> : change file permissions</li>
 <li><code>ls -la</code> : list file permissions</li>
 </ul>
 <div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>owner(u) group(g) other(o)
-d rwx r-x r-x owner group
+d rwx rwx rwx owner group
+</code></pre></div></td></tr></table></div>
+
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code>number is made of 3 digits (octal, base 8):
+U G O
+
+4 = r
+2 = w
+1 = x
+
+7 = rwx
+6 = rw
+5 = rx
+4 = r
+3 = wx
+2 = w
+1 = x
+0 = 
+</code></pre></div></td></tr></table></div>
+
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>Default file permissions
+fedora (most common)
+    Files:       644 = rw- r-- r--
+    Directories: 755 = rwx r-x r-x
+debian
+    Files:       664 = rw- rw- r--
+    Directories: 775 = rwx rwx r-x
 </code></pre></div></td></tr></table></div>
 
 <ul>
@@ -125,9 +172,7 @@ d rwx r-x r-x owner group
 <li><code>groups [user]</code> : list groups of a user</li>
 <li><code>cat /etc/group</code> : list all groups</li>
 </ul>
-<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>docker:x:988:keven
-# group:password:gid:members
+<div class="codehilite"><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>docker:x:988:keven # group:password:gid:members
 </code></pre></div></td></tr></table></div>
 
 <h2>Time</h2>
