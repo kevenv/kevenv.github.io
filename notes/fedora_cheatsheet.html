@@ -47,7 +47,7 @@
 <li><code>dnf config-manager --add-repo [some_repo.repo]</code> : add repo</li>
 <li><code>sudo dnf config-manager setopt [repo].enabled=0</code> : disable repo</li>
 <li><code>rm /etc/yum.repos.d/[repo]</code> : remove repo</li>
-<li><code>dnf repository-packages [repo] list --installed</code> : list all packages installed from specific repo</li>
+<li><code>dnf list --installed | grep [repo]</code> : list all packages installed from specific repo</li>
 <li><code>dnf provides [file]</code> : find package that provides a file</li>
 <li><code>dnf repoquery -l [package]</code> : list files in package</li>
 <li><code>dnf repoquery --requires [package]</code>: list dependencies of package</li>
